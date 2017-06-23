@@ -1,0 +1,27 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!--activity_main.xml界面布局元素-->
+    <!--欢迎语左间距-->
+    <dimen name="main_welcome_leftMargin">100dp</dimen>
+    <!--方框左间距-->
+    <dimen name="main_kuang_leftMargin">80dp</dimen>
+    <!--方框间距-->
+    <dimen name="main_jianju">20dp</dimen>
+    <!--文字间距-->
+    <dimen name="main_word_jianju">10dp</dimen>
+
+    <!--其他所有页面的语音唤醒按钮的底边距-->
+    <dimen name="wakeup_bottom">40dp</dimen>
+
+
+    <!--地图的大小-->
+    <dimen name="map_width">326dp</dimen>
+    <dimen name="map_height">208dp</dimen>
+
+    <!--按钮元素的宽高设置-->
+    <dimen name="button_width">110dp</dimen>
+    <dimen name="button_height">55dp</dimen>
+</resources>

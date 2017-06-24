@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -65,6 +66,11 @@ public class ProductsActivity extends AppCompatActivity {
             switch(msg.what){
                 case 1:
                     try {
+                        if ((msg.obj.toString() == null) || msg.obj.toString().equals(""))
+                        {
+                            Toast.makeText(ProductsActivity.this,"未查询到您想要的信息",Toast.LENGTH_LONG).show();
+                            break;
+                        }
                         JSONObject jsonObject = new JSONObject(JSONTokener(msg.obj.toString()));
                         price_value.setText(jsonObject.getString("id"));
                         salesDaily_value.setText(jsonObject.getString("name"));
@@ -107,7 +113,7 @@ public class ProductsActivity extends AppCompatActivity {
                 }
                 catch (ClientProtocolException e)
                 {
-                    e.printStackTrace();
+                    Toast.makeText(ProductsActivity.this,"网络错误，未查询到您想要的信息",Toast.LENGTH_LONG).show();
                 }
                 catch (IOException e)
                 {

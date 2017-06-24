@@ -4,11 +4,12 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.qman.rockpad.ifkytekUtil.JsonParser;
-import com.example.qman.rockpad.utils.ActivityUtil;
+import com.example.qman.rockpad.tools.VoiceSpeaker;
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.InitListener;
 import com.iflytek.cloud.RecognizerListener;
@@ -23,80 +24,30 @@ import com.iflytek.cloud.SynthesizerListener;
 import stonectr.serial.SerialController;
 
 public class WakeUpActivity extends Activity implements View.OnClickListener {
-    private Button wakeup_button = null;
-
+    private ImageButton wakeup_button = null;
+    private TextView info ;
     private SpeechRecognizer mIat;
-    //语音合成
-    private SpeechSynthesizer mTts;
-    private SpeakerVerifier mVerifier;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wakeup);
-        wakeup_button = (Button) findViewById(R.id.wakeup_button);
+        wakeup_button = (ImageButton) findViewById(R.id.wakeup_button);
         wakeup_button.setOnClickListener(this);
+        info = (TextView)findViewById(R.id.wakeup_info);
 
         mIat = SpeechRecognizer.createRecognizer(this, null);
-        mTts = SpeechSynthesizer.createSynthesizer(this, null);
-        initTts();
+
         initIat();
         mIat.startListening(mRecognizerListener);
-       // mTts.startSpeaking(" 我在听您说呢", mSynListener);
+       // VoiceSpeaker.getInstance().speak("有什么可以帮到您");
     }
 
     @Override
     public void onClick(View v) {
-       // ActivityUtil.toastShow(this,"点我干嘛？");
+        // ActivityUtil.toastShow(this,"点我干嘛？");
         this.finish();
     }
 
-
-    //合成监听器
-    private SynthesizerListener mSynListener = new SynthesizerListener() {
-        //会话结束回调接口，没有错误时，error为null
-        public void onCompleted(SpeechError error) {
-            // 初始化SpeakerVerifier，InitListener为初始化完成后的回调接口
-            mVerifier = SpeakerVerifier.createVerifier(WakeUpActivity.this, new InitListener() {
-                @Override
-                public void onInit(int errorCode) {
-                    if (ErrorCode.SUCCESS == errorCode) {
-                    } else {
-                    }
-                }
-            });
-            mVerifier.setParameter(SpeechConstant.PARAMS, null);
-        }
-        //缓冲进度回调
-        //percent为缓冲进度0~100，beginPos为缓冲音频在文本中开始位置，endPos表示缓冲音频在文本中结束位置，info为附加信息。
-        public void onBufferProgress(int percent, int beginPos, int endPos, String info) {
-        }
-        public void onSpeakBegin() {
-        }
-        //暂停播放
-        public void onSpeakPaused() {
-        }
-        //播放进度回调
-        //percent为播放进度0~100,beginPos为播放音频在文本中开始位置，endPos表示播放音频在文本中结束位置.
-        public void onSpeakProgress(int percent, int beginPos, int endPos) {
-        }
-        //恢复播放回调接口
-        public void onSpeakResumed() {
-        }
-        //会话事件回调接口
-        public void onEvent(int arg0, int arg1, int arg2, Bundle arg3) {
-        }
-    };
-
-    /**
-     * 语音播放初始化
-     */
-    private void initTts() {
-        mTts.setParameter(SpeechConstant.VOICE_NAME, "xiaoyan");//设置发音人
-        mTts.setParameter(SpeechConstant.SPEED, "50");//设置语速
-        mTts.setParameter(SpeechConstant.VOLUME, "100");//设置音量，范围0~100
-        mTts.setParameter(SpeechConstant.ENGINE_TYPE, SpeechConstant.TYPE_CLOUD); //设置云端
-    }
 
     /**
      * 语义监听初始化
@@ -118,28 +69,25 @@ public class WakeUpActivity extends Activity implements View.OnClickListener {
             //    showTip("开始说话");
             Toast.makeText(WakeUpActivity.this, "请开始说话", Toast.LENGTH_SHORT).show();
         }
-
         @Override
         public void onError(SpeechError error) {
             Log.e("onError1: ", error.getPlainDescription(true));
-            Toast.makeText(WakeUpActivity.this,"您没有说话，可能是录音机权限被禁，需要您打开应用的录音权限", Toast.LENGTH_LONG).show();
+            Toast.makeText(WakeUpActivity.this, "您没有说话，可能是录音机权限被禁，需要您打开应用的录音权限", Toast.LENGTH_LONG).show();
         }
-
         @Override
         public void onEndOfSpeech() {
         }
-
         @Override
         public void onResult(RecognizerResult results, boolean isLast) {
             String text = JsonParser.parseIatResult(results.getResultString());
             Log.d("voice", text);
             resolve(text);
-                mIat.destroy();
+            mIat.destroy();
         }
 
         @Override
         public void onVolumeChanged(int volume, byte[] data) {
-           Log.d("", "返回音频数据：" + data.length);
+            Log.d("", "返回音频数据：" + data.length);
         }
 
         @Override
@@ -154,37 +102,55 @@ public class WakeUpActivity extends Activity implements View.OnClickListener {
     public static final String[] BODY_LEFT = {"左转", "向左"};
     public static final String[] BODY_RIGHT = {"右转", "向右", "看右边"};
 
-    public void resolve(String str)
-    {
+    public void resolve(String str) {
 
         if (str == null || str.length() == 0 || str.equals("。") || str.equals("！") || str.equals("？")) {
             return;
         }
-        if (str.contains(BODY_FORWARD[0])
-                || str.contains(BODY_FORWARD[1])
-                || str.contains(BODY_FORWARD[2])) {
-            if (str.contains("不") || str.contains("别") || str.contains("甭") || str.contains("禁止")){
+        if (str.contains(BODY_FORWARD[0]) || str.contains(BODY_FORWARD[1]) || str.contains(BODY_FORWARD[2])) {
+            if (str.contains("不") || str.contains("别") || str.contains("甭") || str.contains("禁止")) {
                 return;
             }
             //    if (str.contains("米"))
             SerialController.getInstance().sendForward();
 
-        } else if (str.contains(BODY_BACKWARD[0])
-                || str.contains(BODY_BACKWARD[1])
-                ) {
+        } else if (str.contains(BODY_BACKWARD[0]) || str.contains(BODY_BACKWARD[1])) {
             if (str.contains("不") || str.contains("别") || str.contains("甭") || str.contains("禁止"))
                 return;
             SerialController.getInstance().sendBackward();
-        } else if (str.contains(BODY_LEFT[0])
-                || str.contains(BODY_LEFT[1])) {
+        } else if (str.contains(BODY_LEFT[0]) || str.contains(BODY_LEFT[1])) {
             if (str.contains("不") || str.contains("别") || str.contains("甭") || str.contains("禁止"))
                 return;
             SerialController.getInstance().sendLeft();
-        } else if (str.contains(BODY_RIGHT[0])
-                || str.contains(BODY_RIGHT[1])) {
+        } else if (str.contains(BODY_RIGHT[0]) || str.contains(BODY_RIGHT[1])) {
             if (str.contains("不") || str.contains("别") || str.contains("甭") || str.contains("禁止"))
                 return;
             SerialController.getInstance().sendRight();
+        } else if (str.contains("可口可乐")) {
+              info.setText(info.getText().toString() + "\n正在为您查询可口可乐信息信息");
+        }else if (str.contains("健力宝")) {
+            info.setText(info.getText().toString() + "\n正在为您查询健力宝信息信息");
+        }else if (str.contains("农夫山泉")) {
+            info.setText(info.getText().toString() + "\n正在为您查询农夫山泉信息信息");
+        }else if (str.contains("绿茶")) {
+            info.setText(info.getText().toString() + "\n正在为您查询绿茶信息信息");
+        }else if (str.contains("小明")||str.contains("小茗")||str.contains("小明同学")) {
+            info.setText(info.getText().toString() + "\n正在为您查询\"小茗\"信息信息");
+        }else if (str.contains("怡宝")||str.contains("医保")) {
+            info.setText(info.getText().toString() + "\n正在为您查询\"怡宝\"信息信息");
+        }else if (str.contains("名人")||str.contains("名仁")||str.contains("名人矿泉水")) {
+            info.setText(info.getText().toString() + "\n正在为您查询可口可乐信息信息");
+        }else if (str.contains("曲奇饼干")) {
+            info.setText(info.getText().toString() + "\n正在为您查询\"曲奇饼干\"信息信息");
+        }
+        else if (str.contains("垃圾袋")) {
+            info.setText(info.getText().toString() + "\n正在为您查询\"垃圾袋\"信息信息");
+        }
+        else if (str.contains("纸杯")) {
+            info.setText(info.getText().toString() + "\n正在为您查询\"纸杯\"信息信息");
+        }
+        else if (str.contains("厕所") || str.contains("卫生间")) {
+              info.setText(info.getText().toString() + "\n即将为你显示卫生间信息");
         }
     }
 

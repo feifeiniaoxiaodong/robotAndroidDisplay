@@ -11,7 +11,6 @@ import android.text.Spanned;
 import android.text.style.TextAppearanceSpan;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -61,10 +60,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         wendu_value = (TextView) findViewById(R.id.main_wendu_value);
-        shidu_value = (TextView) findViewById(R.id.shidu_value);
-        yanwu_value = (TextView) findViewById(R.id.yanwu_value);
-        PM_value = (TextView) findViewById(R.id.PM_value);
-        dianliang_value = (TextView) findViewById(R.id.dianliang_value);
+        shidu_value = (TextView) findViewById(R.id.main_shidu_value);
+        yanwu_value = (TextView) findViewById(R.id.main_yanwu_value);
+        PM_value = (TextView) findViewById(R.id.main_PM_value);
+        dianliang_value = (TextView) findViewById(R.id.main_dianliang_value);
         wakeup_button = (ImageButton) findViewById(R.id.wakeup_button);
         wakeup_button.setOnClickListener(this);
         setValue();

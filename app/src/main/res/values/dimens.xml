@@ -24,4 +24,5 @@
     <!--按钮元素的宽高设置-->
     <dimen name="button_width">110dp</dimen>
     <dimen name="button_height">55dp</dimen>
+
 </resources>

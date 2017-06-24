@@ -34,25 +34,25 @@ public class MapOneActivity extends AppCompatActivity {
         //更新实时位置
         updatePosition();
 
-
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ActivityUtil.toastShow(MapOneActivity.this,"按钮1");
-            }
-        });
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ActivityUtil.toastShow(MapOneActivity.this,"按钮2");
-            }
-        });
-        button3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ActivityUtil.toastShow(MapOneActivity.this,"按钮3");
-            }
-        });
+//
+//        button1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ActivityUtil.toastShow(MapOneActivity.this,"按钮1");
+//            }
+//        });
+//        button2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ActivityUtil.toastShow(MapOneActivity.this,"按钮2");
+//            }
+//        });
+//        button3.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ActivityUtil.toastShow(MapOneActivity.this,"按钮3");
+//            }
+//        });
         button_yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,9 +68,9 @@ public class MapOneActivity extends AppCompatActivity {
     }
     private void init() {
         //初始化
-        button1 = (ImageView) findViewById(R.id.kuang1);
-        button2 = (ImageView) findViewById(R.id.kuang2);
-        button3 = (ImageView) findViewById(R.id.kuang3);
+//        button1 = (ImageView) findViewById(R.id.kuang1);
+//        button2 = (ImageView) findViewById(R.id.kuang2);
+//        button3 = (ImageView) findViewById(R.id.kuang3);
 
         button_yes = (ImageView) findViewById(R.id.yes);
         button_no = (ImageView) findViewById(R.id.no);

@@ -1,138 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_word"
-    tools:context="com.example.qman.rockpad.MainActivity">
+    android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/map"
-        android:layout_width="@dimen/map_width"
-        android:layout_height="@dimen/map_height"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="35dp"
-        android:background="@drawable/map"/>
-
-    <ImageView
-        android:id="@+id/robot"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_alignLeft="@+id/map"
-        android:layout_alignTop="@+id/map"
-        android:background="@drawable/position"/>
-
-    <!--中间的按钮：碳酸饮料-->
     <RelativeLayout
-        android:id="@+id/button2"
-        android:layout_width="@dimen/button_width"
-        android:layout_height="@dimen/button_height"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/main_jianju"
-        android:layout_centerInParent="true"
-        android:layout_below="@+id/map">
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_weight="4">
+
         <ImageView
-            android:id="@+id/kuang2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:background="@drawable/kuang"/>
-        <TextView
-            android:id="@+id/word2"
+            android:id="@+id/map"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="碳酸饮料"
-            android:textColor="@color/white"
-            android:layout_centerInParent="true"
-            android:textSize="22dp"/>
+            android:layout_marginTop="50dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/map" />
+
+        <ImageView
+            android:id="@+id/robot"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/position" />
     </RelativeLayout>
 
-    <!--左侧的按钮：纯净水按钮-->
-    <RelativeLayout
-        android:id="@+id/button1"
-        android:layout_width="@dimen/button_width"
-        android:layout_height="@dimen/button_height"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/main_jianju"
-        android:layout_centerInParent="true"
-        android:layout_toLeftOf="@+id/button2"
-        android:layout_below="@+id/map">
-        <ImageView
-            android:id="@+id/kuang1"
-            android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="50dp"
+        android:layout_weight="0.8"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:background="@drawable/kuang"/>
-        <TextView
-            android:id="@+id/word1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/kuang"
             android:text="纯 净 水"
             android:textColor="@color/white"
-            android:layout_centerInParent="true"
-            android:textSize="22dp"/>
-    </RelativeLayout>
+            android:textSize="40sp" />
 
-    <!--右侧的按钮：茶类-->
-    <RelativeLayout
-        android:id="@+id/button3"
-        android:layout_width="@dimen/button_width"
-        android:layout_height="@dimen/button_height"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/main_jianju"
-        android:layout_centerInParent="true"
-        android:layout_toRightOf="@+id/button2"
-        android:layout_below="@+id/map">
-        <ImageView
-            android:id="@+id/kuang3"
-            android:layout_width="match_parent"
+        <Button
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:background="@drawable/kuang"/>
-        <TextView
-            android:id="@+id/word3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/kuang"
+            android:text="碳酸饮料"
+            android:textColor="@color/white"
+            android:textSize="40sp" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/kuang"
             android:text="茶    类"
             android:textColor="@color/white"
-            android:layout_centerInParent="true"
-            android:textSize="22dp"/>
-    </RelativeLayout>
+            android:textSize="40sp" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/ask"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.3"
+        android:gravity="center"
         android:text="是否需要引导您到指定位置？"
         android:textColor="@color/white"
-        android:textSize="20dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/button2"
-        android:layout_marginTop="@dimen/main_jianju"/>
-    <ImageView
-        android:id="@+id/center"
-        android:layout_width="wrap_content"
+        android:textSize="50sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ask"
-        android:layout_marginTop="@dimen/main_jianju"
-        android:layout_centerHorizontal="true"/>
-    <ImageView
-        android:id="@+id/yes"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_below="@id/ask"
-        android:layout_marginTop="@dimen/main_jianju"
-        android:layout_toLeftOf="@+id/center"
-        android:layout_marginRight="@dimen/main_jianju"
-        android:background="@drawable/yes"/>
-    <ImageView
-        android:id="@+id/no"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_below="@id/ask"
-        android:layout_marginTop="@dimen/main_jianju"
-        android:layout_toRightOf="@+id/center"
-        android:layout_marginLeft="@dimen/main_jianju"
-        android:background="@drawable/no"/>
-</RelativeLayout>
+        android:layout_weight="2"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        >
+
+        <ImageButton
+            android:id="@+id/yes"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:layout_marginRight="160dp"
+            android:src="@drawable/yes" />
+
+        <ImageButton
+            android:id="@+id/no"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:src="@drawable/no" />
+    </LinearLayout>
+</LinearLayout>
+

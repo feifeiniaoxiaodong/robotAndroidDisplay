@@ -1,163 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_word"
-    tools:context="com.example.qman.rockpad.MainActivity">
+    android:paddingTop="100dp"
+    android:paddingBottom="180dp"
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/product_image"
-        android:layout_width="95dp"
-        android:layout_height="213dp"
-        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
         android:layout_marginTop="35dp"
-        android:background="@drawable/products"/>
-    <TextView
-        android:id="@+id/price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="价格："
-        android:textColor="@color/white"
-        android:textSize="20dp"
-        android:layout_below="@+id/product_image"
-        android:layout_marginLeft="@dimen/main_kuang_leftMargin"
-        android:layout_marginTop="@dimen/main_jianju"/>
-    <TextView
-        android:id="@+id/product_price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="1.00元"
-        android:textColor="@color/white"
-        android:textSize="20dp"
-        android:layout_toRightOf="@+id/price"
-        android:layout_alignBottom="@+id/price"  />
-    <TextView
-        android:id="@+id/salesDaily"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="日销量："
-        android:textColor="@color/white"
-        android:textSize="20dp"
-        android:layout_alignLeft="@+id/price"
-        android:layout_below="@+id/price"
-        android:layout_marginTop="@dimen/main_word_jianju"/>
-    <TextView
-        android:id="@+id/product_salesDaily"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="100瓶"
-        android:textColor="@color/white"
-        android:textSize="20dp"
-        android:layout_toRightOf="@+id/salesDaily"
-        android:layout_alignBottom="@+id/salesDaily"  />
+        android:layout_weight="5"
+        android:background="@drawable/products" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.8"
+        android:layout_marginTop="30dp"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.2"
+            android:gravity="right"
+            android:text="价    格："
+            android:textColor="@color/white"
+            android:textSize="40sp" />
+
+        <TextView
+            android:id="@+id/product_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="1.00元"
+            android:textColor="@color/white"
+            android:textSize="40sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.8"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.2"
+            android:gravity="right"
+            android:text="日销量："
+            android:textColor="@color/white"
+            android:textSize="40sp" />
+
+        <TextView
+            android:id="@+id/product_salesDaily"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="100"
+            android:textColor="@color/white"
+            android:textSize="40sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.8"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.2"
+            android:gravity="right"
+            android:text="月销量："
+            android:textColor="@color/white"
+            android:textSize="40sp" />
+
+        <TextView
+            android:id="@+id/product_salesMonth"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="500"
+            android:textColor="@color/white"
+            android:textSize="40sp" />
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/salesMonth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="月销量："
-        android:textColor="@color/white"
-        android:textSize="20dp"
-        android:layout_alignLeft="@+id/salesDaily"
-        android:layout_below="@+id/salesDaily"
-        android:layout_marginTop="@dimen/main_word_jianju"/>
-    <TextView
-        android:id="@+id/product_salesMonth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="1000瓶"
-        android:textColor="@color/white"
-        android:textSize="20dp"
-        android:layout_toRightOf="@+id/salesMonth"
-        android:layout_alignBottom="@+id/salesMonth"  />
-
-    <TextView
-        android:id="@+id/compare"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.5"
+        android:gravity="center_vertical"
+        android:paddingLeft="120dp"
         android:text="同类对比："
         android:textColor="@color/white"
-        android:textSize="20dp"
-        android:layout_below="@+id/salesMonth"
-        android:layout_alignLeft="@+id/button1"
-        android:layout_marginTop="@dimen/main_jianju"/>
-    <!--中间的按钮：碳酸饮料-->
-    <RelativeLayout
-        android:id="@+id/button2"
-        android:layout_width="@dimen/button_width"
-        android:layout_height="@dimen/button_height"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/main_jianju"
-        android:layout_centerInParent="true"
-        android:layout_below="@+id/compare">
-        <ImageView
-            android:id="@+id/kuang2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:background="@drawable/kuang"/>
-        <TextView
-            android:id="@+id/word2"
+        android:textSize="50sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="100dp"
+        android:paddingRight="100dp">
+
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/kuang"
             android:text="碳酸饮料"
-            android:textColor="@color/white"
-            android:layout_centerInParent="true"
-            android:textSize="22dp"/>
-    </RelativeLayout>
+            android:textSize="30sp" />
 
-    <!--左侧的按钮：纯净水按钮-->
-    <RelativeLayout
-        android:id="@+id/button1"
-        android:layout_width="@dimen/button_width"
-        android:layout_height="@dimen/button_height"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/main_jianju"
-        android:layout_centerInParent="true"
-        android:layout_toLeftOf="@+id/button2"
-        android:layout_below="@+id/compare">
-        <ImageView
-            android:id="@+id/kuang1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:background="@drawable/kuang"/>
-        <TextView
-            android:id="@+id/word1"
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="纯 净 水"
-            android:textColor="@color/white"
-            android:layout_centerInParent="true"
-            android:textSize="22dp"/>
-    </RelativeLayout>
+            android:layout_weight="1"
+            android:background="@drawable/kuang"
+            android:text="纯净水"
+            android:textSize="30sp" />
 
-    <!--右侧的按钮：茶类-->
-    <RelativeLayout
-        android:id="@+id/button3"
-        android:layout_width="@dimen/button_width"
-        android:layout_height="@dimen/button_height"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/main_jianju"
-        android:layout_centerInParent="true"
-        android:layout_toRightOf="@+id/button2"
-        android:layout_below="@+id/compare">
-        <ImageView
-            android:id="@+id/kuang3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:background="@drawable/kuang"/>
-        <TextView
-            android:id="@+id/word3"
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="茶    类"
-            android:textColor="@color/white"
-            android:layout_centerInParent="true"
-            android:textSize="22dp"/>
-    </RelativeLayout>
+            android:layout_weight="1"
+            android:background="@drawable/kuang"
+            android:text="茶品"
+            android:textSize="30sp" />
+    </LinearLayout>
 
-</RelativeLayout>
+
+</LinearLayout>
+
+

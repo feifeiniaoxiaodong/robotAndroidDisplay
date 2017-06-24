@@ -13,17 +13,16 @@
     </style>
 
     <style name="style_main_bigFont">
-        <item name="android:textSize">35sp</item>
+        <item name="android:textSize">60sp</item>
         <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="style_main_smallFont">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">40sp</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:textStyle">italic</item>
     </style>
     <style name="style_main_showFont">
-        <item name="android:textSize">25sp</item>
+        <item name="android:textSize">50sp</item>
         <item name="android:textColor">@color/white</item>
     </style>
 </resources>

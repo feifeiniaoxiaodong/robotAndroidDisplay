@@ -5,8 +5,10 @@ import android.util.Log;
 import stonectr.serial.callBackEvent.UartCodebarEvent;
 import stonectr.serial.callBackEvent.UartEventNormal;
 import stonectr.serial.callBackEvent.UartEventOther;
+import stonectr.serial.callBackEvent.UartGetFaceEvent;
 import stonectr.serial.callBackEvent.UartRobotInfoEvent;
 import stonectr.serial.callBackEvent.UartRobotPoseEvent;
+import stonectr.serial.callBackEvent.UartShelvesInfoEvent;
 import stonectr.serial.callBackEvent.UartWakeUpEvent;
 
 
@@ -91,6 +93,22 @@ public class SerialController {
         callback.onReback(event);
     }
 
+    public static void getFace(int faceID)
+    {
+        UartGetFaceEvent event = new UartGetFaceEvent();
+        event.setFaceID(faceID);
+        Log.d(TAG, "getFace: " + faceID);
+        callback.onReback(event);
+    }
+
+    public static void getShelves(int top, int middle)
+    {
+        UartShelvesInfoEvent event = new UartShelvesInfoEvent();
+        event.setTop(top);
+        event.setMiddle(middle);
+        Log.d(TAG, "getShelvesInfo: " + top + " " + middle);
+        callback.onReback(event);
+    }
     public static native void init();
     public static native void release();
     //开关串口
@@ -123,6 +141,10 @@ public class SerialController {
     public native void platformDown();
     public native void platformStop();
     public native void platformBottom();
+
+    public native void moveTo(byte type);
+    public native void gotoScan();
+
 
     public native void patrol(byte line);//巡逻路线*
 

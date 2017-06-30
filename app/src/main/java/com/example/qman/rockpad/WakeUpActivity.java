@@ -1,7 +1,9 @@
 package com.example.qman.rockpad;
 
-import android.app.Activity;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -23,10 +25,11 @@ import com.iflytek.cloud.SynthesizerListener;
 
 import stonectr.serial.SerialController;
 
-public class WakeUpActivity extends Activity implements View.OnClickListener {
+public class WakeUpActivity extends AppCompatActivity implements View.OnClickListener {
     private ImageButton wakeup_button = null;
     private TextView info ;
     private SpeechRecognizer mIat;
+    private boolean isListening = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,10 +37,18 @@ public class WakeUpActivity extends Activity implements View.OnClickListener {
         wakeup_button = (ImageButton) findViewById(R.id.wakeup_button);
         wakeup_button.setOnClickListener(this);
         info = (TextView)findViewById(R.id.wakeup_info);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        info.setText("请问您需要什么帮助？");
         mIat = SpeechRecognizer.createRecognizer(this, null);
-
         initIat();
+        if (isListening)
+        {
+            mIat.stopListening();
+        }
         mIat.startListening(mRecognizerListener);
        // VoiceSpeaker.getInstance().speak("有什么可以帮到您");
     }
@@ -68,19 +79,23 @@ public class WakeUpActivity extends Activity implements View.OnClickListener {
             // 此回调表示：sdk内部录音机已经准备好了，用户可以开始语音输入
             //    showTip("开始说话");
             Toast.makeText(WakeUpActivity.this, "请开始说话", Toast.LENGTH_SHORT).show();
+            isListening = true;
         }
         @Override
         public void onError(SpeechError error) {
             Log.e("onError1: ", error.getPlainDescription(true));
+            isListening = false;
             Toast.makeText(WakeUpActivity.this, "您没有说话，可能是录音机权限被禁，需要您打开应用的录音权限", Toast.LENGTH_LONG).show();
         }
         @Override
         public void onEndOfSpeech() {
+            isListening = false;
         }
         @Override
         public void onResult(RecognizerResult results, boolean isLast) {
             String text = JsonParser.parseIatResult(results.getResultString());
             Log.d("voice", text);
+            isListening = false;
             resolve(text);
             mIat.destroy();
         }
@@ -127,31 +142,84 @@ public class WakeUpActivity extends Activity implements View.OnClickListener {
                 return;
             SerialController.getInstance().sendRight();
         } else if (str.contains("可口可乐")) {
-              info.setText(info.getText().toString() + "\n正在为您查询可口可乐信息信息");
+            info.setText(info.getText().toString() + "\n正在为您查询\"可口可乐\"信息信息");
+            jumpToMap(2);
         }else if (str.contains("健力宝")) {
-            info.setText(info.getText().toString() + "\n正在为您查询健力宝信息信息");
-        }else if (str.contains("农夫山泉")) {
-            info.setText(info.getText().toString() + "\n正在为您查询农夫山泉信息信息");
+            info.setText(info.getText().toString() + "\n正在为您查询\"健力宝\"信息信息");
+            jumpToMap(1);
+        }else if (str.contains("百岁山")) {
+            info.setText(info.getText().toString() + "\n正在为您查询\"百岁山\"信息信息");
+            jumpToMap(4);
+        }else if (str.contains("维他")) {
+            info.setText(info.getText().toString() + "\n正在为您查询\"维他柠檬茶\"信息信息");
+            jumpToMap(5);
+        }
+        else if (str.contains("农夫山泉")) {
+            info.setText(info.getText().toString() + "\n正在为您查询\"农夫山泉\"信息信息");
+            jumpToMap(9);
         }else if (str.contains("绿茶")) {
-            info.setText(info.getText().toString() + "\n正在为您查询绿茶信息信息");
+            info.setText(info.getText().toString() + "\n正在为您查询\"绿茶\"信息信息");
+            jumpToMap(6);
         }else if (str.contains("小明")||str.contains("小茗")||str.contains("小明同学")) {
-            info.setText(info.getText().toString() + "\n正在为您查询\"小茗\"信息信息");
+            info.setText(info.getText().toString() + "\n正在为您查询\"小茗同学\"信息信息");
+            jumpToMap(7);
         }else if (str.contains("怡宝")||str.contains("医保")) {
             info.setText(info.getText().toString() + "\n正在为您查询\"怡宝\"信息信息");
+            jumpToMap(8);
         }else if (str.contains("名人")||str.contains("名仁")||str.contains("名人矿泉水")) {
-            info.setText(info.getText().toString() + "\n正在为您查询可口可乐信息信息");
-        }else if (str.contains("曲奇饼干")) {
+            info.setText(info.getText().toString() + "\n正在为您查询\"名仁\"信息信息");
+            jumpToMap(3);
+        }else if (str.contains("碳酸饮料")) {
+            info.setText(info.getText().toString() + "\n正在为您查询\"碳酸饮料\"信息信息");
+            jumpToMap(10);
+        }else if (str.contains("茶")) {
+            info.setText(info.getText().toString() + "\n正在为您查询\"茶\"信息信息");
+            jumpToMap(11);
+        }else if (str.contains("纯净水")||str.contains("矿泉水")) {
+            info.setText(info.getText().toString() + "\n正在为您查询\"纯净水\"信息信息");
+            jumpToMap(12);
+        } else if (str.contains("曲奇饼干")) {
             info.setText(info.getText().toString() + "\n正在为您查询\"曲奇饼干\"信息信息");
+            jumpToMap(14);
         }
         else if (str.contains("垃圾袋")) {
             info.setText(info.getText().toString() + "\n正在为您查询\"垃圾袋\"信息信息");
+            jumpToMap(15);
         }
         else if (str.contains("纸杯")) {
             info.setText(info.getText().toString() + "\n正在为您查询\"纸杯\"信息信息");
+            jumpToMap(16);
         }
         else if (str.contains("厕所") || str.contains("卫生间")) {
-              info.setText(info.getText().toString() + "\n即将为你显示卫生间信息");
+              info.setText(info.getText().toString() + "\n即将为你显示\"卫生间\"信息");
+            jumpToMap(17);
+        }
+        else if (str.contains("收银台") ) {
+            info.setText(info.getText().toString() + "\n即将为你显示\"收银台\"信息");
+            jumpToMap(18);
+        }
+        else if (str.contains("天气"))
+        {
+            if (str.contains("今天"))
+            {
+                VoiceSpeaker.getInstance().speak("今天北京有雷阵雨，十八到二十九度，适合运动");
+            }
+            else
+            {
+                VoiceSpeaker.getInstance().speak("我只知道今天的天气啊");
+            }
+        }
+        else if (str.contains("你是谁"))
+        {
+            VoiceSpeaker.getInstance().speak("我是石头啊，我妈妈是董洪义");
         }
     }
 
+
+    private void jumpToMap(int p_id)
+    {
+        Intent intent = new Intent(this, MapOneActivity.class);
+        intent.putExtra("product_id", p_id);
+        startActivity(intent);
+    }
 }

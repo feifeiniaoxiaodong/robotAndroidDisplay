@@ -30,7 +30,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".MapOneActivity">
+        <activity android:name=".MapOneActivity"
+            android:launchMode="singleTask" >
 
         </activity>
         <activity android:name=".MainActivity">
@@ -39,10 +40,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ProductsActivity"></activity>
-        <activity android:name=".MemberActivity" />
-        <activity android:name=".WakeUpActivity">
+        <activity android:name=".ProductsActivity"
+            android:launchMode="singleTask">
 
+        </activity>
+        <activity android:name=".MemberActivity"
+            android:launchMode="singleTask">
+        </activity>
+        <activity android:name=".WakeUpActivity"
+            android:launchMode="singleTask">
         </activity>
 
         <service android:name=".service.SerialService"></service>

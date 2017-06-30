@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 
+import com.example.qman.rockpad.MemberActivity;
 import com.example.qman.rockpad.ProductsActivity;
 import com.example.qman.rockpad.WakeUpActivity;
 import com.example.qman.rockpad.application.StoneRbtApp;
@@ -19,8 +20,10 @@ import stonectr.serial.callBackEvent.UartBaseEvent;
 import stonectr.serial.callBackEvent.UartCodebarEvent;
 import stonectr.serial.callBackEvent.UartEventNormal;
 import stonectr.serial.callBackEvent.UartEventOther;
+import stonectr.serial.callBackEvent.UartGetFaceEvent;
 import stonectr.serial.callBackEvent.UartRobotInfoEvent;
 import stonectr.serial.callBackEvent.UartRobotPoseEvent;
+import stonectr.serial.callBackEvent.UartShelvesInfoEvent;
 import stonectr.serial.callBackEvent.UartWakeUpEvent;
 
 /**
@@ -46,7 +49,7 @@ public class SerialService extends Service implements ControlCallBack {
         mobileMsgHandler = MobileMsgHandler.getInstance();
         mobileMsgHandler.setContext(StoneRbtApp.getApplication());
         mobileMsgHandler.getSystemIP();
-      //  mobileMsgHandler.startMobileRcv();
+        mobileMsgHandler.startMobileRcv();
         serialController =  SerialController.getInstance();
         serialController.setControlCallBack(this);
         serialController.startWakeRcv();
@@ -101,8 +104,9 @@ public class SerialService extends Service implements ControlCallBack {
         else if (event instanceof UartWakeUpEvent)
         {
 //            sendBroadcast(BroadcastType.WAKEUP,"" + ((UartWakeUpEvent) event).getAngle());
-            Intent scanIntent = new Intent(this, WakeUpActivity.class);
-            startActivity(scanIntent);
+            Intent wakeIntent = new Intent(this, WakeUpActivity.class);
+            wakeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(wakeIntent);
         }
         else if(event instanceof UartCodebarEvent)
         {
@@ -113,9 +117,10 @@ public class SerialService extends Service implements ControlCallBack {
             }
             else
             {
-//                sendBroadcast(BroadcastType.SCANBAR,((UartCodebarEvent) event).getBar());
+                sendBroadcast(BroadcastType.SCANBAR,((UartCodebarEvent) event).getBar());
 //                Log.d("get message", "get bar " + ((UartCodebarEvent) event).getBar());
                 Intent scanIntent = new Intent(this, ProductsActivity.class);
+                scanIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 scanIntent.putExtra("barID",((UartCodebarEvent) event).getBar());
                 startActivity(scanIntent);
             }
@@ -127,6 +132,19 @@ public class SerialService extends Service implements ControlCallBack {
         else if (event instanceof UartRobotPoseEvent)
         {
             sendBroadcast(BroadcastType.ROBOTPOSE,(UartRobotPoseEvent) event);
+        }
+        else if (event instanceof UartGetFaceEvent)
+        {
+                    sendBroadcast("face","" + ((UartGetFaceEvent) event).getFaceID());
+                    Intent faceIntent = new Intent(this, MemberActivity.class);
+                    faceIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    faceIntent.putExtra("faceID",((UartGetFaceEvent) event).getFaceID());
+                    startActivity(faceIntent);
+
+        }
+        else if (event instanceof UartShelvesInfoEvent)
+        {
+               mobileMsgHandler.sendMsg("shelves " + ((UartShelvesInfoEvent) event).getTop() + " " + ((UartShelvesInfoEvent) event).getMiddle() );
         }
         else if (event instanceof UartEventOther)
         {

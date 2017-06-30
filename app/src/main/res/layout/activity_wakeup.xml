@@ -28,12 +28,11 @@
     <ImageButton
         android:id="@+id/wakeup_button"
         android:layout_gravity="center"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="0dp"
         android:layout_weight="2"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/wakeup_bottom"
+        android:scaleType="centerInside"
+
         android:background="@null"
         android:src="@drawable/button"
          />

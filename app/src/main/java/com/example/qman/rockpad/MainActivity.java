@@ -101,10 +101,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String type = bundle.getString("info");
             if (type.equals(BroadcastType.ROBOTINFO)) {
                 wendu_value.setText(bundle.getInt(BroadcastType.ROBOTINFO_TEMPERATURE, -1) + "℃");
-                shidu_value.setText(bundle.getByte(BroadcastType.ROBOTINFO_HUMIDITY, (byte) 0));
-                yanwu_value.setText(bundle.getInt(BroadcastType.ROBOTINFO_SMOKE, -1));
-                PM_value.setText(bundle.getInt(BroadcastType.ROBOTINFO_PM25, -1));
-                dianliang_value.setText(bundle.getByte(BroadcastType.ROBOTINFO_LEVEL, (byte) 0) + "%");
+          //      shidu_value.setText(bundle.getByte(BroadcastType.ROBOTINFO_HUMIDITY, (byte) 0));
+          //      yanwu_value.setText(bundle.getInt(BroadcastType.ROBOTINFO_SMOKE, -1));
+           //     PM_value.setText(bundle.getInt(BroadcastType.ROBOTINFO_PM25, -1));
+         //      dianliang_value.setText(bundle.getByte(BroadcastType.ROBOTINFO_LEVEL, (byte) 0) + "%");
             }
         }
     }

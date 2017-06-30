@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.util.Log;
+import android.widget.Toast;
 
 
 import com.example.qman.rockpad.application.StoneRbtApp;
@@ -22,7 +23,8 @@ public class MobileMsgHandler {
 
     private boolean rcvFlag = false;
     private SerialController serialController = SerialController.getInstance();
-    private String remoteIP, localIP;
+    private String remoteIP = "192.168.31.212";
+    private String localIP;
     private Context context;
     private static MobileMsgHandler mobileMsgHandler;
 
@@ -185,7 +187,8 @@ public class MobileMsgHandler {
                     //半关闭socket
                     socket.shutdownOutput();
                     //获取客户端的信息
-                    while ((line = br.readLine()) != null)
+                    line = br.readLine();
+                    while (line != null)
                     {
                         mobileMsgParse(line);
                     }
@@ -244,38 +247,22 @@ public class MobileMsgHandler {
             {
                 serialController.platformStop();
             }
+            else if (s[1].equals("startScan"))
+            {
+                Log.d("get Mobile msg ","获得开始扫描");
+                serialController.gotoScan();
+            }
         }
         else if(s[0].equals("ctr"))
         {
             //msgShow.setText("获得控制方式切换指令");
         }
-        else if(s[0].equals("voice_test"))
-        {
-            switch (s[1])
-            {
-                case "0" :
-                    sendTestBroadcast("0");
-                    Log.d("test", "mobileMsgParse:  wake");
-                    break;
-                case "1" :
-                    sendTestBroadcast("1");
-                    break;
-                case "2" :
-                    sendTestBroadcast("2");
-                    break;
-                case "3" :
-                    sendTestBroadcast("3");
-                    break;
-                case "4" :
-                    sendTestBroadcast("4");
-                    break;
-                case "5" :
-                    sendTestBroadcast("5");
-                    break;
-                case "6" :
-                    sendTestBroadcast("6");
-                    break;
-            }
-        }
+//        else if (s[0].equals("ip"))
+//        {
+//            remoteIP = s[1];
+//            Log.d("remote ip change", "远程手机已连接\nIP地址为" + remoteIP);
+//        }
+
+        s = null;
     }
 }

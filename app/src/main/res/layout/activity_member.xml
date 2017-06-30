@@ -1,88 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-
-        android:orientation="vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
     <TextView
-        android:id="@+id/welcome1"
+        android:id="@+id/member_user"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="尊敬的会员，您好，"
+        android:layout_height="0dp"
+        android:layout_weight="1.5"
+        android:gravity="bottom"
+        android:text="尊敬的会员，您好"
         android:textColor="@color/white"
-        android:textSize="50sp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp"/>
+        android:textSize="52sp" />
+
     <TextView
-        android:id="@+id/welcome2"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:gravity="center"
         android:text="欢迎来到我们的超市"
         android:textColor="@color/white"
-        android:textSize="50sp"
-        android:layout_centerHorizontal="true"
-        android:layout_alignLeft="@+id/welcome1"
-        android:layout_below="@+id/welcome1"
-        android:layout_marginTop="@dimen/main_word_jianju"/>
+        android:textSize="50sp" />
+
     <ImageView
-        android:id="@+id/touxiang"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/welcome2"
+        android:id="@+id/member_img"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
         android:layout_marginTop="@dimen/main_jianju"
-        android:background="@drawable/touxiang"/>
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
+        android:src="@drawable/touxiang" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="会员名："
-        android:textColor="@color/white"
-        android:textSize="22dp"
-        android:layout_below="@+id/touxiang"
-        android:layout_marginTop="@dimen/main_jianju"
-        android:layout_marginLeft="@dimen/main_kuang_leftMargin"/>
-    <TextView
-        android:id="@+id/name_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="qinman"
-        android:textColor="@color/white"
-        android:textSize="22dp"
-        android:layout_toRightOf="@+id/name"
-        android:layout_alignBottom="@+id/name"   />
-    <TextView
-        android:id="@+id/jilu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="消费记录："
-        android:textColor="@color/white"
-        android:textSize="22dp"
-        android:layout_below="@+id/name"
-        android:layout_alignLeft="@+id/name"
-        android:layout_marginTop="@dimen/main_word_jianju"/>
-    <TextView
-        android:id="@+id/jilu_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="qinman"
-        android:textColor="@color/white"
-        android:textSize="22dp"
-        android:layout_toRightOf="@+id/jilu"
-        android:layout_alignBottom="@+id/jilu"   />
-    <Button
-        android:id="@+id/wakeup_button"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/wakeup_bottom"
-        android:background="@drawable/button" />
+        android:orientation="horizontal"
+        android:layout_marginTop="40dp"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="会员名:"
+            android:gravity="right"
+            android:textColor="@color/white"
+            android:textSize="42sp" />
+
+        <TextView
+            android:id="@+id/member_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="秦蔓"
+            android:textColor="@color/white"
+            android:textSize="42sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="消费记录:"
+            android:textColor="@color/white"
+            android:textSize="42sp" />
+
+        <TextView
+            android:id="@+id/member_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="面膜"
+            android:textColor="@color/white"
+            android:textSize="42sp" />
 
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/member_wakeup_button"
+        android:layout_weight="1"
+
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:scaleType="centerInside"
+        android:paddingBottom="100dp"
+        android:src="@drawable/button"
+        android:background="@null"/>
+
+</LinearLayout>
 
 
 

@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.example.qman.rockpad.tools.VoiceSpeaker;
 import com.example.qman.rockpad.utils.ActivityUtil;
 
 import stonectr.serial.SerialController;
@@ -47,6 +48,8 @@ public class MapOneActivity extends AppCompatActivity implements View.OnClickLis
             if (product_id > 0)
             {
                 map_image.setImageResource(R.drawable.map_01 + product_id - 1);
+                VoiceSpeaker.getInstance().speak(products[product_id - 1
+                        ] + "的位置给您显示出来了");
             }
         }
     private void initView() {

@@ -178,19 +178,19 @@ public class SerialService extends Service implements ControlCallBack {
         intent.setAction("com.stone.uartBroadcast");
         intent.putExtra("info",str);
         intent.putExtra(BroadcastType.ROBOTINFO_PM25, event.getPm25());
-        mobileMsgHandler.sendRbtInfoMsg(BroadcastType.ROBOTINFO_PM25 + " " + event.getPm25());
+    //    mobileMsgHandler.sendRbtInfoMsg(BroadcastType.ROBOTINFO_PM25 + " " + event.getPm25());
         intent.putExtra(BroadcastType.ROBOTINFO_PM10, event.getPm10());
-        mobileMsgHandler.sendRbtInfoMsg(BroadcastType.ROBOTINFO_PM10 + " " + event.getPm10());
+    //    mobileMsgHandler.sendRbtInfoMsg(BroadcastType.ROBOTINFO_PM10 + " " + event.getPm10());
         intent.putExtra(BroadcastType.ROBOTINFO_TEMPERATURE, event.getTemperature());
-        mobileMsgHandler.sendRbtInfoMsg(BroadcastType.ROBOTINFO_TEMPERATURE + " " + event.getTemperature());
+     //   mobileMsgHandler.sendRbtInfoMsg(BroadcastType.ROBOTINFO_TEMPERATURE + " " + event.getTemperature());
         intent.putExtra(BroadcastType.ROBOTINFO_HUMIDITY,event.getHumidity());
-        mobileMsgHandler.sendRbtInfoMsg(BroadcastType.ROBOTINFO_HUMIDITY + " " + event.getHumidity());
+    //    mobileMsgHandler.sendRbtInfoMsg(BroadcastType.ROBOTINFO_HUMIDITY + " " + event.getHumidity());
         intent.putExtra(BroadcastType.ROBOTINFO_SMOKE,event.getSmoke());
-        mobileMsgHandler.sendRbtInfoMsg(BroadcastType.ROBOTINFO_SMOKE + " " + event.getSmoke());
+     //   mobileMsgHandler.sendRbtInfoMsg(BroadcastType.ROBOTINFO_SMOKE + " " + event.getSmoke());
         intent.putExtra(BroadcastType.ROBOTINFO_LEVEL,event.getLevel());
-        mobileMsgHandler.sendRbtInfoMsg(BroadcastType.ROBOTINFO_LEVEL + " " + event.getLevel());
+    //    mobileMsgHandler.sendRbtInfoMsg(BroadcastType.ROBOTINFO_LEVEL + " " + event.getLevel());
         intent.putExtra(BroadcastType.ROBOTINFO_CHARGING,event.isCharging());
-        mobileMsgHandler.sendRbtInfoMsg(BroadcastType.ROBOTINFO_CHARGING + " " + event.isCharging());
+    //    mobileMsgHandler.sendRbtInfoMsg(BroadcastType.ROBOTINFO_CHARGING + " " + event.isCharging());
         sendBroadcast(intent);
     }
 
@@ -199,6 +199,75 @@ public class SerialService extends Service implements ControlCallBack {
 
         if (str == null || str.length() == 0 || str.equals("。") || str.equals("！") || str.equals("？")) {
             return;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         }
         if (str.contains(BODY_FORWARD[0])
                 || str.contains(BODY_FORWARD[1])

@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.qman.rockpad.ifkytekUtil.JsonParser;
 import com.example.qman.rockpad.tools.VoiceSpeaker;
+import com.example.qman.rockpad.utils.ActivityUtil;
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.InitListener;
 import com.iflytek.cloud.RecognizerListener;
@@ -23,6 +24,9 @@ import com.iflytek.cloud.SpeechRecognizer;
 import com.iflytek.cloud.SpeechSynthesizer;
 import com.iflytek.cloud.SynthesizerListener;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import stonectr.serial.SerialController;
 
 public class WakeUpActivity extends AppCompatActivity implements View.OnClickListener {
@@ -30,6 +34,9 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
     private TextView info ;
     private SpeechRecognizer mIat;
     private boolean isListening = false;
+    private boolean willClose = true;
+    private Timer timer = null;//计时器
+    private TimerTask timerTask = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +44,32 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
         wakeup_button = (ImageButton) findViewById(R.id.wakeup_button);
         wakeup_button.setOnClickListener(this);
         info = (TextView)findViewById(R.id.wakeup_info);
+       // startTime();
+    }
+
+    /**
+     * 开始自动减时
+     */
+    private void startTime() {
+        if(timer==null){
+            timer = new Timer();
+        }
+
+        timerTask = new TimerTask() {
+
+            @Override
+            public void run() {
+                finish();
+            }
+        };
+        timer.schedule(timerTask, 10000);//1000ms执行一次
+    }
+    /**
+     * 停止自动减时
+     */
+    private void stopTime() {
+        if(timer!=null)
+            timer.cancel();
     }
 
     @Override
@@ -86,6 +119,8 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
             Log.e("onError1: ", error.getPlainDescription(true));
             isListening = false;
             Toast.makeText(WakeUpActivity.this, "您没有说话，可能是录音机权限被禁，需要您打开应用的录音权限", Toast.LENGTH_LONG).show();
+        willClose = true;
+            finish();
         }
         @Override
         public void onEndOfSpeech() {
@@ -119,6 +154,7 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
 
     public void resolve(String str) {
 
+        willClose = false;
         if (str == null || str.length() == 0 || str.equals("。") || str.equals("！") || str.equals("？")) {
             return;
         }
@@ -212,6 +248,11 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
         else if (str.contains("你是谁"))
         {
             VoiceSpeaker.getInstance().speak("我是石头啊，我妈妈是董洪义");
+        }
+        else
+        {
+            willClose = true;
+            finish();
         }
     }
 

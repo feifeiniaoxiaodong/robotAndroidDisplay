@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -112,11 +113,12 @@ public class ProductsActivity extends AppCompatActivity {
                             Toast.makeText(ProductsActivity.this,"未查询到您想要的信息",Toast.LENGTH_LONG).show();
                             break;
                         }
+                        Log.d("...a", "handleMessage: " + msg.obj.toString());
                         JSONObject jsonObject = new JSONObject(JSONTokener(msg.obj.toString()));
                         product_name.setText(jsonObject.getString("name"));
                         product_price.setText(jsonObject.getString("price") + "元");
-                        product_salesDaily.setText(jsonObject.getString("daily_sale:"));
-                        product_salesMonth.setText(jsonObject.getString("monthly_sale:"));
+                        product_salesDaily.setText(jsonObject.getString("daily_sale"));
+                        product_salesMonth.setText(jsonObject.getString("monthly_sale"));
                         ImageLoader.getInstance().displayImage("http://"+jsonObject.getString("image"),product_image);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -135,7 +137,7 @@ public class ProductsActivity extends AppCompatActivity {
 
             @Override
             public void run() {
-                String uriAPI = "http://211.159.157.142:8001/test?id=" + id;
+                String uriAPI = "http://211.159.157.142:8000/test?id=" + id;
                 HttpGet httpRequest = new HttpGet(uriAPI);
                 try
                 {

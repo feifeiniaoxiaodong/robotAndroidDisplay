@@ -10,6 +10,8 @@ public class BroadcastType {
     public final static String WAKEUP = "wake";
     public final static String ROBOTPOSE = "pose";
     public final static String ROBOTINFO = "robotInfo";
+    public final  static String RFID = "rfid";
+    public final static String FACE = "face";
 
     public final static String ROBOTINFO_PM25 = "pm25";
     public final static String ROBOTINFO_PM10 = "pm10";
@@ -18,4 +20,5 @@ public class BroadcastType {
     public final static String ROBOTINFO_HUMIDITY = "humidity";
     public final static String ROBOTINFO_LEVEL = "level";
     public final static String ROBOTINFO_CHARGING = "charging";
+
 }

@@ -2,10 +2,12 @@ package stonectr.serial;
 
 import android.util.Log;
 
+import stonectr.serial.callBackEvent.UartBaseEvent;
 import stonectr.serial.callBackEvent.UartCodebarEvent;
 import stonectr.serial.callBackEvent.UartEventNormal;
 import stonectr.serial.callBackEvent.UartEventOther;
 import stonectr.serial.callBackEvent.UartGetFaceEvent;
+import stonectr.serial.callBackEvent.UartRfidEvent;
 import stonectr.serial.callBackEvent.UartRobotInfoEvent;
 import stonectr.serial.callBackEvent.UartRobotPoseEvent;
 import stonectr.serial.callBackEvent.UartShelvesInfoEvent;
@@ -109,6 +111,18 @@ public class SerialController {
         Log.d(TAG, "getShelvesInfo: " + top + " " + middle);
         callback.onReback(event);
     }
+
+
+    public static void getRfid(int r)
+    {
+        UartRfidEvent event = new UartRfidEvent();
+//        Log.d(TAG, "getRfid: " + ((r + 256*256*256*256 ) % 256*256*256*256));
+
+        Log.d(TAG, "getRfid: " + r);
+        event.setId(r);
+        callback.onReback(event);
+    }
+
     public static native void init();
     public static native void release();
     //开关串口

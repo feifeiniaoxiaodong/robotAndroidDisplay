@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -13,7 +14,7 @@ import android.widget.TextView;
 
 import com.example.qman.rockpad.constant.BroadcastType;
 
-public class MemberActivity extends AppCompatActivity implements View.OnClickListener  {
+public class RFIDMemberActivity extends AppCompatActivity implements View.OnClickListener  {
     private ImageButton wakeup_button;
     private ImageView image;
     private TextView username_t;
@@ -26,7 +27,7 @@ public class MemberActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_member);
+        setContentView(R.layout.activity_rfid_member);
         //初始化控件
         initView();
         //设置控件的值
@@ -39,7 +40,7 @@ public class MemberActivity extends AppCompatActivity implements View.OnClickLis
     private void initView(){
         //初始化
         username_t = (TextView) findViewById(R.id.rfid_name);
-        record_t = (TextView) findViewById(R.id.member_record);
+      //  record_t = (TextView) findViewById(R.id.rfid_record);
         welcome_t = (TextView)findViewById(R.id.rfid_user);
         image = (ImageView)findViewById(R.id.rfid_img);
         wakeup_button = (ImageButton) findViewById(R.id.rfid_wakeup_button);
@@ -50,9 +51,10 @@ public class MemberActivity extends AppCompatActivity implements View.OnClickLis
     {
 
         super.onResume();
-     //   Intent intent = getIntent();
-      //  int faceID = intent.getIntExtra("faceID",-3);
-      //  setValue(faceID);
+     //   record_t.setText("我的名字");
+        Intent intent = getIntent();
+       int id = intent.getIntExtra("rfid",-3);
+        setValue(id);
     }
     @Override
     public void onDestroy()
@@ -64,56 +66,61 @@ public class MemberActivity extends AppCompatActivity implements View.OnClickLis
 
         String[] name = {"丁宁","董登峰","董洪义","冯瑾","梁帆", "李慧君","刘鹏","秦蔓","王宝明","王绮涵",
                           "王现永","王鑫磊","肖胜杰","邢瑞林","徐宽","徐越","杨璐","于旸","张翰天","张新华"} ;
-        String[] record = {"苹果" ,"矿泉水", "周黑鸭,面膜"};
-        welcome_t.setText("尊敬的" + name[faceID] + "，您好");
-        username_t.setText(name[faceID]);
-        if (faceID >= 0)
-        switch (faceID)
+        int[] id = {0x3a75fb9e, 0xe417bb95, 0x7a152b74,0x1AB9FA4E,0xDA262474,
+                0x06ECDAAB,0x96986F3B,0x6BD8DAAB,0xFACEDAAB,0xC67FD5AB,
+                0x1635DBAB,0x9C69D5AB,0xB9696F3B,0x73666F3B,0x9AA26E8B,
+                0x4DAF6E3B,0x6D76703B};
+        String[] id_name = {"董洪义","王现永","余浩","徐越","肖胜杰",
+                "王鑫磊","蒋瞰阳","冯瑾","董登峰","陈浩",
+                "安淳榆","张新华","余暘","时同华","刘鹏",
+                "邢瑞林","备用"};
+        for (int i = 0; i < id.length; i++)
         {
-            case 0:
-                break;
-            case 1:
-                image.setImageResource(R.drawable.men_01);
-                break;
-            case 2:
-                image.setImageResource(R.drawable.men_02);
-                break;
-            case 3:
-                image.setImageResource(R.drawable.men_03);
-                break;
-            case 6:
-                image.setImageResource(R.drawable.men_06);
-                break;
-            case 8:
-                image.setImageResource(R.drawable.men_08);
-                break;
-            case 10:
-                image.setImageResource(R.drawable.men_10);
-                break;
-            case 11:
-                image.setImageResource(R.drawable.men_11);
-                break;
-            case 13:
-                image.setImageResource(R.drawable.men_13);
-                break;
-            case 19:
-                image.setImageResource(R.drawable.men_19);
-                break;
-            default:
-
+            if (faceID == id[i])
+            {
+                username_t.setText(id_name[i]);
+                Log.d("aisdi a", "第--------------" + i);
+            }
         }
-        if (faceID == 2)
-        {
-            record_t.setText("不可描述之物");
-        }
-        else if (faceID == 3)
-        {
-            record_t.setText("百科全书");
-        }
-        else
-        {
-            record_t.setText(record[faceID % 3]);
-        }
+  //       String[] record = {"苹果" ,"矿泉水", "周黑鸭,面膜"};
+   //     welcome_t.setText("尊敬的" + name[faceID] + "，您好");
+   //     username_t.setText(name[faceID]);
+//        if (faceID >= 0)
+//        switch (faceID)
+//        {
+//            case 0:
+//                break;
+//            case 1:
+//                image.setImageResource(R.drawable.men_01);
+//                break;
+//            case 2:
+//                image.setImageResource(R.drawable.men_02);
+//                break;
+//            case 3:
+//                image.setImageResource(R.drawable.men_03);
+//                break;
+//            case 6:
+//                image.setImageResource(R.drawable.men_06);
+//                break;
+//            case 8:
+//                image.setImageResource(R.drawable.men_08);
+//                break;
+//            case 10:
+//                image.setImageResource(R.drawable.men_10);
+//                break;
+//            case 11:
+//                image.setImageResource(R.drawable.men_11);
+//                break;
+//            case 13:
+//                image.setImageResource(R.drawable.men_13);
+//                break;
+//            case 19:
+//                image.setImageResource(R.drawable.men_19);
+//                break;
+//            default:
+//
+//        }
+//
 
     }
     @Override

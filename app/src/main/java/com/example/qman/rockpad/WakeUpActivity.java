@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.example.qman.rockpad.ifkytekUtil.JsonParser;
 import com.example.qman.rockpad.tools.VoiceSpeaker;
 import com.example.qman.rockpad.utils.ActivityUtil;
+import com.example.qman.rockpad.utils.TimerUtil;
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.InitListener;
 import com.iflytek.cloud.RecognizerListener;
@@ -44,32 +45,9 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
         wakeup_button = (ImageButton) findViewById(R.id.wakeup_button);
         wakeup_button.setOnClickListener(this);
         info = (TextView)findViewById(R.id.wakeup_info);
-       // startTime();
-    }
 
-    /**
-     * 开始自动减时
-     */
-    private void startTime() {
-        if(timer==null){
-            timer = new Timer();
-        }
-
-        timerTask = new TimerTask() {
-
-            @Override
-            public void run() {
-                finish();
-            }
-        };
-        timer.schedule(timerTask, 10000);//1000ms执行一次
-    }
-    /**
-     * 停止自动减时
-     */
-    private void stopTime() {
-        if(timer!=null)
-            timer.cancel();
+        //10秒后自动退回
+        TimerUtil.startTime(WakeUpActivity.this,  10000);
     }
 
     @Override
@@ -248,6 +226,61 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
         else if (str.contains("你是谁"))
         {
             VoiceSpeaker.getInstance().speak("我是石头啊，我妈妈是董洪义");
+        }
+        else if (str.contains("打开") || str.contains("关闭"))
+        {
+            if (str.contains("灯"))
+            {
+                if (str.contains("客厅"))
+                {
+
+                }
+                else if (str.contains("餐厅"))
+                {
+
+                }
+                else if (str.contains("厨房"))
+                {
+
+                }
+                else if (str.contains("卧室"))
+                {
+
+                }
+                else if (str.contains("书房"))
+                {
+
+                }
+                else if (str.contains("卫生间"))
+                {
+
+                }
+                else if (str.contains("所有"))
+                {
+
+                }
+                else if (str.contains("卧室") && str.contains("台灯"))
+                {
+
+                }
+            }
+            else if (str.contains("窗帘"))
+            {
+
+            }
+            else if (str.contains("空调"))
+            {
+
+            }
+            else if (str.contains("加湿器"))
+            {
+
+            }
+            else if (str.contains("电视机"))
+            {
+
+            }
+
         }
         else
         {

@@ -39,13 +39,21 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+
+        <!--不要这个页面-->
         <activity android:name=".ProductsActivity"
             android:launchMode="singleTask">
 
         </activity>
         <activity android:name=".MemberActivity"
             android:launchMode="singleTask">
+
+        </activity>
+        <activity android:name=".RFIDMemberActivity"
+            android:launchMode="singleTask">
+
         </activity>
         <activity android:name=".WakeUpActivity"
             android:launchMode="singleTask">

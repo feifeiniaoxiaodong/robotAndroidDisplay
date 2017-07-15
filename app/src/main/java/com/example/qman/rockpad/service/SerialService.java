@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.example.qman.rockpad.MemberActivity;
 import com.example.qman.rockpad.ProductsActivity;
+import com.example.qman.rockpad.RFIDMemberActivity;
 import com.example.qman.rockpad.WakeUpActivity;
 import com.example.qman.rockpad.application.StoneRbtApp;
 import com.example.qman.rockpad.constant.BroadcastType;
@@ -21,6 +22,7 @@ import stonectr.serial.callBackEvent.UartCodebarEvent;
 import stonectr.serial.callBackEvent.UartEventNormal;
 import stonectr.serial.callBackEvent.UartEventOther;
 import stonectr.serial.callBackEvent.UartGetFaceEvent;
+import stonectr.serial.callBackEvent.UartRfidEvent;
 import stonectr.serial.callBackEvent.UartRobotInfoEvent;
 import stonectr.serial.callBackEvent.UartRobotPoseEvent;
 import stonectr.serial.callBackEvent.UartShelvesInfoEvent;
@@ -53,7 +55,7 @@ public class SerialService extends Service implements ControlCallBack {
         serialController =  SerialController.getInstance();
         serialController.setControlCallBack(this);
         serialController.startWakeRcv();
-        serialController.startScanRcv();
+       // serialController.startScanRcv();
         serialController.startRosRcv();
     }
     @Override
@@ -135,11 +137,20 @@ public class SerialService extends Service implements ControlCallBack {
         }
         else if (event instanceof UartGetFaceEvent)
         {
-                    sendBroadcast("face","" + ((UartGetFaceEvent) event).getFaceID());
+                    sendBroadcast(BroadcastType.FACE,"" + ((UartGetFaceEvent) event).getFaceID());
                     Intent faceIntent = new Intent(this, MemberActivity.class);
                     faceIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     faceIntent.putExtra("faceID",((UartGetFaceEvent) event).getFaceID());
                     startActivity(faceIntent);
+
+        }
+        else if (event instanceof UartRfidEvent)
+        {
+            sendBroadcast(BroadcastType.RFID,"" + ((UartRfidEvent) event).getId());
+            Intent rfidIntent = new Intent(this, RFIDMemberActivity.class);
+            rfidIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            rfidIntent.putExtra("rfid",((UartRfidEvent) event).getId());
+            startActivity(rfidIntent);
 
         }
         else if (event instanceof UartShelvesInfoEvent)
@@ -199,75 +210,6 @@ public class SerialService extends Service implements ControlCallBack {
 
         if (str == null || str.length() == 0 || str.equals("。") || str.equals("！") || str.equals("？")) {
             return;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         }
         if (str.contains(BODY_FORWARD[0])
                 || str.contains(BODY_FORWARD[1])

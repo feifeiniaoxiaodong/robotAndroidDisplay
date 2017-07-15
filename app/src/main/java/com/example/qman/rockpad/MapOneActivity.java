@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 
 import com.example.qman.rockpad.tools.VoiceSpeaker;
 import com.example.qman.rockpad.utils.ActivityUtil;
+import com.example.qman.rockpad.utils.TimerUtil;
 
 import stonectr.serial.SerialController;
 
@@ -38,6 +39,9 @@ public class MapOneActivity extends AppCompatActivity implements View.OnClickLis
         initView();
         //更新实时位置
   //      updatePosition();
+
+        //10秒后自动退回
+        TimerUtil.startTime(MapOneActivity.this,  10000);
         }
         @Override
         public void onResume()

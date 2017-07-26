@@ -60,6 +60,9 @@
         </activity>
 
         <service android:name=".service.SerialService"></service>
+        <service android:name=".service.PlayMusicService"
+            android:exported="true"
+            android:enabled="true"/>
     </application>
 
 </manifest>

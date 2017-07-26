@@ -11,19 +11,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.qman.rockpad.ifkytekUtil.JsonParser;
+import com.example.qman.rockpad.service.PlayMusicService;
 import com.example.qman.rockpad.tools.VoiceSpeaker;
-import com.example.qman.rockpad.utils.ActivityUtil;
 import com.example.qman.rockpad.utils.TimerUtil;
-import com.iflytek.cloud.ErrorCode;
-import com.iflytek.cloud.InitListener;
 import com.iflytek.cloud.RecognizerListener;
 import com.iflytek.cloud.RecognizerResult;
-import com.iflytek.cloud.SpeakerVerifier;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechRecognizer;
-import com.iflytek.cloud.SpeechSynthesizer;
-import com.iflytek.cloud.SynthesizerListener;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -45,14 +40,14 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
         wakeup_button = (ImageButton) findViewById(R.id.wakeup_button);
         wakeup_button.setOnClickListener(this);
         info = (TextView)findViewById(R.id.wakeup_info);
-
         //10秒后自动退回
-        TimerUtil.startTime(WakeUpActivity.this,  10000);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        TimerUtil.stopTime();
+        TimerUtil.startTime(WakeUpActivity.this,  5000);
         info.setText("请问您需要什么帮助？");
         mIat = SpeechRecognizer.createRecognizer(this, null);
         initIat();
@@ -155,7 +150,73 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
             if (str.contains("不") || str.contains("别") || str.contains("甭") || str.contains("禁止"))
                 return;
             SerialController.getInstance().sendRight();
-        } else if (str.contains("可口可乐")) {
+        }
+        else if (str.contains("打开") || str.contains("关闭"))
+        {
+            boolean isTurnOn = false;
+            if (str.contains("打开"))
+            {
+                isTurnOn = true;
+            }
+            if (str.contains("灯"))
+            {
+                if (str.contains("客厅"))
+                {
+                    info.setText(info.getText().toString() + "\n即将为您"+(isTurnOn ? " 打开 " : " 关闭 ")+"客厅灯 ");
+                }
+                else if (str.contains("餐厅"))
+                {
+                    info.setText(info.getText().toString() + "\n即将为您"+(isTurnOn ? " 打开 " : " 关闭 ")+"餐厅大灯 ");
+                }
+                else if (str.contains("厨房"))
+                {
+                    info.setText(info.getText().toString() + "\n即将为您"+(isTurnOn ? " 打开 " : " 关闭 ")+"厨房灯 ");
+                }
+                else if (str.contains("卧室"))
+                {
+                    if (str.contains("台灯"))
+                    info.setText(info.getText().toString() + "\n即将为您"+(isTurnOn ? " 打开 " : " 关闭 ")+"卧室台灯 ");
+                    else
+                    info.setText(info.getText().toString() + "\n即将为您"+(isTurnOn ? " 打开 " : " 关闭 ")+"卧室灯 ");
+                }
+                else if (str.contains("书房"))
+                {
+                    info.setText(info.getText().toString() + "\n即将为您"+(isTurnOn ? " 打开 " : " 关闭 ")+"书房顶灯 ");
+                }
+                else if (str.contains("卫生间"))
+                {
+                    info.setText(info.getText().toString() + "\n即将为您"+(isTurnOn ? " 打开 " : " 关闭 ")+"卫生间灯 ");
+                }
+                else if (str.contains("所有"))
+                {
+                    info.setText(info.getText().toString() + "\n即将为您"+(isTurnOn ? " 打开 " : " 关闭 ")+"所有灯 ");
+                }
+            }
+            else if (str.contains("窗帘"))
+            {
+                info.setText(info.getText().toString() + "\n即将为您"+(isTurnOn ? " 打开 " : " 关闭 ")+"窗帘 ");
+            }
+            else if (str.contains("空调"))
+            {
+                info.setText(info.getText().toString() + "\n即将为您"+(isTurnOn ? " 打开 " : " 关闭 ")+"空调 ");
+            }
+            else if (str.contains("加湿器"))
+            {
+                info.setText(info.getText().toString() + "\n即将为您"+(isTurnOn ? " 打开 " : " 关闭 ")+"加湿器 ");
+            }
+            else if (str.contains("电视机"))
+            {
+                info.setText(info.getText().toString() + "\n即将为您"+(isTurnOn ? " 打开 " : " 关闭 ")+"电视机 ");
+            }
+            else if (str.contains("音乐"))
+            {
+                playingmusic(PlayMusicService.STOP_MUSIC, -1);
+            }
+            TimerUtil.startTime(WakeUpActivity.this,  4000);
+        }
+
+
+        else if (str.contains("可口可乐")) {
             info.setText(info.getText().toString() + "\n正在为您查询\"可口可乐\"信息信息");
             jumpToMap(2);
         }else if (str.contains("健力宝")) {
@@ -227,60 +288,30 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
         {
             VoiceSpeaker.getInstance().speak("我是石头啊，我妈妈是董洪义");
         }
-        else if (str.contains("打开") || str.contains("关闭"))
+
+        else if (str.contains("播放"))
         {
-            if (str.contains("灯"))
+
+            if (str.contains("鸿雁"))
             {
-                if (str.contains("客厅"))
-                {
-
-                }
-                else if (str.contains("餐厅"))
-                {
-
-                }
-                else if (str.contains("厨房"))
-                {
-
-                }
-                else if (str.contains("卧室"))
-                {
-
-                }
-                else if (str.contains("书房"))
-                {
-
-                }
-                else if (str.contains("卫生间"))
-                {
-
-                }
-                else if (str.contains("所有"))
-                {
-
-                }
-                else if (str.contains("卧室") && str.contains("台灯"))
-                {
-
-                }
+                info.setText(info.getText().toString() + "\n正在为您播放 鸿雁 ");
+                playingmusic(PlayMusicService.PLAY_MUSIC, R.raw.music_hongyan);
             }
-            else if (str.contains("窗帘"))
+            else if (str.contains("丑八怪"))
             {
-
+                info.setText(info.getText().toString() + "\n正在为您播放 丑八怪 ");
+                playingmusic(PlayMusicService.PLAY_MUSIC, R.raw.music_choubaguai);
             }
-            else if (str.contains("空调"))
+            else if (str.contains("小苹果"))
             {
-
+                info.setText(info.getText().toString() + "\n正在为您播放 小苹果 ");
+                playingmusic(PlayMusicService.PLAY_MUSIC, R.raw.music_xiaopingguo);
             }
-            else if (str.contains("加湿器"))
+            else if (str.contains("音乐"))
             {
-
+                info.setText(info.getText().toString() + "\n正在为您播放 音乐 ");
+                playingmusic(PlayMusicService.PLAY_MUSIC, R.raw.music_fenshoukuaile);
             }
-            else if (str.contains("电视机"))
-            {
-
-            }
-
         }
         else
         {
@@ -289,9 +320,17 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    private void playingmusic(int type, int music_id) {
+        //启动服务，播放音乐
+        Intent intent=new Intent(this,PlayMusicService.class);
+        intent.putExtra("music_id",music_id);
+        intent.putExtra("type",type);
+        startService(intent);
+    }
 
     private void jumpToMap(int p_id)
     {
+        TimerUtil.stopTime();
         Intent intent = new Intent(this, MapOneActivity.class);
         intent.putExtra("product_id", p_id);
         startActivity(intent);

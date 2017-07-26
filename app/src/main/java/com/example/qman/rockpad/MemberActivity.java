@@ -35,14 +35,15 @@ public class MemberActivity extends AppCompatActivity implements View.OnClickLis
         serialReceiver = new SerialMsgReceiver();
         intentFilter=new IntentFilter("com.stone.uartBroadcast");
         registerReceiver(serialReceiver, intentFilter);
+
     }
     private void initView(){
         //初始化
         username_t = (TextView) findViewById(R.id.rfid_name);
         record_t = (TextView) findViewById(R.id.member_record);
-        welcome_t = (TextView)findViewById(R.id.rfid_user);
-        image = (ImageView)findViewById(R.id.rfid_img);
-        wakeup_button = (ImageButton) findViewById(R.id.rfid_wakeup_button);
+        welcome_t = (TextView)findViewById(R.id.member_user);
+        image = (ImageView)findViewById(R.id.member_img);
+        wakeup_button = (ImageButton) findViewById(R.id.member_wakeup_button);
         wakeup_button.setOnClickListener(this);
     }
 @Override

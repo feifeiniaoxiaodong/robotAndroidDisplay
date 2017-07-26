@@ -119,7 +119,7 @@ public class SerialController {
 //        Log.d(TAG, "getRfid: " + ((r + 256*256*256*256 ) % 256*256*256*256));
 
         Log.d(TAG, "getRfid: " + r);
-        event.setId(r);
+        event.setId(r & 0xffffffff);
         callback.onReback(event);
     }
 

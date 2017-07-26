@@ -5,7 +5,7 @@
     android:gravity="center"
     android:orientation="vertical">
     <TextView
-        android:id="@+id/rfid_user"
+        android:id="@+id/member_user"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="1.5"
@@ -24,7 +24,7 @@
         android:textSize="50sp" />
 
     <ImageView
-        android:id="@+id/rfid_img"
+        android:id="@+id/member_img"
         android:layout_width="240dp"
         android:layout_height="240dp"
         android:layout_marginTop="@dimen/main_jianju"
@@ -47,7 +47,7 @@
             android:textSize="42sp" />
 
         <TextView
-            android:id="@+id/rfid_name"
+            android:id="@+id/member_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
@@ -78,7 +78,7 @@
     </LinearLayout>
 
     <ImageButton
-        android:id="@+id/rfid_wakeup_button"
+        android:id="@+id/member_wakeup_button"
         android:layout_weight="1"
 
         android:layout_width="120dp"

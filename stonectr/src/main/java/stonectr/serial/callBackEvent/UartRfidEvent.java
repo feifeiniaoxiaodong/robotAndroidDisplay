@@ -6,12 +6,12 @@ package stonectr.serial.callBackEvent;
 
 public class UartRfidEvent extends UartBaseEvent {
 
-    private  int id;
-    public int getId()
+    private double id;
+    public double getId()
     {
         return id;
     }
-    public void setId(int id)
+    public void setId(double id)
     {
         this.id = id;
     }

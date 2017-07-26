@@ -1,7 +1,10 @@
 package com.example.qman.rockpad.service;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -42,6 +45,7 @@ public class SerialService extends Service implements ControlCallBack {
     private final IBinder serialServiceBinder = new SerialServiceBinder();
     private MobileMsgHandler mobileMsgHandler;
     SerialController serialController;
+    private MusicBroadCastReceiver musicReceiver;
 
     @Override
     public void onCreate()
@@ -57,11 +61,15 @@ public class SerialService extends Service implements ControlCallBack {
         serialController.startWakeRcv();
        // serialController.startScanRcv();
         serialController.startRosRcv();
+        musicReceiver=new MusicBroadCastReceiver();
+        IntentFilter filter=new IntentFilter();
+        filter.addAction("com.music.complete");
+        registerReceiver(musicReceiver,filter);
     }
     @Override
     public int onStartCommand(Intent intent, int flag, int startID)
     {
-        Log.d(TAG, "srevice onStart");
+        Log.d(TAG, "service onStart");
         return super.onStartCommand(intent, flag, startID);
     }
     @Nullable
@@ -88,6 +96,8 @@ public class SerialService extends Service implements ControlCallBack {
     {
         Log.d(TAG, "service onDestroy");
         super.onDestroy();
+        serialController.stopRosRcv();
+        serialController.stopWakeRcv();
     }
 
     public void setRemoteIP(String ip)
@@ -109,6 +119,10 @@ public class SerialService extends Service implements ControlCallBack {
             Intent wakeIntent = new Intent(this, WakeUpActivity.class);
             wakeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(wakeIntent);
+
+            Intent intent=new Intent(this,PlayMusicService.class);
+            intent.putExtra("type",PlayMusicService.STOP_MUSIC);
+            startService(intent);
         }
         else if(event instanceof UartCodebarEvent)
         {
@@ -142,7 +156,6 @@ public class SerialService extends Service implements ControlCallBack {
                     faceIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     faceIntent.putExtra("faceID",((UartGetFaceEvent) event).getFaceID());
                     startActivity(faceIntent);
-
         }
         else if (event instanceof UartRfidEvent)
         {
@@ -151,6 +164,7 @@ public class SerialService extends Service implements ControlCallBack {
             rfidIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             rfidIntent.putExtra("rfid",((UartRfidEvent) event).getId());
             startActivity(rfidIntent);
+
 
         }
         else if (event instanceof UartShelvesInfoEvent)
@@ -238,4 +252,13 @@ public class SerialService extends Service implements ControlCallBack {
             SerialController.getInstance().sendLeft();
         }
     }
+
+
+    public class MusicBroadCastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+         //   Toast.makeText(context,"音乐播放结束",Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }

@@ -13,16 +13,16 @@
         android:text="尊敬的会员，您好"
         android:textColor="@color/white"
         android:textSize="52sp" />
-
+<!--
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="0.5"
         android:gravity="center"
-        android:text="欢迎来到我们的超市"
+        android:text="欢迎"
         android:textColor="@color/white"
         android:textSize="50sp" />
-
+-->
     <ImageView
         android:id="@+id/rfid_img"
         android:layout_width="240dp"

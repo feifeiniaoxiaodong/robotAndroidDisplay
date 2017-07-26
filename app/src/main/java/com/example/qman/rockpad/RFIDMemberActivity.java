@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.qman.rockpad.constant.BroadcastType;
+import com.example.qman.rockpad.utils.TimerUtil;
 
 public class RFIDMemberActivity extends AppCompatActivity implements View.OnClickListener  {
     private ImageButton wakeup_button;
@@ -39,9 +40,9 @@ public class RFIDMemberActivity extends AppCompatActivity implements View.OnClic
     }
     private void initView(){
         //初始化
-        username_t = (TextView) findViewById(R.id.rfid_name);
       //  record_t = (TextView) findViewById(R.id.rfid_record);
         welcome_t = (TextView)findViewById(R.id.rfid_user);
+        username_t = (TextView) findViewById(R.id.rfid_name);
         image = (ImageView)findViewById(R.id.rfid_img);
         wakeup_button = (ImageButton) findViewById(R.id.rfid_wakeup_button);
         wakeup_button.setOnClickListener(this);
@@ -49,12 +50,13 @@ public class RFIDMemberActivity extends AppCompatActivity implements View.OnClic
 @Override
     public void onResume()
     {
-
         super.onResume();
-     //   record_t.setText("我的名字");
-        Intent intent = getIntent();
-       int id = intent.getIntExtra("rfid",-3);
-        setValue(id);
+//     //   record_t.setText("我的名字");
+       Intent intent = getIntent();
+        double id = intent.getDoubleExtra("rfid",-3);
+       setValue(id);
+        TimerUtil.stopTime();
+        TimerUtil.startTime(RFIDMemberActivity.this, 5000);
     }
     @Override
     public void onDestroy()
@@ -62,11 +64,11 @@ public class RFIDMemberActivity extends AppCompatActivity implements View.OnClic
         super.onDestroy();
         unregisterReceiver(serialReceiver);
     }
-    private void setValue(int faceID){
+    private void setValue(double faceID){
 
         String[] name = {"丁宁","董登峰","董洪义","冯瑾","梁帆", "李慧君","刘鹏","秦蔓","王宝明","王绮涵",
                           "王现永","王鑫磊","肖胜杰","邢瑞林","徐宽","徐越","杨璐","于旸","张翰天","张新华"} ;
-        int[] id = {0x3a75fb9e, 0xe417bb95, 0x7a152b74,0x1AB9FA4E,0xDA262474,
+        double[] id = {0x3a75fb9e, 0xe417bb95, 0x7a152b74,0x1AB9FA4E,0xDA262474,
                 0x06ECDAAB,0x96986F3B,0x6BD8DAAB,0xFACEDAAB,0xC67FD5AB,
                 0x1635DBAB,0x9C69D5AB,0xB9696F3B,0x73666F3B,0x9AA26E8B,
                 0x4DAF6E3B,0x6D76703B};
@@ -79,7 +81,9 @@ public class RFIDMemberActivity extends AppCompatActivity implements View.OnClic
             if (faceID == id[i])
             {
                 username_t.setText(id_name[i]);
-                Log.d("aisdi a", "第--------------" + i);
+                welcome_t.setText("尊敬的" + id_name[i] + "，您好");
+             //   Log.d("aisdi a", "第--------------" + i);
+                image.setImageResource(R.drawable.rfid_face_01 + i);
             }
         }
   //       String[] record = {"苹果" ,"矿泉水", "周黑鸭,面膜"};
@@ -135,9 +139,10 @@ public class RFIDMemberActivity extends AppCompatActivity implements View.OnClic
         public void onReceive(Context context, Intent intent) {
             Bundle bundle = intent.getExtras();
             String type = bundle.getString("info");
-            if (type.equals("face"))
+            if (type.equals(BroadcastType.RFID))
             {
-                int id = Integer.parseInt(bundle.getString("value"));
+                double id = Double.valueOf(bundle.getString("value")).doubleValue();
+                //int id = Integer.parseInt(bundle.getString("value"));
                 setValue(id);
                 //query( bundle.getString("value"));
             }

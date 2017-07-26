@@ -28,15 +28,15 @@ import java.util.TimerTask;
 public class TimerUtil extends AppCompatActivity {
     public static Timer timer = null;//计时器
     public static TimerTask timerTask = null;
+
     /**
      * 开始自动减时
      */
-    public static void startTime(final Activity activity,  long timeLength){
-        if(timer==null){
+    public static void startTime(final Activity activity, long timeLength) {
+        if (timer == null) {
             timer = new Timer();
         }
         timerTask = new TimerTask() {
-
             @Override
             public void run() {
                 activity.finish();
@@ -50,7 +50,7 @@ public class TimerUtil extends AppCompatActivity {
      * 停止自动减时
      */
     public static void stopTime() {
-        if(timer!=null)
+        if (timer != null)
             timer.cancel();
         timer = null;
     }

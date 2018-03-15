@@ -1,1 +1,1 @@
-include ':app', ':stonectr'
+include ':app'

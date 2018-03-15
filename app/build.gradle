@@ -10,6 +10,23 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        // add by fjx-2018-2-3 13:56:57-----start
+        ndk {
+            // 模块名称，即编译的.so文件名
+            moduleName "SerialPort"
+            // 使用STL标准库(默认情况下JNI中是无法使用STL标准库的)
+            stl "stlport_static"
+            // "log" 表示加入Android的调试日志，只要在导入#include <android/log.h>
+            // 就可使用__android_log_print方法打印日志到logcat中
+            ldLibs "log"
+        }
+        // add by fjx-2018-2-3 13:56:57-----end
+
+        externalNativeBuild {
+            cmake {
+                cppFlags "-std=c++11"
+            }
+        }
     }
     buildTypes {
         release {
@@ -26,6 +43,13 @@ android {
         exclude 'META-INF/NOTICE.txt'
     }
     useLibrary 'org.apache.http.legacy'
+
+    externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+        }
+    }
+
 }
 
 dependencies {
@@ -36,7 +60,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.2.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
     testCompile 'junit:junit:4.12'
-    compile project(':stonectr')
+//    compile project(':stonectr')
     compile files('libs/BASE64.jar')
     compile files('libs/httpclient-4.5.3.jar')
     compile files('libs/Msc.jar')

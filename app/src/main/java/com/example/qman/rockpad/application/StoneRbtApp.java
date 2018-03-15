@@ -31,7 +31,6 @@ public class StoneRbtApp extends Application {
         sApp = this;
     }
 
-
     public static StoneRbtApp getApplication() {
         return sApp;
     }

@@ -56,7 +56,7 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
             mIat.stopListening();
         }
         mIat.startListening(mRecognizerListener);
-       // VoiceSpeaker.getInstance().speak("有什么可以帮到您");
+        // VoiceSpeaker.getInstance().speak("有什么可以帮到您");
     }
 
     @Override
@@ -92,7 +92,7 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
             Log.e("onError1: ", error.getPlainDescription(true));
             isListening = false;
             Toast.makeText(WakeUpActivity.this, "您没有说话，可能是录音机权限被禁，需要您打开应用的录音权限", Toast.LENGTH_LONG).show();
-        willClose = true;
+            willClose = true;
             finish();
         }
         @Override
@@ -130,6 +130,10 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
         willClose = false;
         if (str == null || str.length() == 0 || str.equals("。") || str.equals("！") || str.equals("？")) {
             return;
+        }
+        // if(str.contains("你好") || str.contains("您好"))
+        {
+           // VoiceSpeaker.getInstance().speak("您好");
         }
         if (str.contains(BODY_FORWARD[0]) || str.contains(BODY_FORWARD[1]) || str.contains(BODY_FORWARD[2])) {
             if (str.contains("不") || str.contains("别") || str.contains("甭") || str.contains("禁止")) {
@@ -175,9 +179,9 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
                 else if (str.contains("卧室"))
                 {
                     if (str.contains("台灯"))
-                    info.setText(info.getText().toString() + "\n即将为您"+(isTurnOn ? " 打开 " : " 关闭 ")+"卧室台灯 ");
+                        info.setText(info.getText().toString() + "\n即将为您"+(isTurnOn ? " 打开 " : " 关闭 ")+"卧室台灯 ");
                     else
-                    info.setText(info.getText().toString() + "\n即将为您"+(isTurnOn ? " 打开 " : " 关闭 ")+"卧室灯 ");
+                        info.setText(info.getText().toString() + "\n即将为您"+(isTurnOn ? " 打开 " : " 关闭 ")+"卧室灯 ");
                 }
                 else if (str.contains("书房"))
                 {
@@ -216,6 +220,10 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
         }
 
 
+        else if(str.contains("高兴") || str.contains("见到你"))
+        {
+            VoiceSpeaker.getInstance().speak("欢迎光临伊利集团");
+        }
         else if (str.contains("可口可乐")) {
             info.setText(info.getText().toString() + "\n正在为您查询\"可口可乐\"信息信息");
             jumpToMap(2);
@@ -266,7 +274,7 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
             jumpToMap(16);
         }
         else if (str.contains("厕所") || str.contains("卫生间")) {
-              info.setText(info.getText().toString() + "\n即将为你显示\"卫生间\"信息");
+            info.setText(info.getText().toString() + "\n即将为你显示\"卫生间\"信息");
             jumpToMap(17);
         }
         else if (str.contains("收银台") ) {
@@ -277,16 +285,38 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
         {
             if (str.contains("今天"))
             {
-                VoiceSpeaker.getInstance().speak("今天北京有雷阵雨，十八到二十九度，适合运动");
+                VoiceSpeaker.getInstance().speak("今天天气好像不太好，我觉得有点冷哎");
             }
             else
             {
-                VoiceSpeaker.getInstance().speak("我只知道今天的天气啊");
+                VoiceSpeaker.getInstance().speak("不好意思，我记性不太好，我只知道今天的天气啊");
             }
         }
         else if (str.contains("你是谁"))
         {
-            VoiceSpeaker.getInstance().speak("我是石头啊，我妈妈是董洪义");
+            VoiceSpeaker.getInstance().speak("我是石头啊，不过你也可以叫我石头石头");
+        }
+
+        else if (str.contains("简介") || str.contains("伊利信条")|| str.contains("信条")) {
+
+            info.setText(info.getText().toString() + "\n即将为您介绍伊利");
+            playingmusic(PlayMusicService.PLAY_MUSIC,R.raw.music_yilixintiao);
+        }
+        else if (str.contains("愿景") || str.contains("伊利愿景")|| str.contains("愿望")) {
+            info.setText(info.getText().toString() + "\n即将为您介绍伊利愿景");
+            playingmusic(PlayMusicService.PLAY_MUSIC,R.raw.music_yiliyuanjing);
+        }
+        else if (str.contains("精神") || str.contains("伊利精神")) {
+            info.setText(info.getText().toString() + "\n即将为您介绍伊利精神");
+            playingmusic(PlayMusicService.PLAY_MUSIC,R.raw.music_yilijingshen);
+        }
+        else if (str.contains("价值观") || str.contains("核心")|| str.contains("核心价值观")) {
+            info.setText(info.getText().toString() + "\n即将为您介绍伊利核心价值观");
+            playingmusic(PlayMusicService.PLAY_MUSIC,R.raw.music_hexinjiazhiguan);
+        }
+        else if (str.contains("潘总") || str.contains("金句")|| str.contains("潘总金句")) {
+            info.setText(info.getText().toString() + "\n即将为您 播放潘总金句");
+            playingmusic(PlayMusicService.PLAY_MUSIC,R.raw.music_panzongjinju);
         }
 
         else if (str.contains("播放"))
@@ -311,6 +341,20 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
             {
                 info.setText(info.getText().toString() + "\n正在为您播放 音乐 ");
                 playingmusic(PlayMusicService.PLAY_MUSIC, R.raw.music_fenshoukuaile);
+            }
+            else if(str.contains("信条"))
+            {
+                info.setText(info.getText().toString()+"\n正在为您播放 伊利信条 ");
+                playingmusic(PlayMusicService.PLAY_MUSIC,R.raw.music_yilixintiao);
+            }
+            else if(str.contains("伊利之歌") ||str.contains("之歌")||str.contains("歌"))
+            {
+                info.setText(info.getText().toString()+"\n正在为您播放 伊利之歌 ");
+                playingmusic(PlayMusicService.PLAY_MUSIC,R.raw.music_songofyili);
+            }
+            else if (str.contains("潘总") || str.contains("金句")|| str.contains("潘总金句")) {
+                info.setText(info.getText().toString() + "\n即将为您 播放潘总金句");
+                playingmusic(PlayMusicService.PLAY_MUSIC,R.raw.music_panzongjinju);
             }
         }
         else

@@ -154,18 +154,24 @@
 
 </LinearLayout>
 
+    <Button
+        android:id="@+id/test_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.03"
+        android:text="test_open" />
+
     <ImageButton
         android:id="@+id/wakeup_button"
         android:layout_width="120dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
         android:layout_marginBottom="35dp"
         android:layout_marginTop="50dp"
-        android:layout_height="0dp"
         android:layout_weight="0.25"
-        android:layout_gravity="center"
         android:background="@null"
-        android:src="@drawable/button"
         android:scaleType="fitCenter"
-    />
+        android:src="@drawable/button" />
 
 
 </LinearLayout>

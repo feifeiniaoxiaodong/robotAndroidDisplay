@@ -30,6 +30,7 @@ import stonectr.serial.callBackEvent.UartRobotInfoEvent;
 import stonectr.serial.callBackEvent.UartRobotPoseEvent;
 import stonectr.serial.callBackEvent.UartShelvesInfoEvent;
 import stonectr.serial.callBackEvent.UartWakeUpEvent;
+import stonectr.serial.serialport.SerialPortUtil;
 
 /**
  * Created by Sunshine on 2017/3/28.
@@ -58,9 +59,11 @@ public class SerialService extends Service implements ControlCallBack {
         mobileMsgHandler.startMobileRcv();
         serialController =  SerialController.getInstance();
         serialController.setControlCallBack(this);
-        serialController.startWakeRcv();
+        SerialPortUtil.getInstance().initSerialPort(); //初试化串口，开启串口接受线程
+
+     /*    serialController.startWakeRcv();
        // serialController.startScanRcv();
-        serialController.startRosRcv();
+        serialController.startRosRcv();*/
         musicReceiver=new MusicBroadCastReceiver();
         IntentFilter filter=new IntentFilter();
         filter.addAction("com.music.complete");
@@ -104,8 +107,6 @@ public class SerialService extends Service implements ControlCallBack {
     {
         mobileMsgHandler.setRemoteIP(ip);
     }
-
-
 
     @Override
     public void onReback(UartBaseEvent event) {

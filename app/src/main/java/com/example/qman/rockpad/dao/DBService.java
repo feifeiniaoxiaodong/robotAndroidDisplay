@@ -95,7 +95,7 @@ public class DBService {
 
                     moveParam.setId(resultSet.getString("id"));
                     moveParam.setRid(resultSet.getString("rid"));
-                    String w=resultSet.getString("w");
+                    String w=resultSet.getString("rock_move.w");
                     String v=resultSet.getString("v");
                     moveParam.setW(Integer.parseInt(w) );
                     moveParam.setV(Integer.parseInt(v));

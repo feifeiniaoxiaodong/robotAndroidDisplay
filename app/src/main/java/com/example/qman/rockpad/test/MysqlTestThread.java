@@ -20,7 +20,15 @@ public class MysqlTestThread implements  Runnable {
 
         EnvParam envParam=new EnvParam("2","3","2018-03-17 11:15:01" ,"56","20","ds","56","42");
 
-        DBService.getInstence().insert(envParam);
-        DBService.getInstence().selectEnvParam("2");
+//        DBService.getInstence().insert(envParam);
+//        DBService.getInstence().selectEnvParam("2");
+
+        DBService.getInstence().selectRockmoveById("1");
+
+        DBService.getInstence().selectRockmoveById("2");
+
+        DBService.getInstence().selectRockmoveById("3");
+
+
     }
 }

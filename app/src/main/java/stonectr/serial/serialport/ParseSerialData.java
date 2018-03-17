@@ -19,7 +19,7 @@ public class ParseSerialData extends  Thread implements OnDataReceiveListener {
 
     private final String TAG="ParseSerialData";
     private volatile boolean isCountinue=true;
-    private IntBuffer intBuffer =IntBuffer.allocate(1024);
+//    private IntBuffer intBuffer =IntBuffer.allocate(1024);
 //    private
 //    ArrayDeque<Integer>  arrayDeque= (ArrayDeque<Integer>) Collections.synchronizedCollection(new ArrayDeque<Integer>(1024));
 //    Collections.synchronizedCollection(arra)
@@ -29,9 +29,12 @@ public class ParseSerialData extends  Thread implements OnDataReceiveListener {
     @Override
     public void onDataReceive(byte[] buffer, int size) {
         int [] revData= BytesUtil.byteToInt(buffer,size); //byte转化为int，暂时保存数据
-        List list = Arrays.asList(revData);
+//        List list = Arrays.asList(revData);
 //        arrayDeque.addAll(arrayList);
-        arrayList.addAll(list);
+//        arrayList.addAll(list);
+        for(int i:revData){
+            arrayList.add(i);
+        }
     }
 
 
@@ -39,7 +42,8 @@ public class ParseSerialData extends  Thread implements OnDataReceiveListener {
     public void run() {
 
         while(isCountinue){
-            while(!arrayList.isEmpty() ){
+            while(arrayList.size()>3 ){
+
                 if(arrayList.get(0) == 0x55 && arrayList.get(1)==0x02){   //Retrieves and removes
 
                     if(arrayList.get(2)==0x02 && arrayList.size()>=28){  //28字节
@@ -58,7 +62,8 @@ public class ParseSerialData extends  Thread implements OnDataReceiveListener {
                             Log.d(TAG, "positionx:"+positionx+"positiony:"+positiony+ "rotation:"+rotaion_yaml);
                         }
 
-                    }else if( arrayList.size() >=15){ //15字节
+                    }else if( (arrayList.get(2)==0x01 || arrayList.get(2)==0x05|| arrayList.get(2)==0x03||arrayList.get(2)==0x04)
+                              && arrayList.size() >=15){ //15字节
                         int[] msg15=new int[15];
                         for(int i=0;i<15;i++){
                             msg15[i]= arrayList.get(0); //取15字节
@@ -81,7 +86,7 @@ public class ParseSerialData extends  Thread implements OnDataReceiveListener {
                                     int voltage=msg15[12];//电压
                                     int direction=msg15[13];
                                     SerialController.robotInfo(pm25,pm10,temperature,(byte)humidity,smoke,(byte)voltage,(byte)direction);
-                                    Log.d(TAG ,"收到环境数据");
+                                    Log.d(TAG ,"收到环境数据"+ pm25+pm10+temperature+smoke);
                                     break;
                                 case 0x03: // face detected
                                     break;
@@ -97,10 +102,19 @@ public class ParseSerialData extends  Thread implements OnDataReceiveListener {
                     arrayList.remove(0);
                 }//end 55  02
 
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }//end while
+
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
-
-
     }//end run
 
 

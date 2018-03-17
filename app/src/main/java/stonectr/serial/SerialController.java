@@ -145,7 +145,6 @@ public class SerialController {
     public  void navigation(int[] x, int[] y, int[] theta){ //导航到指定点，x、y、theta double 各8字节，
             int [] command =new int[28] ; //
            command[0]=0x55;command[1]=0x01;
-
            command[2]=0x40;
            System.arraycopy(x,0,command,3,8);
            System.arraycopy(y,0,command,11,8);

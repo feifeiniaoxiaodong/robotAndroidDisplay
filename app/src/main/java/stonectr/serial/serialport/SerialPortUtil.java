@@ -74,10 +74,10 @@ public class SerialPortUtil {
                 mSerialReadThread= new SerialReadThread();//开启数据接收线程
                 mSerialReadThread.start();
 
-               onDataReceiveListener=  new HandleSerialData();//设置数据接收接口
-//                 parseSerialData=new ParseSerialData();
-//                 parseSerialData.start();
-//                 onDataReceiveListener=parseSerialData;
+//               onDataReceiveListener=  new HandleSerialData();//设置数据接收接口
+                 parseSerialData=new ParseSerialData();
+                 parseSerialData.start();
+                 onDataReceiveListener=parseSerialData;
 
 
             }
@@ -113,6 +113,7 @@ public class SerialPortUtil {
                   }catch (Exception e){
                       e.printStackTrace();
                   }
+
                   while((nRead=mInputStream.available())>0 && size<900 ){
                       nRead =mInputStream.read(buffer,size,100);
                       size+=nRead ;

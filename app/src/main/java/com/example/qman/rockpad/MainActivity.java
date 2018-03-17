@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 import com.example.qman.rockpad.constant.BroadcastType;
 import com.example.qman.rockpad.service.SerialService;
+import com.example.qman.rockpad.test.MysqlTestThread;
+import com.example.qman.rockpad.test.SerialTestThread;
 import com.example.qman.rockpad.utils.ActivityUtil;
 
 import java.io.File;
@@ -54,25 +56,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * 串口初始化
      * add:wei
      */
-    public void initSerial(){
+ /*   public void initSerial(){
         String portpath="/dev/ttyS3";
         int buadrate=115200 ;
 
         SerialPortUtil serialPortUtil=SerialPortUtil.getInstance();
         //初始化串口
         serialPortUtil.initSerialPort(portpath,buadrate,0);
-    }
+    }*/
 
     /**
      * 串口测试，发送数据
      * add :wei
      */
-    public void testSerial(){
+ /*   public void testSerial(){
         int[] testBuffer=new int [] {0xe2,0x23,0x78,0x12,0xad};
         if(SerialPortUtil.getInstance().isSerialOpen()){
             SerialPortUtil.getInstance().sendBuffer(testBuffer);
         }
-    }
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
        Intent serviceIntent = new Intent(this, SerialService.class);
         startService(serviceIntent);
 
-        initSerial();
+//        initSerial();
 
         /*System.out.println("6666666666666666666666666");
         System.out.println("zrvalue is:"+ SerialController.getInstance().add(190, 7));
@@ -169,7 +171,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         {
             case R.id.test_btn:
 
-                testSerial();
+                new Thread( new SerialTestThread()).start(); //开启一个测试线程，可删
+
+//                new Thread(new MysqlTestThread()).start();
+
+                /*testSerial();*/
              /*   ActivityUtil.toastShow(this, "点我干嘛？");
                 File device = new File("/dev/ttyS3");
                 //检查访问权限，如果没有读写权限，进行文件操作，修改文件访问权限

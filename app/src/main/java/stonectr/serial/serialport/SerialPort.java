@@ -47,8 +47,8 @@ public class SerialPort {
     }
 
     /*
-         * Do not remove or rename the field mFd: it is used by native method close();
-         */
+     * Do not remove or rename the field mFd: it is used by native method close();
+     */
     private FileDescriptor mFd;
     private FileInputStream mFileInputStream;
     private FileOutputStream mFileOutputStream;

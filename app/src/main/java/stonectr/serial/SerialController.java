@@ -35,7 +35,7 @@ public class SerialController {
 
     private SerialController() {
     }
-
+    //单例模式
     public static synchronized SerialController getInstance() {
         if (instance == null) {
             instance = new SerialController();
@@ -47,7 +47,6 @@ public class SerialController {
     {
         callback.onReback(new UartWakeUpEvent(angle));
     }
-
 
     public static void robotInfo(int pm25, int pm10, int temp, byte humi, int smoke, byte level, byte charging)
     {
@@ -78,8 +77,7 @@ public class SerialController {
         callback.onReback(new UartEventNormal(2));
     }
 
-    public static void getBarcode(String code)
-    {
+    public static void getBarcode(String code) {
         //获得条形码
         UartCodebarEvent event = new UartCodebarEvent();
         event.setIs2DBar(false);
@@ -116,8 +114,7 @@ public class SerialController {
     }
 
 
-    public static void getRfid(int r)
-    {
+    public static void getRfid(int r) {
         UartRfidEvent event = new UartRfidEvent();
 //        Log.d(TAG, "getRfid: " + ((r + 256*256*256*256 ) % 256*256*256*256));
 
@@ -126,8 +123,7 @@ public class SerialController {
         callback.onReback(event);
     }
 
-    public static void getRfid(long r)
-    {
+    public static void getRfid(long r) {
         UartRfidEvent event = new UartRfidEvent();
 //        Log.d(TAG, "getRfid: " + ((r + 256*256*256*256 ) % 256*256*256*256));
 
@@ -139,12 +135,12 @@ public class SerialController {
     /***发送串口命令函数*add by wei 2018/3/10**/
     //待测试.....，2018/3/10
     //导航到指定点
-    public  void navigation(double android_x ,double android_y,double android_theta ){
+    public  void navigation(double v, double android_x, double android_y, double android_theta){
         navigation(  BytesUtil.parseDoubleToInts(android_x) ,
                     BytesUtil.parseDoubleToInts(android_y) ,
                   BytesUtil.parseDoubleToInts( android_theta));
-
     }
+
     //导航到指定点
     public  void navigation(int[] x, int[] y, int[] theta){ //导航到指定点，x、y、theta double 各8字节，
             int [] command =new int[28] ; //
@@ -157,6 +153,7 @@ public class SerialController {
            command[27]= HandleSerialData.getCRCNum(command,27);
            SerialPortUtil.getInstance().sendBuffer(command) ; //发送命令
     }
+
     //编写功能函数，代替原native函数
     public  void sendForward(){
         simpleMove(0x00); //前进
@@ -165,25 +162,28 @@ public class SerialController {
     public  void sendBackward(){
         simpleMove(0x01); //后退
     }
+
     public  void sendLeft(){
         simpleMove(0x03); //反转
     }
+
     public  void sendRight(){
         simpleMove(0x02); //正转
     }
+
     public  void sendStop(){
         simpleMove(0x04); //停止
     }
+
     private void simpleMove(int action){
-        int []  command=new int[7];
+        int []  command=new int[6];
         command[0]=0x55; command[1]=0x01;
         command[2]=0x10; //simple move
         command[3]=action; //动作
-        command[4]=0;command[5]=0;
-        command[6]=HandleSerialData.getCRCNum(command,6);
+        command[4]=0;
+        command[5]=HandleSerialData.getCRCNum(command,5);
         SerialPortUtil.getInstance().sendBuffer(command) ; //发送命令
     }
-
     /****************/
 
     public static native void init_();
@@ -210,7 +210,7 @@ public class SerialController {
     public native void sendRight();
     public native void sendStop();*/
 
-    public native void sendForward(byte distance);   //前进**米
+//    public native void sendForward(byte distance);   //前进**米
     public native void sendBackward(byte distance);
     public native void sendLeft(byte distance);
     public native void sendRight(byte distance);

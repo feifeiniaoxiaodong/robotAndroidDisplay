@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidParameterException;
+import java.sql.PreparedStatement;
 
 /**
  * Created by wei on 2018/3/9.
@@ -22,6 +23,7 @@ public class SerialPortUtil {
     private InputStream mInputStream=null;
     private SerialReadThread  mSerialReadThread= null; //数据接收线程
     private OnDataReceiveListener onDataReceiveListener=null; //串口数据读取接口
+    private ParseSerialData parseSerialData =null ; //报文解析线程
     private volatile boolean isStop=false;
 
     private static SerialPortUtil  serialPortUtil=null; //单例模式
@@ -66,12 +68,18 @@ public class SerialPortUtil {
                 serialPort=new SerialPort(new File(path),baudrate,flags);
                 mOutputStream=serialPort.getOutputStream();
                 mInputStream=serialPort.getInputStream();
+
                 //开启数据接收线程
-                 isStop=false;
+//                isStop=false;
                 mSerialReadThread= new SerialReadThread();//开启数据接收线程
                 mSerialReadThread.start();
 
-                onDataReceiveListener=  tmpOnDataReceiveListener;//设置数据接收接口
+               onDataReceiveListener=  new HandleSerialData();//设置数据接收接口
+//                 parseSerialData=new ParseSerialData();
+//                 parseSerialData.start();
+//                 onDataReceiveListener=parseSerialData;
+
+
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -83,17 +91,35 @@ public class SerialPortUtil {
 
         @Override
         public void run() {
+
             super.run();
             while(!isStop && !isInterrupted()){//条件：串口未关闭 ，没有中断产生
-                int size=0;
+                int index=0 , nRead=0;
+               int size=0;
                try{
                    if(mInputStream==null)  return ;
 
                    byte[] buffer=new byte[1024];
-                   size=mInputStream.available();
-//                   size=mInputStream.read(buffer);      //数据读取函数需要升级，目前读取函数比较简单
-                   if(size>0){
-                       size=mInputStream.read(buffer);
+//                  size=mInputStream.available();
+
+                 /*  size=mInputStream.read(buffer);      //数据读取函数需要升级，目前读取函数比较简单
+                   size+=mInputStream.read(buffer);*/
+//                   while((nRead=mInputStream.read(buffer,size, 100))>0 ){
+//                       size+=nRead ;
+//                   }
+                  size=mInputStream.read(buffer);
+                  try{
+                      Thread.sleep(3);
+                  }catch (Exception e){
+                      e.printStackTrace();
+                  }
+                  while((nRead=mInputStream.available())>0 && size<900 ){
+                      nRead =mInputStream.read(buffer,size,100);
+                      size+=nRead ;
+                   }
+
+                   if(size>=0){ //接收的最短报文长15
+//                       size=mInputStream.read(buffer);
                        if(null!=onDataReceiveListener){
                            onDataReceiveListener.onDataReceive(buffer,size); //接收数据 ，java数组传递引用，在函数中更改buffer数据，也会造成原buffer中数据的修改
                        }
@@ -157,7 +183,8 @@ public class SerialPortUtil {
      * 关闭串口
      */
     public void closeSerialPort(){
-        isStop=true ;
+        isStop=true ;   //关闭报文接收线程
+        parseSerialData.stopParseSerialData(); //关闭报文处理线程
         if(serialPort!=null){
             serialPort.close();
             serialPort=null;
@@ -175,7 +202,7 @@ public class SerialPortUtil {
     }
 
     //数据接收接口对象
-    private OnDataReceiveListener  tmpOnDataReceiveListener=new OnDataReceiveListener(){
+   /* private OnDataReceiveListener  tmpOnDataReceiveListener=new OnDataReceiveListener(){
 
         @Override
         public void onDataReceive(byte[] buffer, int size) {
@@ -187,5 +214,5 @@ public class SerialPortUtil {
             Log.d(TAG, new String(buffer,0,size)); //打印
         }
     };
-
+*/
 }

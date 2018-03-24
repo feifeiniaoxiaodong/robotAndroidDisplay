@@ -54,7 +54,7 @@ public class ParseSerialData extends  Thread implements OnDataReceiveListener {
                         }
                         //校验
                         if( HandleSerialData.isCRCOk(msg28,28)){
-                            Double positionx= BytesUtil.parseDouble( BytesUtil.getNInts(msg28,3,8));   //小端模式
+                            Double positionx= BytesUtil.parseDouble( BytesUtil.getNInts(msg28,3,8));   //位置数据，小端模式
                             Double positiony=BytesUtil.parseDouble( BytesUtil.getNInts(msg28, 11,8));
                             Double rotaion_yaml=BytesUtil.parseDouble(BytesUtil.getNInts(msg28,19,8));
                             SerialController.robotPose(positionx,positiony,rotaion_yaml);

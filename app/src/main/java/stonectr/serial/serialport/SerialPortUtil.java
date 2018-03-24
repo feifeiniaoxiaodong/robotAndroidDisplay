@@ -77,7 +77,7 @@ public class SerialPortUtil {
 //               onDataReceiveListener=  new HandleSerialData();//设置数据接收接口
                  parseSerialData=new ParseSerialData();
                  parseSerialData.start();
-                 onDataReceiveListener=parseSerialData;
+                 onDataReceiveListener=parseSerialData;//设置数据接收接口
 
 
             }

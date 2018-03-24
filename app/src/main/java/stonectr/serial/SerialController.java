@@ -153,27 +153,121 @@ public class SerialController {
            SerialPortUtil.getInstance().sendBuffer(command) ; //发送命令
     }
 
-    //编写功能函数，代替原native函数
+    //编写功能函数，代替原native函数,功能实现函数
+    //向前走3s后停下
     public  void sendForward(){
-        simpleMove(0x00); //前进
+        new Thread(new Runnable() {
+//            1000/50=20
+            @Override
+            public void run() {
+                int n=20*3; //每间隔50ms发送一次指令， 3s后停下
+                while(n>0){
+                   if(n>2){
+                       sendMsgForward();
+                   }else{
+                       sendMsgStop(); //stop,发两次停止指令
+                   }
+                    n--;
+                    try {
+                        Thread.sleep(50);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
     }
 
+    //向后走，3s后停下
     public  void sendBackward(){
-        simpleMove(0x01); //后退
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int n=20*3; //每间隔50ms发送一次指令， 3s后停下
+                while(n>0){
+                    if(n>2){
+                        sendMsgBackward();
+                    }else{
+                        sendMsgStop(); //stop
+                    }
+                    n--;
+                    try {
+                        Thread.sleep(50);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
     }
-
+    //向左转，3s后停下
     public  void sendLeft(){
-        simpleMove(0x03); //反转
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int n=20*3; //每间隔50ms发送一次指令， 3s后停下
+                while(n>0){
+                    if(n>2){
+                        sendMsgLeft();
+                    }else{
+                        sendMsgStop(); //stop
+                    }
+                    n--;
+                    try {
+                        Thread.sleep(50);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
     }
-
+    //向右转，3s后停下
     public  void sendRight(){
-        simpleMove(0x02); //正转
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int n=20*3; //每间隔50ms发送一次指令， 3s后停下
+                while(n>0){
+                    if(n>2){
+                        sendMsgRight();
+                    }else{
+                        sendMsgStop(); //stop
+                    }
+                    n--;
+                    try {
+                        Thread.sleep(50);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
     }
 
     public  void sendStop(){
+        sendMsgStop(); //停止
+    }
+    
+/*********************************************/
+    //发送串口指令函数
+    //向前走
+    private void sendMsgForward(){
+        simpleMove(0x00); //前进
+    }
+    //向后走
+    private void sendMsgBackward(){
+        simpleMove(0x01); //后退
+    }
+    private void sendMsgLeft(){
+        simpleMove(0x03); //反转
+    }
+    private void sendMsgRight(){
+        simpleMove(0x02); //正转
+    }
+    private void sendMsgStop(){
         simpleMove(0x04); //停止
     }
-
     private void simpleMove(int action){
         int []  command=new int[6];
         command[0]=0x55; command[1]=0x01;

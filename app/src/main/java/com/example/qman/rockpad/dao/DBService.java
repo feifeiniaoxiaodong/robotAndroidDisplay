@@ -92,7 +92,6 @@ public class DBService {
             resultSet=preparedStatement.executeQuery();
             if(resultSet!=null){
                 while(resultSet.next()){
-
                     moveParam.setId(resultSet.getString("id"));
                     moveParam.setRid(resultSet.getString("rid"));
                     String w=resultSet.getString("rock_move.w");

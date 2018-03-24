@@ -53,4 +53,15 @@ public class MoveParam {
     public void setV(int v) {
         this.v = v;
     }
+
+
+    @Override
+    public String toString() {
+        return "MoveParam{" +
+                "id='" + id + '\'' +
+                ", rid='" + rid + '\'' +
+                ", w=" + w +
+                ", v=" + v +
+                '}';
+    }
 }

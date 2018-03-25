@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.example.qman.rockpad.constant.BroadcastType;
 import com.example.qman.rockpad.service.SerialService;
+import com.example.qman.rockpad.test.MusicTestThread;
 import com.example.qman.rockpad.test.MysqlTestThread;
 import com.example.qman.rockpad.test.SerialTestThread;
 import com.example.qman.rockpad.utils.ActivityUtil;
@@ -170,6 +171,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
       switch (v.getId())
         {
             case R.id.test_btn:
+
+                new Thread(new MusicTestThread(getApplicationContext())).start(); //测试MediaPlayer
 
 //               new Thread( new SerialTestThread()).start(); //开启一个测试线程，可删
 

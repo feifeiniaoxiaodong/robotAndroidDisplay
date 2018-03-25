@@ -6,17 +6,19 @@ import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
+import java.io.IOException;
+
 /**
  * Created by sunshine on 2017/7/16.
+ * 一种服务只有一个实例
  */
-
 public class PlayMusicService extends Service {
 
     public static final int PLAY_MUSIC = 1;
     public static final int PAUSE_MUSIC = 2;
     public static final int STOP_MUSIC = 3;
     //用于播放音乐等媒体资源
-    private MediaPlayer mediaPlayer;
+    private MediaPlayer mediaPlayer=null;
     //标志判断播放歌曲是否是停止之后重新播放，还是继续播放
     private boolean isStop = true;
 
@@ -43,7 +45,7 @@ public class PlayMusicService extends Service {
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    //发送广播到MainActivity
+                    //发送广播到MainActivity,目前未实现
                     Intent intent = new Intent();
                     intent.setAction("com.music.complete");
                     sendBroadcast(intent);
@@ -69,12 +71,20 @@ public class PlayMusicService extends Service {
         switch (intent.getIntExtra("type", -1)) {
             case PLAY_MUSIC:
                 if (isStop) {
-                    int music_id = intent.getIntExtra("music_id",-1);
-                    if (music_id > 0) {
+//                    int music_id = intent.getIntExtra("music_id",-1);
+                    String music_path=intent.getStringExtra("music_path");
+
+                    if (music_path !=null && !"".equals(music_path.trim())) {
                         //重置mediaplayer
                         mediaPlayer.reset();
                         //将需要播放的资源与之绑定
-                        mediaPlayer = MediaPlayer.create(this, music_id);
+//                        mediaPlayer = MediaPlayer.create(this, music_id);
+                       try {
+                            mediaPlayer.setDataSource(music_path);//从sacard读取歌曲进行播放
+                            mediaPlayer.prepareAsync();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         //开始播放
                         mediaPlayer.start();
                         //是否循环播放
@@ -93,7 +103,7 @@ public class PlayMusicService extends Service {
                 break;
             case STOP_MUSIC:
                 if (mediaPlayer != null) {
-                    //停止之后要开始播放音乐
+                    //停止之后要开始播放音乐，停止音乐播放之后为release掉MediaPlayer
                     mediaPlayer.stop();
                     isStop = true;
                 }
@@ -105,5 +115,11 @@ public class PlayMusicService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if(mediaPlayer!=null){
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer=null;
+        }
     }
+
 }

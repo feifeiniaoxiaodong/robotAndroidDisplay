@@ -104,4 +104,17 @@
         <item>0</item>
     </string-array>
 
+    <!--music sdcard path-->
+    <string name="musicrootpath">/mnt/internal_sd/Music/robot/</string>
+    <string name="choubaguai">/mnt/internal_sd/Music/robot/music_choubaguai.mp3</string>
+    <string name="fenshoukuaile">/mnt/internal_sd/Music/robot/music_fenshoukuaile.mp3</string>
+    <string name="hexinjiazhiguan">/mnt/internal_sd/Music/robot/music_hexinjiazhiguan.mp3</string>
+    <string name="hongyan">/mnt/internal_sd/Music/robot/music_hongyan.mp3</string>
+    <string name="panzongjinju">/mnt/internal_sd/Music/robot/music_panzongjinju.mp3</string>
+    <string name="songofyili">/mnt/internal_sd/Music/robot/music_songofyili.mp3</string>
+    <string name="xiaopingguo">/mnt/internal_sd/Music/robot/music_xiaopingguo.mp3</string>
+    <string name="yilijingshen">/mnt/internal_sd/Music/robot/music_yilijingshen.mp3</string>
+    <string name="yilixintiao">/mnt/internal_sd/Music/robot/music_yilixintiao.mp3</string>
+    <string name="yiliyuanjing">/mnt/internal_sd/Music/robot/music_yiliyuanjing.mp3</string>
+
 </resources>

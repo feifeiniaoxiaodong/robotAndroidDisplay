@@ -220,7 +220,6 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
             TimerUtil.startTime(WakeUpActivity.this,  4000);
         }
 
-
         else if(str.contains("高兴") || str.contains("见到你"))
         {
             VoiceSpeaker.getInstance().speak("欢迎光临伊利集团");
@@ -325,11 +324,10 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
             info.setText(info.getText().toString() + "\n即将为您 播放潘总金句");
 //            playingmusic(PlayMusicService.PLAY_MUSIC,R.raw.music_panzongjinju);
             playingmusic(PlayMusicService.PAUSE_MUSIC, getResources().getString(R.string.panzongjinju));
-
         }
-
         else if (str.contains("播放"))
         {
+            
             if (str.contains("鸿雁"))
             {
                 info.setText(info.getText().toString() + "\n正在为您播放 鸿雁 ");
@@ -349,14 +347,12 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
                 info.setText(info.getText().toString() + "\n正在为您播放 小苹果 ");
 //                playingmusic(PlayMusicService.PLAY_MUSIC, R.raw.music_xiaopingguo);
                 playingmusic(PlayMusicService.PAUSE_MUSIC, getResources().getString(R.string.xiaopingguo));
-
             }
             else if (str.contains("音乐"))
             {
                 info.setText(info.getText().toString() + "\n正在为您播放 音乐 ");
-//                playingmusic(PlayMusicService.PLAY_MUSIC, R.raw.music_fenshoukuaile);
+//               playingmusic(PlayMusicService.PLAY_MUSIC, R.raw.music_fenshoukuaile);
                 playingmusic(PlayMusicService.PAUSE_MUSIC, getResources().getString(R.string.fenshoukuaile));
-
             }
             else if(str.contains("信条"))
             {
@@ -376,9 +372,8 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
                 info.setText(info.getText().toString() + "\n即将为您 播放潘总金句");
 //                playingmusic(PlayMusicService.PLAY_MUSIC,R.raw.music_panzongjinju);
                 playingmusic(PlayMusicService.PAUSE_MUSIC, getResources().getString(R.string.panzongjinju));
-
             }
-        } else
+        }else
         {
             willClose = true;
             finish();

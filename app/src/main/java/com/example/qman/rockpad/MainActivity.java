@@ -41,41 +41,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SerialMsgReceiver serialReceiver;
     private IntentFilter intentFilter;
 
-  /*  public void test()
-    {
-        SerialController.getInstance().init("/dev/ttyS3",9600,8,1,'N');
-        SerialController.getInstance().open();
-        System.out.println("isOpen:"+SerialController.getInstance().isOpen()+"");
-        byte[] buf =new byte[100];
-        SerialController.getInstance().read(buf,100);
-        int x = 'A';
-        System.out.println("buf:"+buf+x);
-    }*/
-
-    /**
-     * 串口测试
-     * 串口初始化
-     * add:wei
-     */
- /*   public void initSerial(){
-        String portpath="/dev/ttyS3";
-        int buadrate=115200 ;
-
-        SerialPortUtil serialPortUtil=SerialPortUtil.getInstance();
-        //初始化串口
-        serialPortUtil.initSerialPort(portpath,buadrate,0);
-    }*/
-
-    /**
-     * 串口测试，发送数据
-     * add :wei
-     */
- /*   public void testSerial(){
-        int[] testBuffer=new int [] {0xe2,0x23,0x78,0x12,0xad};
-        if(SerialPortUtil.getInstance().isSerialOpen()){
-            SerialPortUtil.getInstance().sendBuffer(testBuffer);
-        }
-    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,37 +55,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         registerReceiver(serialReceiver, intentFilter);
 
        Intent serviceIntent = new Intent(this, SerialService.class);
-        startService(serviceIntent);
+       startService(serviceIntent);
 
-//        initSerial();
 
-        /*System.out.println("6666666666666666666666666");
-        System.out.println("zrvalue is:"+ SerialController.getInstance().add(190, 7));
-        System.out.println("zrStr is:"+ SerialController.getInstance().getString("/dev/ttyS777"));
-
-        SerialController.getInstance().init("/dev/ttyS3",9600,8,1,'N');*/
-
-//        try {
-//				/* Missing read/write permission, trying to chmod the file */
-//            Process su;
-//            su = Runtime.getRuntime().exec("/system/bin/su");
-//            String cmd = "chmod 666 " + "/dev/ttyS3" + "\n"
-//                    + "exit\n";
-//            su.getOutputStream().write(cmd.getBytes());
-//            if ((su.waitFor() != 0)) {
-//                throw new SecurityException();
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            throw new SecurityException();
-//        }
-        //System.out.println("open:"+SerialController.getInstance().open());
-        //System.out.println("isOpen:"+SerialController.getInstance().isOpen()+"");
-//        byte[]buf = {1,1,2};
-        //SerialController.getInstance().read(buf,buf.length);
-        //SerialController.getInstance().write(buf,buf.length);
-//        int x = 'A';
-//        System.out.println("buf:"+buf.toString()+x);
     }
 
     @Override
@@ -136,7 +73,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initTextView(R.id.main_somg_t, "烟雾", 1);
         initTextView(R.id.main_pm25_t, "PM2.5", 2);
         initTextView(R.id.main_level_t, "电量", 1);
-
 
         wendu_value = (TextView) findViewById(R.id.main_wendu_value);
         shidu_value = (TextView) findViewById(R.id.main_shidu_value);
@@ -158,13 +94,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         t.setText(text, TextView.BufferType.SPANNABLE);
     }
 
-    private void setValue() {
-        wendu_value.setText("50℃");
-        shidu_value.setText("40");
-        yanwu_value.setText("5");
-        PM_value.setText("63");
-        dianliang_value.setText("90");
-    }
+
 
     @Override
     public void onClick(View v) {
@@ -172,51 +102,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         {
             case R.id.test_btn:
 
-                new Thread(new MusicTestThread(getApplicationContext())).start(); //测试MediaPlayer
+                new Thread(new MusicTestThread(getApplicationContext())).start(); //测试MediaPlayer，可删
 
 //               new Thread( new SerialTestThread()).start(); //开启一个测试线程，可删
 
-//                new Thread(new MysqlTestThread()).start(); //测试数据库
+//                new Thread(new MysqlTestThread()).start(); //测试数据库，可删
 
-                /*testSerial();*/
-             /*   ActivityUtil.toastShow(this, "点我干嘛？");
-                File device = new File("/dev/ttyS3");
-                //检查访问权限，如果没有读写权限，进行文件操作，修改文件访问权限
-                if (!device.canRead() || !device.canWrite())
-                {
-                    try {
-                        //通过挂载到linux的方式，修改文件的操作权限
-                        Process su = Runtime.getRuntime().exec("/system/bin/su");
-                        String cmd = "chmod 666 " + device.getAbsolutePath() + "\n" + "exit\n";
-                        su.getOutputStream().write(cmd.getBytes());
-
-                        if ((su.waitFor() != 0) || !device.canRead() || !device.canWrite()) {
-                            throw new SecurityException();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        throw new SecurityException();
-                    }
-                }
-                SerialController.getInstance().init("/dev/ttyS3",9600,8,1,'N');
-                boolean flag = false;
-                if(!flag)
-                {
-                    flag = true;
-                    System.out.println("open(MainActivity):"+SerialController.getInstance().open());
-                    System.out.println("isOpen(MainActivity):"+SerialController.getInstance().isOpen()+"");
-                }
-                byte[]data = new byte[10];
-                // trans to cpp
-                for (byte i = 0;i<10;i++)
-                {
-                    data[i] = (byte)(i+1);
-                }
-                System.out.println("read(MainActivity) "+SerialController.getInstance().read(data,10)+" bytes");
-                for (int i = 0;i< data.length;i++)
-                {
-                    System.out.println("data[" +i + "] = "+data[i]);
-                }*/
                 break;
             case R.id.wakeup_button:
                 //        ActivityUtil.toastShow(this, "点我干嘛？");
@@ -226,6 +117,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private void setValue() {
+        wendu_value.setText("50℃");
+        shidu_value.setText("40");
+        yanwu_value.setText("5");
+        PM_value.setText("63");
+        dianliang_value.setText("90");
+    }
 
     class SerialMsgReceiver extends BroadcastReceiver {
 
@@ -233,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public void onReceive(Context context, Intent intent) {
             Bundle bundle = intent.getExtras();
             String type = bundle.getString("info");
-            if (type.equals(BroadcastType.ROBOTINFO)) {
+            if (type.equals(BroadcastType.ROBOTINFO)) { //界面温湿度显示
                 wendu_value.setText(bundle.getInt(BroadcastType.ROBOTINFO_TEMPERATURE, -1) + "℃");
                 shidu_value.setText(bundle.getByte(BroadcastType.ROBOTINFO_HUMIDITY, (byte)0) + "");
                 yanwu_value.setText(bundle.getInt(BroadcastType.ROBOTINFO_SMOKE, -1) + "");

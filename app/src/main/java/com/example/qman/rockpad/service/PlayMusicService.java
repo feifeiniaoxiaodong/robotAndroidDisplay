@@ -71,16 +71,16 @@ public class PlayMusicService extends Service {
         switch (intent.getIntExtra("type", -1)) {
             case PLAY_MUSIC:
                 if (isStop) {
-//                    int music_id = intent.getIntExtra("music_id",-1);
+//                  int music_id = intent.getIntExtra("music_id",-1);
                     String music_path=intent.getStringExtra("music_path");
 
                     if (music_path !=null && !"".equals(music_path.trim())) {
                         //重置mediaplayer
                         mediaPlayer.reset();
                         //将需要播放的资源与之绑定
-//                        mediaPlayer = MediaPlayer.create(this, music_id);
+//                       mediaPlayer = MediaPlayer.create(this, music_id);
                        try {
-                            mediaPlayer.setDataSource(music_path);//从sacard读取歌曲进行播放
+                            mediaPlayer.setDataSource(music_path);
                             mediaPlayer.prepareAsync();
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -103,7 +103,7 @@ public class PlayMusicService extends Service {
                 break;
             case STOP_MUSIC:
                 if (mediaPlayer != null) {
-                    //停止之后要开始播放音乐，停止音乐播放之后为release掉MediaPlayer
+                    //停止之后要开始播放音乐，停止但不调用release()释放所占用资源
                     mediaPlayer.stop();
                     isStop = true;
                 }
@@ -117,7 +117,7 @@ public class PlayMusicService extends Service {
         super.onDestroy();
         if(mediaPlayer!=null){
             mediaPlayer.stop();
-            mediaPlayer.release();
+            mediaPlayer.release(); //release()调用后mediaPlayer对象不再可用
             mediaPlayer=null;
         }
     }

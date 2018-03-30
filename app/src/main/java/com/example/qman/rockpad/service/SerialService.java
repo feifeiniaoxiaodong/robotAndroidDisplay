@@ -38,7 +38,7 @@ import stonectr.serial.serialport.SerialPortUtil;
 
 public class SerialService extends Service implements ControlCallBack {
 
-    private String TAG = "serial sevice"; 
+    private final String TAG = "Serial Service";
     public static final String[] BODY_FORWARD = {"往前", "向前", "前进"};
     public static final String[] BODY_BACKWARD = {"后退", "向后", "往后"};
     public static final String[] BODY_LEFT = {"左转", "向左"};
@@ -70,9 +70,8 @@ public class SerialService extends Service implements ControlCallBack {
         registerReceiver(musicReceiver,filter);
     }
     @Override
-    public int onStartCommand(Intent intent, int flag, int startID)
-    {
-        Log.d(TAG, "service onStart");
+    public int onStartCommand(Intent intent, int flag, int startID){
+        Log.d(TAG, "service onStartCommand");
         return super.onStartCommand(intent, flag, startID);
     }
     @Nullable
@@ -81,6 +80,7 @@ public class SerialService extends Service implements ControlCallBack {
         Log.d(TAG, "service onBind");
         return serialServiceBinder;
     }
+
     public class SerialServiceBinder extends Binder {
         public SerialServiceBinder() {
         }
@@ -88,6 +88,7 @@ public class SerialService extends Service implements ControlCallBack {
             return SerialService.this;
         }
     }
+
     @Override
     public boolean onUnbind(Intent intent)
     {
@@ -99,12 +100,11 @@ public class SerialService extends Service implements ControlCallBack {
     {
         Log.d(TAG, "service onDestroy");
         super.onDestroy();
-        serialController.stopRosRcv();
-        serialController.stopWakeRcv();
+      /*  serialController.stopRosRcv();
+        serialController.stopWakeRcv();*/
     }
 
-    public void setRemoteIP(String ip)
-    {
+    public void setRemoteIP(String ip) {
         mobileMsgHandler.setRemoteIP(ip);
     }
 
@@ -222,7 +222,6 @@ public class SerialService extends Service implements ControlCallBack {
 
     public void resolve(String str)
     {
-
         if (str == null || str.length() == 0 || str.equals("。") || str.equals("！") || str.equals("？")) {
             return;
         }
@@ -253,7 +252,6 @@ public class SerialService extends Service implements ControlCallBack {
             SerialController.getInstance().sendLeft();
         }
     }
-
 
     public class MusicBroadCastReceiver extends BroadcastReceiver {
         @Override

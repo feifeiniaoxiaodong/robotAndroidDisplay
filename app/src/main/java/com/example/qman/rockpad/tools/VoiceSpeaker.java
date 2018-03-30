@@ -37,7 +37,6 @@ public class VoiceSpeaker {
     public void speak( String str)
     {
         mTts.startSpeaking(" " + str, mSynListener);
-
     }
 
     /**

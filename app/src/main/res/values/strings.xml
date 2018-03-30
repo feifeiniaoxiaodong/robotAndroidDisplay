@@ -106,6 +106,7 @@
 
     <!--music sdcard path-->
     <string name="musicrootpath">/mnt/internal_sd/Music/robot/</string>
+
     <string name="choubaguai">/mnt/internal_sd/Music/robot/music_choubaguai.mp3</string>
     <string name="fenshoukuaile">/mnt/internal_sd/Music/robot/music_fenshoukuaile.mp3</string>
     <string name="hexinjiazhiguan">/mnt/internal_sd/Music/robot/music_hexinjiazhiguan.mp3</string>

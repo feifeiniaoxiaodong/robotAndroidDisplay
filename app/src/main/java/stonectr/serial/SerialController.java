@@ -26,7 +26,7 @@ public class SerialController {
 
     private static ControlCallBack callback;
 
-    private static String TAG = "UARTReceive";
+    private final static String TAG = "UARTReceive";
     private static SerialController instance;
 
     public void setControlCallBack(ControlCallBack callback) {
@@ -35,6 +35,7 @@ public class SerialController {
 
     private SerialController() {
     }
+
     //单例模式
     public static synchronized SerialController getInstance() {
         if (instance == null) {
@@ -42,6 +43,7 @@ public class SerialController {
         }
         return instance;
     }
+
     //串口唤醒事件1
     public static void wakeUp(int angle)
     {
@@ -86,6 +88,7 @@ public class SerialController {
         if (callback != null)
         callback.onReback(event);
     }
+
     public static void get2Barcode(String code)
     {
         //获得二维码
@@ -135,7 +138,7 @@ public class SerialController {
     /***发送串口命令函数*add by wei 2018/3/10**/
     //待测试.....，2018/3/10
     //导航到指定点
-    public  void navigation(double v, double android_x, double android_y, double android_theta){
+    public  void navigation( double android_x, double android_y, double android_theta){
         navigation(  BytesUtil.parseDoubleToInts(android_x) ,
                     BytesUtil.parseDoubleToInts(android_y) ,
                   BytesUtil.parseDoubleToInts( android_theta));
@@ -200,6 +203,7 @@ public class SerialController {
             }
         }).start();
     }
+
     //向左转，3s后停下
     public  void sendLeft(){
         new Thread(new Runnable() {
@@ -222,6 +226,7 @@ public class SerialController {
             }
         }).start();
     }
+
     //向右转，3s后停下
     public  void sendRight(){
         new Thread(new Runnable() {

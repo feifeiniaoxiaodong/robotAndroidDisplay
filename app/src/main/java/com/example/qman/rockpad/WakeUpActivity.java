@@ -378,17 +378,17 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
                 playingmusic(PlayMusicService.PAUSE_MUSIC, getResources().getString(R.string.panzongjinju));
 
             }
-        }
-        else
+        } else
         {
             willClose = true;
             finish();
         }
+
     }
 
     /**
      * 播放音乐
-     * @param type：
+     * @param type：操作类型，1启动、2暂停、3停止
      * @param music_id
      */
     private void playingmusic(int type, int music_id) {
@@ -401,7 +401,7 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
 
     /**
      * 播放sacard中的音乐
-     * @param type：操作类型，启动、暂停、停止
+     * @param type：操作类型，1启动、2暂停、3停止
      * @param path：音乐文件在sdcard中的地址
      */
     private void playingmusic(int type,String path){

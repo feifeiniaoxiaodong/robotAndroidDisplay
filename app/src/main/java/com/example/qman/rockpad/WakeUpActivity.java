@@ -383,8 +383,8 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
             willClose = true;
             finish();
         }
-
     }
+
 
     /**
      * 播放音乐

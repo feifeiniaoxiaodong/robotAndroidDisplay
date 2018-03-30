@@ -56,8 +56,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
        Intent serviceIntent = new Intent(this, SerialService.class);
        startService(serviceIntent);
-
-
     }
 
     @Override
@@ -93,8 +91,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         text.setSpan(new TextAppearanceSpan(this, R.style.style_main_smallFont), index, str.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         t.setText(text, TextView.BufferType.SPANNABLE);
     }
-
-
 
     @Override
     public void onClick(View v) {

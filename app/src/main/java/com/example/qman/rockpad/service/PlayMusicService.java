@@ -25,7 +25,6 @@ public class PlayMusicService extends Service {
     /**
      * onBind，返回一个IBinder，可以与Activity交互
      * 这是Bind Service的生命周期方法
-     *
      * @param intent
      * @return
      */

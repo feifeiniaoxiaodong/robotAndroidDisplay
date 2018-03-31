@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.example.qman.rockpad.R;
 import com.example.qman.rockpad.service.PlayMusicService;
+import com.example.qman.rockpad.tools.FindLocalMusicUrl;
 
 /**
  * 测试音乐
@@ -20,10 +21,16 @@ public class MusicTestThread implements Runnable {
 
     @Override
     public void run() {
-        String path=context.getResources().getString(R.string.choubaguai);
-        playingmusic(PlayMusicService.PLAY_MUSIC, path);
 
-        playingmusic(PlayMusicService.PAUSE_MUSIC,""); //pause
+        String musicdesc="播放小苹果";
+
+        String musicpath= FindLocalMusicUrl.searchLocalMusic(context ,musicdesc);
+
+//        String path=context.getResources().getString(R.string.choubaguai);
+
+        playingmusic(PlayMusicService.PLAY_MUSIC, musicpath);
+
+      /*  playingmusic(PlayMusicService.PAUSE_MUSIC,""); //pause
 //
         playingmusic(PlayMusicService.PLAY_MUSIC, path); //restart
 //
@@ -33,9 +40,10 @@ public class MusicTestThread implements Runnable {
 //
         playingmusic(PlayMusicService.PLAY_MUSIC, path); //restart
 //
-        playingmusic(PlayMusicService.STOP_MUSIC , ""); //stop
+        playingmusic(PlayMusicService.STOP_MUSIC , ""); //stop*/
 
     }
+
 
 
     /**

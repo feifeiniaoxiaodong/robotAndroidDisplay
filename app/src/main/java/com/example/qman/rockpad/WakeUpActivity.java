@@ -1,7 +1,10 @@
 package com.example.qman.rockpad;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -10,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.qman.rockpad.constant.BroadcastType;
 import com.example.qman.rockpad.ifkytekUtil.JsonParser;
 import com.example.qman.rockpad.service.PlayMusicService;
 import com.example.qman.rockpad.tools.VoiceSpeaker;
@@ -33,6 +37,7 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
     private boolean willClose = true;
     private Timer timer = null;//计时器
     private TimerTask timerTask = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +46,7 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
         wakeup_button.setOnClickListener(this);
         info = (TextView)findViewById(R.id.wakeup_info);
         //10秒后自动退回
+
     }
 
     @Override
@@ -83,7 +89,7 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
         @Override
         public void onBeginOfSpeech() {
             // 此回调表示：sdk内部录音机已经准备好了，用户可以开始语音输入
-            //    showTip("开始说话");
+//                showTip("开始说话");
             Toast.makeText(WakeUpActivity.this, "请开始说话", Toast.LENGTH_SHORT).show();
             isListening = true;
         }
@@ -214,7 +220,7 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
             }
             else if (str.contains("音乐"))
             {
-//                playingmusic(PlayMusicService.STOP_MUSIC, -1);
+//               playingmusic(PlayMusicService.STOP_MUSIC, -1);
                 playingmusic(PlayMusicService.STOP_MUSIC, "");
             }
             TimerUtil.startTime(WakeUpActivity.this,  4000);
@@ -300,35 +306,72 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
         else if (str.contains("简介") || str.contains("伊利信条")|| str.contains("信条")) {
 
             info.setText(info.getText().toString() + "\n即将为您介绍伊利");
-//            playingmusic(PlayMusicService.PLAY_MUSIC,R.raw.music_yilixintiao);
-            playingmusic(PlayMusicService.PAUSE_MUSIC, getResources().getString(R.string.yilixintiao));
+            playingmusic(PlayMusicService.PLAY_MUSIC, getResources().getString(R.string.yilixintiao));
         }
         else if (str.contains("愿景") || str.contains("伊利愿景")|| str.contains("愿望")) {
             info.setText(info.getText().toString() + "\n即将为您介绍伊利愿景");
 //            playingmusic(PlayMusicService.PLAY_MUSIC,R.raw.music_yiliyuanjing);
-            playingmusic(PlayMusicService.PAUSE_MUSIC, getResources().getString(R.string.yiliyuanjing));
+            playingmusic(PlayMusicService.PLAY_MUSIC, getResources().getString(R.string.yiliyuanjing));
         }
         else if (str.contains("精神") || str.contains("伊利精神")) {
             info.setText(info.getText().toString() + "\n即将为您介绍伊利精神");
-//            playingmusic(PlayMusicService.PLAY_MUSIC,R.raw.music_yilijingshen);
-            playingmusic(PlayMusicService.PAUSE_MUSIC, getResources().getString(R.string.yilijingshen));
-
+            playingmusic(PlayMusicService.PLAY_MUSIC, getResources().getString(R.string.yilijingshen));
         }
         else if (str.contains("价值观") || str.contains("核心")|| str.contains("核心价值观")) {
             info.setText(info.getText().toString() + "\n即将为您介绍伊利核心价值观");
-//            playingmusic(PlayMusicService.PLAY_MUSIC,R.raw.music_hexinjiazhiguan);
-            playingmusic(PlayMusicService.PAUSE_MUSIC, getResources().getString(R.string.hexinjiazhiguan));
+
+            playingmusic(PlayMusicService.PLAY_MUSIC, getResources().getString(R.string.hexinjiazhiguan));
 
         }
         else if (str.contains("潘总") || str.contains("金句")|| str.contains("潘总金句")) {
             info.setText(info.getText().toString() + "\n即将为您 播放潘总金句");
-//            playingmusic(PlayMusicService.PLAY_MUSIC,R.raw.music_panzongjinju);
-            playingmusic(PlayMusicService.PAUSE_MUSIC, getResources().getString(R.string.panzongjinju));
+            playingmusic(PlayMusicService.PLAY_MUSIC, getResources().getString(R.string.panzongjinju));
         }
-        else if (str.contains("播放"))
+        else if (str.contains("播放")|| str.contains("唱")|| str.contains("唱首歌")|| str.contains("唱一首"))
         {
-            
-            if (str.contains("鸿雁"))
+            info.setText(info.getText().toString() + "\n请稍等，正在为您查找歌曲... ");
+//          playingmusic(PlayMusicService.PAUSE_MUSIC, getResources().getString(R.string.hongyan));
+            searchMusic(PlayMusicService.PLAY_MUSIC,str);
+        }
+        {
+            willClose = true;
+            finish();
+        }
+    }
+
+    /**
+     * 播放sacard中的音乐
+     * @param type：操作类型，1启动、2暂停、3停止
+     * @param path：音乐文件在sdcard中的地址
+     */
+    private void playingmusic(int type,String path){
+        //启动服务，播放音乐
+        Intent intent=new Intent(this ,PlayMusicService.class);
+        intent.putExtra("music_path",path );
+        intent.putExtra("type",type);
+        startService(intent);
+    }
+
+    private void searchMusic(int type,String desc){
+        //
+        Intent intent=new Intent(this,PlayMusicService.class);
+        intent.putExtra("musicdesc",desc);
+        intent.putExtra("type",type);
+        startService(intent);
+    }
+
+    private void jumpToMap(int p_id)
+    {
+        TimerUtil.stopTime();
+        Intent intent = new Intent(this, MapOneActivity.class);
+        intent.putExtra("product_id", p_id);
+        startActivity(intent);
+    }
+
+}//end class
+
+
+        /*    if (str.contains("鸿雁"))
             {
                 info.setText(info.getText().toString() + "\n正在为您播放 鸿雁 ");
 //                playingmusic(PlayMusicService.PLAY_MUSIC, R.raw.music_hongyan);
@@ -358,7 +401,7 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
             {
                 info.setText(info.getText().toString()+"\n正在为您播放 伊利信条 ");
 //                playingmusic(PlayMusicService.PLAY_MUSIC,R.raw.music_yilixintiao);
-                playingmusic(PlayMusicService.PAUSE_MUSIC, getResources().getString(R.string.yilixintiao));
+                playingmusic(PlayMusicService.PLAY_MUSIC, getResources().getString(R.string.yilixintiao));
 
             }
             else if(str.contains("伊利之歌") ||str.contains("之歌")||str.contains("歌"))
@@ -372,46 +415,20 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
                 info.setText(info.getText().toString() + "\n即将为您 播放潘总金句");
 //                playingmusic(PlayMusicService.PLAY_MUSIC,R.raw.music_panzongjinju);
                 playingmusic(PlayMusicService.PAUSE_MUSIC, getResources().getString(R.string.panzongjinju));
-            }
-        }else
-        {
-            willClose = true;
-            finish();
-        }
-    }
+            }*/
 
 
-    /**
-     * 播放音乐
-     * @param type：操作类型，1启动、2暂停、3停止
-     * @param music_id
-     */
+
+
+/*    *//**
+ * 播放音乐
+ * @param type：操作类型，1启动、2暂停、3停止
+ * @param music_id
+ *//*
     private void playingmusic(int type, int music_id) {
         //启动服务，播放音乐
         Intent intent=new Intent(this,PlayMusicService.class);
         intent.putExtra("music_id",music_id);
         intent.putExtra("type",type);
         startService(intent);
-    }
-
-    /**
-     * 播放sacard中的音乐
-     * @param type：操作类型，1启动、2暂停、3停止
-     * @param path：音乐文件在sdcard中的地址
-     */
-    private void playingmusic(int type,String path){
-        //启动服务，播放音乐
-        Intent intent=new Intent(this ,PlayMusicService.class);
-        intent.putExtra("music_path",path );
-        intent.putExtra("type",type);
-        startService(intent);
-    }
-
-    private void jumpToMap(int p_id)
-    {
-        TimerUtil.stopTime();
-        Intent intent = new Intent(this, MapOneActivity.class);
-        intent.putExtra("product_id", p_id);
-        startActivity(intent);
-    }
-}
+    }*/

@@ -133,6 +133,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 yanwu_value.setText(bundle.getInt(BroadcastType.ROBOTINFO_SMOKE, -1) + "");
                 PM_value.setText(bundle.getInt(BroadcastType.ROBOTINFO_PM25, -1) + "");
                dianliang_value.setText(bundle.getByte(BroadcastType.ROBOTINFO_LEVEL, (byte) 0) + "%");
+            }else{
+                //找不到音乐
+                //音乐播放结束
             }
         }
     }

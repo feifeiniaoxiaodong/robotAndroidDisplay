@@ -282,8 +282,8 @@ public class SerialController {
     }
     /****************/
 
-    public static native void init_();
-//    public static native void release();
+    public static native void init();
+    public static native void release();
     //开关串口
     public static native void openScanPort();
     public static native void closeScanPort();
@@ -344,9 +344,9 @@ public class SerialController {
     public native int add(int x ,int y);*/
     // add by fjx ---2018-02-03 14:22:25----end
 
-/*   static {
-        System.loadLibrary("SerialPort");
-//        init();
-    }*/
+   static {
+        System.loadLibrary("serialTool");
+        init();
+    }
 
 }

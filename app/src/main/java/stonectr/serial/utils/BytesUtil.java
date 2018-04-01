@@ -1,8 +1,6 @@
-package stonectr.serial.serialport;
+package stonectr.serial.utils;
 
 import android.util.Log;
-
-import java.util.zip.DataFormatException;
 
 /**
  * Created by wei on 2018/3/9.

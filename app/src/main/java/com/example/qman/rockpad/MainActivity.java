@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -19,15 +18,6 @@ import android.widget.TextView;
 import com.example.qman.rockpad.constant.BroadcastType;
 import com.example.qman.rockpad.service.SerialService;
 import com.example.qman.rockpad.test.MusicTestThread;
-import com.example.qman.rockpad.test.MysqlTestThread;
-import com.example.qman.rockpad.test.SerialTestThread;
-import com.example.qman.rockpad.utils.ActivityUtil;
-
-import java.io.File;
-
-import stonectr.serial.SerialController;
-import stonectr.serial.serialport.SerialPort;
-import stonectr.serial.serialport.SerialPortUtil;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 

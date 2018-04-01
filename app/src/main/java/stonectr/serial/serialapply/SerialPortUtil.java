@@ -1,6 +1,4 @@
-package stonectr.serial.serialport;
-
-import android.util.Log;
+package stonectr.serial.serialapply;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,7 +6,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidParameterException;
-import java.sql.PreparedStatement;
+
+import stonectr.serial.serialport.SerialPort;
+import stonectr.serial.utils.BytesUtil;
 
 /**
  * Created by wei on 2018/3/9.
@@ -74,11 +74,9 @@ public class SerialPortUtil {
                 mSerialReadThread= new SerialReadThread();//开启数据接收线程
                 mSerialReadThread.start();
 
-//               onDataReceiveListener=  new HandleSerialData();//设置数据接收接口
                  parseSerialData=new ParseSerialData();
                  parseSerialData.start();
                  onDataReceiveListener=parseSerialData;//设置数据接收接口
-
 
             }
         }catch (Exception e){
@@ -100,13 +98,7 @@ public class SerialPortUtil {
                    if(mInputStream==null)  return ;
 
                    byte[] buffer=new byte[1024];
-//                  size=mInputStream.available();
 
-                 /*  size=mInputStream.read(buffer);      //数据读取函数需要升级，目前读取函数比较简单
-                   size+=mInputStream.read(buffer);*/
-//                   while((nRead=mInputStream.read(buffer,size, 100))>0 ){
-//                       size+=nRead ;
-//                   }
                   size=mInputStream.read(buffer);
                   try{
                       Thread.sleep(3);
@@ -120,7 +112,7 @@ public class SerialPortUtil {
                    }
 
                    if(size>=0){ //接收的最短报文长15
-//                       size=mInputStream.read(buffer);
+
                        if(null!=onDataReceiveListener){
                            onDataReceiveListener.onDataReceive(buffer,size); //接收数据 ，java数组传递引用，在函数中更改buffer数据，也会造成原buffer中数据的修改
                        }
@@ -176,7 +168,7 @@ public class SerialPortUtil {
     }
 
     public boolean sendBuffer(int[] mBuf){
-        byte[]  mBuffer =BytesUtil.intToByte(mBuf);
+        byte[]  mBuffer = BytesUtil.intToByte(mBuf);
         return sendBuffer(mBuffer);
     }
 
@@ -202,7 +194,15 @@ public class SerialPortUtil {
         return false;
     }
 
-    //数据接收接口对象
+
+}
+
+
+
+
+
+
+//数据接收接口对象
    /* private OnDataReceiveListener  tmpOnDataReceiveListener=new OnDataReceiveListener(){
 
         @Override
@@ -216,4 +216,3 @@ public class SerialPortUtil {
         }
     };
 */
-}

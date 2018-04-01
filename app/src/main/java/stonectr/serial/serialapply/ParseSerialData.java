@@ -1,15 +1,13 @@
-package stonectr.serial.serialport;
+package stonectr.serial.serialapply;
 
 import android.util.Log;
 
-import java.nio.IntBuffer;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import stonectr.serial.SerialController;
+import stonectr.serial.utils.BytesUtil;
 
 /**
  * Created by wei on 2018/3/17.
@@ -121,4 +119,5 @@ public class ParseSerialData extends  Thread implements OnDataReceiveListener {
     public void stopParseSerialData(){
         this.isCountinue=false;
     }
+
 }

@@ -30,7 +30,7 @@ import stonectr.serial.callBackEvent.UartRobotInfoEvent;
 import stonectr.serial.callBackEvent.UartRobotPoseEvent;
 import stonectr.serial.callBackEvent.UartShelvesInfoEvent;
 import stonectr.serial.callBackEvent.UartWakeUpEvent;
-import stonectr.serial.serialport.SerialPortUtil;
+import stonectr.serial.serialapply.SerialPortUtil;
 
 /**
  * Created by Sunshine on 2017/3/28.

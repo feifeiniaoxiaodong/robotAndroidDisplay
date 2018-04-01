@@ -1,21 +1,18 @@
 package stonectr.serial;
 // http://www.cnblogs.com/huangenai/p/6839477.html  编译时候出现 DELETE_FAILED_INTERNAL_ERROR 错误 樊嘉欣 2017-12-16 22:53:14
-import android.provider.Settings;
 import android.util.Log;
 
-import stonectr.serial.callBackEvent.UartBaseEvent;
 import stonectr.serial.callBackEvent.UartCodebarEvent;
 import stonectr.serial.callBackEvent.UartEventNormal;
-import stonectr.serial.callBackEvent.UartEventOther;
 import stonectr.serial.callBackEvent.UartGetFaceEvent;
 import stonectr.serial.callBackEvent.UartRfidEvent;
 import stonectr.serial.callBackEvent.UartRobotInfoEvent;
 import stonectr.serial.callBackEvent.UartRobotPoseEvent;
 import stonectr.serial.callBackEvent.UartShelvesInfoEvent;
 import stonectr.serial.callBackEvent.UartWakeUpEvent;
-import stonectr.serial.serialport.BytesUtil;
-import stonectr.serial.serialport.HandleSerialData;
-import stonectr.serial.serialport.SerialPortUtil;
+import stonectr.serial.utils.BytesUtil;
+import stonectr.serial.serialapply.HandleSerialData;
+import stonectr.serial.serialapply.SerialPortUtil;
 
 
 /**

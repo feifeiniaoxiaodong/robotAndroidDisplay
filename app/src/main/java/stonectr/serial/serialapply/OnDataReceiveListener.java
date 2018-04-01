@@ -1,4 +1,4 @@
-package stonectr.serial.serialport;
+package stonectr.serial.serialapply;
 
 /**
  * Created by wei on 2018/3/9.

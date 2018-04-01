@@ -78,6 +78,8 @@ public class DBService {
         }
     }
 
+
+
     //查
     public MoveParam selectRockmoveById(String rid){
         if(conn==null) return null;
@@ -228,7 +230,6 @@ public class DBService {
         return res;
     }
 
-
     private void closePreRes(){
         try{
             if(resultSet!=null){
@@ -241,17 +242,6 @@ public class DBService {
             }
         }catch (Exception e){
             e.printStackTrace();
-        }
-    }
-
-    public void closeConn(){
-        if(conn!=null){
-            try {
-                conn.close();
-                conn=null;
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
     }
 

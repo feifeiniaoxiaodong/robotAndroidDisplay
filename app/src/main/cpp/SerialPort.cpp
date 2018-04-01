@@ -24,7 +24,6 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-
 #include "android/log.h"
 static const char *TAG="serial_port";
 #define LOGI(fmt, args...) __android_log_print(ANDROID_LOG_INFO,  TAG, fmt, ##args)
@@ -253,9 +252,3 @@ JNIEXPORT jint JNICALL  JNI_OnLoad(JavaVM* vm, void* reserved)  {
 
     return result;
 }
-
-
-
-
-
-

@@ -344,9 +344,9 @@ public class SerialController {
     public native int add(int x ,int y);*/
     // add by fjx ---2018-02-03 14:22:25----end
 
- /*   static {
+    static {
         System.loadLibrary("SerialPort");
-        //init();
-    }*/
+//        init();
+    }
 
 }

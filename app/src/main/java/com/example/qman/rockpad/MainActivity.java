@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         {
             case R.id.test_btn:
 
-                new Thread(new MusicTestThread(getApplicationContext())).start(); //测试MediaPlayer，可删
+//                new Thread(new MusicTestThread(getApplicationContext())).start(); //测试MediaPlayer，可删
 
 //               new Thread( new SerialTestThread()).start(); //开启一个测试线程，可删
 

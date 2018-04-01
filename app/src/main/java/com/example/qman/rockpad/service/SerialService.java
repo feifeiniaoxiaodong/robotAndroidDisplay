@@ -61,10 +61,13 @@ public class SerialService extends Service implements ControlCallBack {
         serialController.setControlCallBack(this);
         SerialPortUtil.getInstance().initSerialPort(); //初试化串口，开启串口接受线程
 
-//        serialController.startWakeRcv();
+        try{
+            serialController.startWakeRcv();
 //        serialController.startScanRcv();
-//        serialController.startRosRcv();
-
+            serialController.startRosRcv();
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
         musicReceiver=new MusicBroadCastReceiver();
         IntentFilter filter=new IntentFilter();
         filter.addAction("com.music.complete");

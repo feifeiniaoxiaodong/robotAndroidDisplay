@@ -122,13 +122,12 @@
 
     <string name="weiphone">/storage/emulated/0/netease/cloudmusic/Music/</string>
 
-    <string name="hexinjiazhiguan">>/storage/emulated/0/netease/cloudmusic/Music/music_hexinjiazhiguan.mp3</string>
-    <string name="panzongjinju">>/storage/emulated/0/netease/cloudmusic/Music/music_panzongjinju.mp3</string>
-    <string name="songofyili">>/storage/emulated/0/netease/cloudmusic/Music/music_songofyili.mp3</string>
-    <string name="yilijingshen">>/storage/emulated/0/netease/cloudmusic/Music/music_yilijingshen.mp3</string>
-    <string name="yilixintiao">>/storage/emulated/0/netease/cloudmusic/Music/music_yilixintiao.mp3</string>
-    <string name="yiliyuanjing">>/storage/emulated/0/netease/cloudmusic/Music/music_yiliyuanjing.mp3</string>
-
+    <string name="hexinjiazhiguan">/storage/emulated/0/netease/cloudmusic/Music/music_hexinjiazhiguan.mp3</string>
+    <string name="panzongjinju">/storage/emulated/0/netease/cloudmusic/Music/music_panzongjinju.mp3</string>
+    <string name="songofyili">/storage/emulated/0/netease/cloudmusic/Music/music_songofyili.mp3</string>
+    <string name="yilijingshen">/storage/emulated/0/netease/cloudmusic/Music/music_yilijingshen.mp3</string>
+    <string name="yilixintiao">/storage/emulated/0/netease/cloudmusic/Music/music_yilixintiao.mp3</string>
+    <string name="yiliyuanjing">/storage/emulated/0/netease/cloudmusic/Music/music_yiliyuanjing.mp3</string>
 
 
 </resources>

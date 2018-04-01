@@ -63,6 +63,8 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
         }
         mIat.startListening(mRecognizerListener);
         // VoiceSpeaker.getInstance().speak("有什么可以帮到您");
+
+        playingmusic(PlayMusicService.STOP_MUSIC, ""); //add by wei,2018/4/1，在下次语音时，关闭上次音乐
     }
 
     @Override
@@ -220,7 +222,6 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
             }
             else if (str.contains("音乐"))
             {
-//               playingmusic(PlayMusicService.STOP_MUSIC, -1);
                 playingmusic(PlayMusicService.STOP_MUSIC, "");
             }
             TimerUtil.startTime(WakeUpActivity.this,  4000);
@@ -327,11 +328,18 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
             info.setText(info.getText().toString() + "\n即将为您 播放潘总金句");
             playingmusic(PlayMusicService.PLAY_MUSIC, getResources().getString(R.string.panzongjinju));
         }
-        else if (str.contains("播放")|| str.contains("唱")|| str.contains("唱首歌")|| str.contains("唱一首"))
+        else if (str.contains("播放")|| str.contains("唱")|| str.contains("唱首")|| str.contains("唱一首"))
         {
             info.setText(info.getText().toString() + "\n请稍等，正在为您查找歌曲... ");
 //          playingmusic(PlayMusicService.PAUSE_MUSIC, getResources().getString(R.string.hongyan));
             searchMusic(PlayMusicService.PLAY_MUSIC,str);
+        }else if(str.contains("熊猫")||str.contains("介绍")|| str.contains("哪里")|| str.contains("哪些")|| str.contains("动物")|| str.contains("景区")|| str.contains("这里")
+                || str.contains("安全") ){
+            info.setText(info.getText().toString() + "\n为您介绍熊猫");
+            searchMusic(PlayMusicService.PLAY_MUSIC,str);
+        }else{
+            //未正确识别
+            VoiceSpeaker.getInstance().speak("我没听清，请再说一次好吗？");
         }
         {
             willClose = true;

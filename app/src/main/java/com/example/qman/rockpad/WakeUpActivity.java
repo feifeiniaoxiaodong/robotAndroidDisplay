@@ -64,7 +64,8 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
         mIat.startListening(mRecognizerListener);
         // VoiceSpeaker.getInstance().speak("有什么可以帮到您");
 
-        playingmusic(PlayMusicService.STOP_MUSIC, ""); //add by wei,2018/4/1，在下次语音时，关闭上次音乐
+//        playingmusic(PlayMusicService.STOP_MUSIC, ""); //add by wei,2018/4/1，在下次语音时，关闭上次音乐
+        sendMusicFuncBroadcast("stopmusic"); //add by wei,2018/4/1，在下次语音时，关闭上次音乐
     }
 
     @Override
@@ -222,9 +223,16 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
             }
             else if (str.contains("音乐"))
             {
-                playingmusic(PlayMusicService.STOP_MUSIC, "");
+                if(isTurnOn){
+                    //此处的命令是打开音乐，可以随便放一首
+                    searchMusic(PlayMusicService.PLAY_MUSIC, "小苹果");
+                }else{
+//                    playingmusic(PlayMusicService.STOP_MUSIC, "");
+                    sendMusicFuncBroadcast("stopmusic");//使用广播形式关闭音乐，该命令目前用不上，因为下次开启wakeup时，会停止当前正在播放音乐
+                }
+
             }
-            TimerUtil.startTime(WakeUpActivity.this,  4000);
+            TimerUtil.startTime(WakeUpActivity.this,  4000);//目前未起作用，因为还函数末尾调用了finish()
         }
 
         else if(str.contains("高兴") || str.contains("见到你"))
@@ -296,7 +304,7 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
             }
             else
             {
-                VoiceSpeaker.getInstance().speak("不好意思，我记性不太好，我只知道今天的天气啊");
+                VoiceSpeaker.getInstance().speak("不好意思，我记性不太好，我只知道今天的天气噢");
             }
         }
         else if (str.contains("你是谁"))
@@ -339,7 +347,7 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
             searchMusic(PlayMusicService.PLAY_MUSIC,str);
         }else{
             //未正确识别
-            VoiceSpeaker.getInstance().speak("我没听清，请再说一次好吗？");
+            VoiceSpeaker.getInstance().speak("对不起，我没听清，请再说一次好吗？");
         }
         {
             willClose = true;
@@ -374,6 +382,17 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
         Intent intent = new Intent(this, MapOneActivity.class);
         intent.putExtra("product_id", p_id);
         startActivity(intent);
+    }
+
+    private void sendMusicFuncBroadcast(String type){
+        sendBroadcast(BroadcastType.MUSICMSGAC,type);
+    }
+
+    private void sendBroadcast(String ... args){
+        Intent intent=new Intent();
+        intent.setAction(args[0]);
+        intent.putExtra("info",args[1]);
+        sendBroadcast(intent);
     }
 
 }//end class

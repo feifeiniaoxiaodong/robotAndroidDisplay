@@ -97,20 +97,19 @@ public class PlayMusicService extends Service {
         switch (intent.getIntExtra("type", -1)) {
             case PLAY_MUSIC:
                 if (isStop) {
-//                  int music_id = intent.getIntExtra("music_id",-1);
-                    String music_path=intent.getStringExtra("music_path");
-                    String musicdesc=intent.getStringExtra("musicdesc");
+                    String music_path=intent.getStringExtra("music_path");//取音乐地址
+                    String musicdesc=intent.getStringExtra("musicdesc"); //取语句进行搜索
 
-                    if (music_path !=null && !"".equals(music_path.trim())) {  //指定音乐local地址
+                    if (music_path !=null && !"".equals(music_path.trim())) {  //按地址播放
                         startMusic(music_path);
 
-                    }else if(musicdesc!=null && !"".equals( musicdesc.trim())){ //在local查找对应音乐播放，没有则网络下载
+                    }else if(musicdesc!=null && !"".equals( musicdesc.trim())){ //本地查找播放，没有则网络下载
 
                         String abspath=null;
-                        if(( abspath= FindLocalMusicUrl.searchLocalMusic(this,musicdesc))!=null){ //本地有Music
+                        if(( abspath= FindLocalMusicUrl.searchLocalMusic(this,musicdesc))!=null){ //本地找到Music
                             startMusic(abspath);
 
-                        }else{   //网络下载，数据库下载
+                        }else{   //本地未找到，数据库下载
                          /*   String url="";
                             HttpUtil.sendOkHttpRequest(url, new Callback() {
                                 @Override
@@ -184,6 +183,11 @@ public class PlayMusicService extends Service {
                 if (mediaPlayer != null) {
                     mediaPlayer.stop();
                     isStop = true;
+                }
+            }else if("pausemusic".equals(type)){
+                //播放器不为空，并且正在播放
+                if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                    mediaPlayer.pause();
                 }
             }
         }

@@ -211,7 +211,6 @@ public class DBService {
     }
 
 
-
     //删除操作
     public int delete(String rid){
         int res=-1;
@@ -242,6 +241,17 @@ public class DBService {
             }
         }catch (Exception e){
             e.printStackTrace();
+        }
+    }
+
+    public void closeConn(){
+        if(conn!=null){
+            try {
+                conn.close();
+                conn=null;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 

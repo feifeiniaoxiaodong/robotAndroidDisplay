@@ -4,7 +4,10 @@ import android.content.Intent;
 
 import com.example.qman.rockpad.dao.dbcommand.EnvParam;
 import com.example.qman.rockpad.dao.dbcommand.MoveParam;
+import com.example.qman.rockpad.utils.ImagUtil;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -77,8 +80,6 @@ public class DBService {
             }
         }
     }
-
-
 
     //查
     public MoveParam selectRockmoveById(String rid){
@@ -229,6 +230,45 @@ public class DBService {
         }
         return res;
     }
+
+    //读取数据库音乐
+    //测试通过
+    public void selectMusic(int id){
+        String targetpath="F:/robot_android_pro/resources/music/薛之谦演员db.mp3";
+        final String sql="select * from music where id=?";
+        InputStream in=null;
+        if(conn==null) return ;
+
+        try{
+            preparedStatement=conn.prepareStatement(sql);
+            preparedStatement.setInt(1,id);
+            resultSet=preparedStatement.executeQuery();
+            if(resultSet!=null){
+                while(resultSet.next()){
+                    String caption=resultSet.getString("info");
+//                    in=resultSet.getAsciiStream("mus");
+                    in=resultSet.getBinaryStream("mus");
+//                    Blob blob= resultSet.getBlob("mus");
+//                    in=blob.getBinaryStream();
+                    ImagUtil.saveImage(in,targetpath);
+                }
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            if(in!=null){
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            colseConnection();
+        }
+    }
+
+
 
     private void closePreRes(){
         try{

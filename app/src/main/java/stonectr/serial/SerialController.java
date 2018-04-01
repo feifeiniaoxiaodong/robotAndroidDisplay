@@ -11,8 +11,9 @@ import stonectr.serial.callBackEvent.UartRobotPoseEvent;
 import stonectr.serial.callBackEvent.UartShelvesInfoEvent;
 import stonectr.serial.callBackEvent.UartWakeUpEvent;
 import stonectr.serial.utils.BytesUtil;
-import stonectr.serial.serialapply.HandleSerialData;
+
 import stonectr.serial.serialapply.SerialPortUtil;
+import stonectr.serial.utils.CRCVerify;
 
 
 /**
@@ -149,7 +150,7 @@ public class SerialController {
            System.arraycopy(x,0,command,3,8);
            System.arraycopy(y,0,command,11,8);
            System.arraycopy(theta,0,command,19,8);
-           command[27]= HandleSerialData.getCRCNum(command,27);
+           command[27]= CRCVerify.getCRCNum(command,27);
            SerialPortUtil.getInstance().sendBuffer(command) ; //发送命令
     }
 
@@ -276,13 +277,13 @@ public class SerialController {
         command[2]=0x10; //simple move
         command[3]=action; //动作
         command[4]=0;
-        command[5]=HandleSerialData.getCRCNum(command,5);
+        command[5]=CRCVerify.getCRCNum(command,5);
         SerialPortUtil.getInstance().sendBuffer(command) ; //发送命令
     }
     /****************/
 
     public static native void init_();
-    public static native void release();
+//    public static native void release();
     //开关串口
     public static native void openScanPort();
     public static native void closeScanPort();
@@ -297,7 +298,6 @@ public class SerialController {
     public static native void stopScanRcv();
     public static native void startRosRcv();
     public static native void stopRosRcv();
-
 
     /*public native void sendForward();
     public native void sendBackward();

@@ -8,6 +8,7 @@ import java.util.List;
 
 import stonectr.serial.SerialController;
 import stonectr.serial.utils.BytesUtil;
+import stonectr.serial.utils.CRCVerify;
 
 /**
  * Created by wei on 2018/3/17.
@@ -51,7 +52,7 @@ public class ParseSerialData extends  Thread implements OnDataReceiveListener {
                             arrayList.remove(0);
                         }
                         //校验
-                        if( HandleSerialData.isCRCOk(msg28,28)){
+                        if( CRCVerify.isCRCOk(msg28,28)){
                             Double positionx= BytesUtil.parseDouble( BytesUtil.getNInts(msg28,3,8));   //位置数据，小端模式
                             Double positiony=BytesUtil.parseDouble( BytesUtil.getNInts(msg28, 11,8));
                             Double rotaion_yaml=BytesUtil.parseDouble(BytesUtil.getNInts(msg28,19,8));
@@ -67,7 +68,7 @@ public class ParseSerialData extends  Thread implements OnDataReceiveListener {
                             msg15[i]= arrayList.get(0); //取15字节
                             arrayList.remove(0);
                         }
-                        if(HandleSerialData.isCRCOk(msg15,15) ){
+                        if(CRCVerify.isCRCOk(msg15,15) ){
                             switch (msg15[2]){
                                 case 0x05:  //RFID ,数据(big endian)uint_32
                                     long rfid =BytesUtil.parseUnint32( BytesUtil.reverseInts(BytesUtil.getNInts(msg15,3,4)) ,4);

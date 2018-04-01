@@ -341,8 +341,8 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
             info.setText(info.getText().toString() + "\n请稍等，正在为您查找歌曲... ");
 //          playingmusic(PlayMusicService.PAUSE_MUSIC, getResources().getString(R.string.hongyan));
             searchMusic(PlayMusicService.PLAY_MUSIC,str);
-        }else if(str.contains("熊猫")||str.contains("介绍")|| str.contains("哪里")|| str.contains("哪些")|| str.contains("动物")|| str.contains("景区")|| str.contains("这里")
-                || str.contains("安全") ){
+        }else if(str.contains("熊猫")||str.contains("介绍")|| str.contains("哪里")|| str.contains("哪些")|| str.contains("动物")
+                || str.contains("景区")|| str.contains("这里") || str.contains("安全") ){
             info.setText(info.getText().toString() + "\n为您介绍熊猫");
             searchMusic(PlayMusicService.PLAY_MUSIC,str);
         }else{

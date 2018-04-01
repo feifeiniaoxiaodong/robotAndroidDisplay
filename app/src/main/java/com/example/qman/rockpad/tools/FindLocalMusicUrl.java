@@ -24,8 +24,8 @@ public class FindLocalMusicUrl {
         String isFind=null;
        final  String regex= "^\\S+\\.mp3$";
 
-//      File file= new File(context.getResources().getString(R.string.musicrootpath));
-        File file= new File(context.getResources().getString(R.string.weiphone));
+      File file= new File(context.getResources().getString(R.string.musicrootpath));
+//        File file= new File(context.getResources().getString(R.string.weiphone));
         String [] musicnames =file.list();
 //      String [] musicnames2 =file.list( getFilenameFilter(regex)); //
 
@@ -50,8 +50,8 @@ public class FindLocalMusicUrl {
             }
         }
         if( matchRatio> 0.45){
-//            isFind= context.getResources().getString(R.string.musicrootpath)+ musicnames[matchIndex];
-            isFind= context.getResources().getString(R.string.weiphone)+ musicnames[matchIndex];
+           isFind= context.getResources().getString(R.string.musicrootpath)+ musicnames[matchIndex];
+//            isFind= context.getResources().getString(R.string.weiphone)+ musicnames[matchIndex];
         }
         return isFind;
     }

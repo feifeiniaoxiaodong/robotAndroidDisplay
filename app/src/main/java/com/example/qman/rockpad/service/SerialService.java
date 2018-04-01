@@ -61,13 +61,13 @@ public class SerialService extends Service implements ControlCallBack {
         serialController.setControlCallBack(this);
         SerialPortUtil.getInstance().initSerialPort(); //初试化串口，开启串口接受线程
 
-        try{
-            serialController.startWakeRcv();
+    /*   try{
+            serialController.startWakeRcv(); //造成闪退
 //        serialController.startScanRcv();
             serialController.startRosRcv();
         }catch(Exception e) {
             e.printStackTrace();
-        }
+        }*/
         musicReceiver=new MusicBroadCastReceiver();
         IntentFilter filter=new IntentFilter();
         filter.addAction("com.music.complete");
@@ -104,8 +104,8 @@ public class SerialService extends Service implements ControlCallBack {
     {
         Log.d(TAG, "service onDestroy");
         super.onDestroy();
-      /*  serialController.stopRosRcv();
-        serialController.stopWakeRcv();*/
+       serialController.stopRosRcv();
+        serialController.stopWakeRcv();
     }
 
     public void setRemoteIP(String ip) {

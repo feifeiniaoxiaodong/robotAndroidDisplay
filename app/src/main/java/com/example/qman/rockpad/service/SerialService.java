@@ -31,6 +31,7 @@ import stonectr.serial.callBackEvent.UartRobotPoseEvent;
 import stonectr.serial.callBackEvent.UartShelvesInfoEvent;
 import stonectr.serial.callBackEvent.UartWakeUpEvent;
 import stonectr.serial.serialapply.SerialPortUtil;
+import stonectr.serial.serialapply.SerialPortWakeUpUtil;
 
 /**
  * Created by Sunshine on 2017/3/28.
@@ -60,8 +61,9 @@ public class SerialService extends Service implements ControlCallBack {
         serialController =  SerialController.getInstance();
         serialController.setControlCallBack(this);
         SerialPortUtil.getInstance().initSerialPort(); //初试化串口，开启串口接受线程
+//        SerialPortWakeUpUtil.getInstance().initSerialPort(); //开启语音唤醒串口
 
-        serialController.startWakeRcv(); //造成闪退
+        serialController.startWakeRcv(); //造成闪退；更换native库后，不再闪退
 //        serialController.startScanRcv();
         serialController.startRosRcv();
 

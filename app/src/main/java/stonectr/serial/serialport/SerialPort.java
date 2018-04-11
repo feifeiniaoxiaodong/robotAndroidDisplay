@@ -104,7 +104,13 @@ public class SerialPort {
     }
 
     public boolean isSerialOpen(){
-       return  mFd.valid();
+        boolean falg=false ;
+        try{
+            falg=mFd.valid();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+       return  falg;
     }
     // JNI
     private native static FileDescriptor open(String path, int baudrate, int flags);

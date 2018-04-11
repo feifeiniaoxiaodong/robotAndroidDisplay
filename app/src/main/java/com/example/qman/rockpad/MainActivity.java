@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
         initView();
-        //开启广播接收
+        //广播注册
         serialReceiver = new SerialMsgReceiver();
         intentFilter = new IntentFilter("com.stone.uartBroadcast");
         registerReceiver(serialReceiver, intentFilter);
@@ -127,6 +127,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //找不到音乐
                 //音乐播放结束
             }
+        }
+    }
+
+    //display message
+    class ToastMessageDisplay extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
         }
     }
 }

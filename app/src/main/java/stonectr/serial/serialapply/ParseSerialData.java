@@ -36,20 +36,19 @@ public class ParseSerialData extends  Thread implements OnDataReceiveListener {
         }
     }
 
-
     @Override
     public void run() {
 
         while(isCountinue){
             while(arrayList.size()>3 ){
 
-                if(arrayList.get(0) == 0x55 && arrayList.get(1)==0x02){   //Retrieves and removes
+                if(arrayList.get(0) == 0x55 && arrayList.get(1)==0x02){   //Retrieves,两个字节的串口报文头
 
                     if(arrayList.get(2)==0x02 && arrayList.size()>=28){  //28字节
                         int[] msg28=new int[28];
                         for(int i=0;i<28;i++){
                             msg28[i]= arrayList.get(0); //取28字节
-                            arrayList.remove(0);
+                            arrayList.remove(0); //删
                         }
                         //校验
                         if( CRCVerify.isCRCOk(msg28,28)){
@@ -78,7 +77,7 @@ public class ParseSerialData extends  Thread implements OnDataReceiveListener {
                                 case 0x01:  //PM_Hum_Smoke_Volt
                                     int pm25= BytesUtil.parseUnint16( BytesUtil.reverseInts(BytesUtil.getNInts(msg15,3,2)));
                                     int pm10=BytesUtil.parseUnint16( BytesUtil.reverseInts(BytesUtil.getNInts(msg15,5,2)));
-//                            int zero= revData[7]; //零上or零下
+//                                  int zero= revData[7]; //零上or零下
                                     int temperature= msg15[8]; //绝对温度
                                     int humidity=msg15[9] ; //湿度
                                     int smoke=BytesUtil.parseUnint16( BytesUtil.reverseInts(BytesUtil.getNInts(msg15,10,2))); //
@@ -97,7 +96,7 @@ public class ParseSerialData extends  Thread implements OnDataReceiveListener {
                         }
                     } //size
 
-                }else{ //如果连续两个字节都不符合，则删一个，继续检测
+                }else{ //如果连续两个字节都不符合，则删除第一个字节，重新开发查找
                     arrayList.remove(0);
                 }//end 55  02
 
@@ -113,7 +112,7 @@ public class ParseSerialData extends  Thread implements OnDataReceiveListener {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
+        }//end while
     }//end run
 
 

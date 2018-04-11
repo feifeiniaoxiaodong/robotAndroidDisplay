@@ -20,14 +20,14 @@ public class SerialPortUtil {
 
     private SerialPort serialPort=null;
     private OutputStream mOutputStream=null;
-    private InputStream mInputStream=null;
-    private SerialReadThread  mSerialReadThread= null; //数据接收线程
+    private InputStream  mInputStream=null;
+    private SerialReadThread  mSerialReadThread= null;        //数据接收线程
     private OnDataReceiveListener onDataReceiveListener=null; //串口数据读取接口
-    private ParseSerialData parseSerialData =null ; //报文解析线程
+    private ParseSerialData parseSerialData =null ;           //报文解析线程
     private volatile boolean isStop=false;
 
-    private static SerialPortUtil  serialPortUtil=null; //单例模式
-    public static SerialPortUtil getInstance(){
+    private static SerialPortUtil  serialPortUtil=null;       //单例模式
+    public  static SerialPortUtil  getInstance(){
         if(serialPortUtil==null){
             synchronized (SerialPortUtil.class){
                 if(serialPortUtil==null){
@@ -37,6 +37,7 @@ public class SerialPortUtil {
         }
         return serialPortUtil;
     }
+
 
     //设置数据接收接口
     public void setOnDataReceiveListener(
@@ -70,14 +71,13 @@ public class SerialPortUtil {
                 mInputStream=serialPort.getInputStream();
 
                 //开启数据接收线程
-//                isStop=false;
+//              isStop=false;
                 mSerialReadThread= new SerialReadThread();//开启数据接收线程
                 mSerialReadThread.start();
 
                  parseSerialData=new ParseSerialData();
                  parseSerialData.start();
                  onDataReceiveListener=parseSerialData;//设置数据接收接口
-
             }
         }catch (Exception e){
             e.printStackTrace();

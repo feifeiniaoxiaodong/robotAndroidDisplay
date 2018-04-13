@@ -14,6 +14,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.qman.rockpad.constant.BroadcastType;
 import com.example.qman.rockpad.service.SerialService;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //广播注册
         serialReceiver = new SerialMsgReceiver();
         intentFilter = new IntentFilter("com.stone.uartBroadcast");
+        intentFilter.addAction("com.stone.toast");
         registerReceiver(serialReceiver, intentFilter);
 
        Intent serviceIntent = new Intent(this, SerialService.class);
@@ -115,26 +117,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            Bundle bundle = intent.getExtras();
-            String type = bundle.getString("info");
-            if (type.equals(BroadcastType.ROBOTINFO)) { //界面温湿度显示
-                wendu_value.setText(bundle.getInt(BroadcastType.ROBOTINFO_TEMPERATURE, -1) + "℃");
-                shidu_value.setText(bundle.getByte(BroadcastType.ROBOTINFO_HUMIDITY, (byte)0) + "");
-                yanwu_value.setText(bundle.getInt(BroadcastType.ROBOTINFO_SMOKE, -1) + "");
-                PM_value.setText(bundle.getInt(BroadcastType.ROBOTINFO_PM25, -1) + "");
-               dianliang_value.setText(bundle.getByte(BroadcastType.ROBOTINFO_LEVEL, (byte) 0) + "%");
-            }else{
-                //找不到音乐
-                //音乐播放结束
+            String action=intent.getAction();
+            if(action!=null && action.equals("com.stone.uartBroadcast")){
+                Bundle bundle = intent.getExtras();
+                String type = bundle.getString("info");
+
+                if (type.equals(BroadcastType.ROBOTINFO)) { //界面温湿度显示
+                    wendu_value.setText(bundle.getInt(BroadcastType.ROBOTINFO_TEMPERATURE, -1) + "℃");
+                    shidu_value.setText(bundle.getByte(BroadcastType.ROBOTINFO_HUMIDITY, (byte)0) + "");
+                    yanwu_value.setText(bundle.getInt(BroadcastType.ROBOTINFO_SMOKE, -1) + "");
+                    PM_value.setText(bundle.getInt(BroadcastType.ROBOTINFO_PM25, -1) + "");
+                    dianliang_value.setText(bundle.getByte(BroadcastType.ROBOTINFO_LEVEL, (byte) 0) + "%");
+                }else{
+                    //找不到音乐
+                    //音乐播放结束
+                }
+            }else if(action!=null && action.equals("com.stone.toast")){
+                String msg= intent.getStringExtra("toast");
+                displayToast(msg);
             }
         }
     }
 
-    //display message
+    //Toast display message
     class ToastMessageDisplay extends BroadcastReceiver{
         @Override
         public void onReceive(Context context, Intent intent) {
 
         }
+    }
+
+    private void displayToast(String str){
+        Toast.makeText(this,str,Toast.LENGTH_LONG).show();
     }
 }

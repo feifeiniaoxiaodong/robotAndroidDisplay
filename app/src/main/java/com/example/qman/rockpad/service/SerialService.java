@@ -61,11 +61,11 @@ public class SerialService extends Service implements ControlCallBack {
         serialController =  SerialController.getInstance();
         serialController.setControlCallBack(this);
         SerialPortUtil.getInstance().initSerialPort(); //初试化串口，开启串口接受线程
-//        SerialPortWakeUpUtil.getInstance().initSerialPort(); //开启语音唤醒串口
+        SerialPortWakeUpUtil.getInstance().initSerialPort(); //开启语音唤醒串口
 
-        serialController.startWakeRcv(); //造成闪退；更换native库后，不再闪退
+////        serialController.startWakeRcv(); //造成闪退；更换native库后，不再闪退
 //        serialController.startScanRcv();
-        serialController.startRosRcv();
+////        serialController.startRosRcv();
 
         musicReceiver=new MusicBroadCastReceiver();
         IntentFilter filter=new IntentFilter();
@@ -124,9 +124,9 @@ public class SerialService extends Service implements ControlCallBack {
             wakeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(wakeIntent);
 
-            Intent intent=new Intent(this,PlayMusicService.class);
+        /*    Intent intent=new Intent(this,PlayMusicService.class); //在wakeup活动的Onresume函数中执行停止音乐操作
             intent.putExtra("type",PlayMusicService.STOP_MUSIC);
-            startService(intent);
+            startService(intent);*/
         }
         else if(event instanceof UartCodebarEvent)
         {

@@ -1,10 +1,18 @@
 package stonectr.serial.serialapply;
 
+import android.content.Context;
+import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
+
+import com.example.qman.rockpad.application.StoneRbtApp;
+
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.security.InvalidParameterException;
 
+import stonectr.serial.SerialController;
 import stonectr.serial.serialport.SerialPort;
 
 /**
@@ -41,7 +49,7 @@ public class SerialPortWakeUpUtil {
      * 串口初始化
      */
     public void initSerialPort(){
-        initSerialPort(portpath,buadrate,0);
+        initSerialPort(portpath,buadrate,flags);
     }
 
     /**
@@ -109,11 +117,39 @@ public class SerialPortWakeUpUtil {
         public void run() {
 
         }*/
+
         //解析唤醒报文，执行唤醒操作
         @Override
         public void onDataReceive(byte[] buffer, int size) {
+            String msg=null;
+            try {
+                 msg=new String(buffer,"ascii");
+                displayToastMain("收到的唤醒报文::"+msg);
+                 msg=msg.toLowerCase();
+                 msg=msg.substring(msg.indexOf('w'));//剔除wakeup前面的无用字符
+                if(msg.contains("wake")&& msg.contains("up") ){
+                    int angle=0;
+                    if(msg.contains("angle")){
+                        String  str=msg.substring( msg.indexOf(':')+1);
+                        angle = Integer.valueOf( str.substring(0 , str.indexOf(" ")));
+                    }
+                    SerialController.wakeUp(angle); //唤醒语音
+                }
 
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            // 读取一行，即 "WAKE UP!angle:88 score:2049  key_word: shi2"
         }
+    }
+
+    //在主屏幕显示消息
+    private void displayToastMain(String msg){
+        Intent intent=new Intent("com.stone.toast");
+        intent.putExtra("toast",msg);
+
+        Context context= StoneRbtApp.getContext();
+        context.sendBroadcast(intent);
     }
 
 }

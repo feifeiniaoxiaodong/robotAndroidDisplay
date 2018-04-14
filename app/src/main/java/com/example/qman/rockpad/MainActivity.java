@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView PM_value = null;
     private TextView dianliang_value = null;
     private ImageButton wakeup_button = null;
-    private Button test_open = null;
+//    private Button test_open = null;
     private SerialMsgReceiver serialReceiver;
     private IntentFilter intentFilter;
 
@@ -71,8 +71,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dianliang_value = (TextView) findViewById(R.id.main_dianliang_value);
         wakeup_button = (ImageButton) findViewById(R.id.wakeup_button);
         wakeup_button.setOnClickListener(this);
-        test_open=(Button)findViewById(R.id.test_btn);
-        test_open.setOnClickListener(this);
+//        test_open=(Button)findViewById(R.id.test_btn);
+//        test_open.setOnClickListener(this);
         setValue();
     }
     private void initTextView(int id, String str, int index)
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
       switch (v.getId())
         {
-            case R.id.test_btn:
+//            case R.id.test_btn:
 
 //                new Thread(new MusicTestThread(getApplicationContext())).start(); //测试MediaPlayer，可删
 
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 //                new Thread(new MysqlTestThread()).start(); //测试数据库，可删
 
-                break;
+//                break;
             case R.id.wakeup_button:
                 //        ActivityUtil.toastShow(this, "点我干嘛？");
                 Intent intent = new Intent(this, WakeUpActivity.class);
@@ -148,6 +148,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void displayToast(String str){
-        Toast.makeText(this,str,Toast.LENGTH_LONG).show();
+        Toast.makeText(this,str,Toast.LENGTH_SHORT).show();
     }
 }

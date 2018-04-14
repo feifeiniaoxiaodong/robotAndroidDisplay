@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.example.qman.rockpad.R;
+import com.example.qman.rockpad.application.StoneRbtApp;
 import com.example.qman.rockpad.constant.BroadcastType;
 import com.example.qman.rockpad.tools.FindLocalMusicUrl;
 import com.example.qman.rockpad.utils.HttpUtil;
@@ -191,6 +192,16 @@ public class PlayMusicService extends Service {
                 }
             }
         }
+    }
+
+
+    //在主屏幕显示消息
+    private void displayToastMain(String msg){
+        Intent intent=new Intent("com.stone.toast");
+        intent.putExtra("toast",msg);
+
+        Context context= StoneRbtApp.getContext();
+        context.sendBroadcast(intent);
     }
 
 

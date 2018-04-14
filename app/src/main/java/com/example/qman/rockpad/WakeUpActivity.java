@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.qman.rockpad.application.StoneRbtApp;
 import com.example.qman.rockpad.constant.BroadcastType;
 import com.example.qman.rockpad.ifkytekUtil.JsonParser;
 import com.example.qman.rockpad.service.PlayMusicService;
@@ -150,19 +151,23 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
             }
             //    if (str.contains("米"))
             SerialController.getInstance().sendForward();
+            displayToastMain("正在向前走...");
 
         } else if (str.contains(BODY_BACKWARD[0]) || str.contains(BODY_BACKWARD[1])) {
             if (str.contains("不") || str.contains("别") || str.contains("甭") || str.contains("禁止"))
                 return;
             SerialController.getInstance().sendBackward();
+            displayToastMain("正在向后走...");
         } else if (str.contains(BODY_LEFT[0]) || str.contains(BODY_LEFT[1])) {
             if (str.contains("不") || str.contains("别") || str.contains("甭") || str.contains("禁止"))
                 return;
             SerialController.getInstance().sendLeft();
+            displayToastMain("正在向左走...");
         } else if (str.contains(BODY_RIGHT[0]) || str.contains(BODY_RIGHT[1])) {
             if (str.contains("不") || str.contains("别") || str.contains("甭") || str.contains("禁止"))
                 return;
             SerialController.getInstance().sendRight();
+            displayToastMain("正在向右走...");
         }
         else if (str.contains("打开") || str.contains("关闭"))
         {
@@ -347,7 +352,7 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
             searchMusic(PlayMusicService.PLAY_MUSIC,str);
         }else{
             //未正确识别
-            VoiceSpeaker.getInstance().speak("对不起，我没听清，请再说一次好吗？");
+//            VoiceSpeaker.getInstance().speak("对不起，我没听清，请再说一次好吗？");
         }
         {
             willClose = true;
@@ -394,6 +399,19 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
         intent.putExtra("info",args[1]);
         sendBroadcast(intent);
     }
+
+
+    //在主屏幕显示消息
+    private void displayToastMain(String msg){
+        Intent intent=new Intent("com.stone.toast");
+        intent.putExtra("toast",msg);
+
+        Context context= StoneRbtApp.getContext();
+        context.sendBroadcast(intent);
+    }
+
+
+
 
 }//end class
 

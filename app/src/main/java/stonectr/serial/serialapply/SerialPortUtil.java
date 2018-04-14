@@ -13,6 +13,7 @@ import stonectr.serial.utils.BytesUtil;
 /**
  * Created by wei on 2018/3/9.
  * 串口工具类
+ * 温湿度和底盘控制串口号：/dev/ttyS0
  */
 
 public class SerialPortUtil {
@@ -49,7 +50,7 @@ public class SerialPortUtil {
     public  void initSerialPort(){
         //从prefer获取路径，波特率，标志位
         //初始化串口
-        String portpath="/dev/ttyS3";
+        String portpath="/dev/ttyS0";
         int buadrate=115200 ;
         initSerialPort(portpath,buadrate,0);
     }

@@ -18,6 +18,7 @@ import stonectr.serial.serialport.SerialPort;
 /**
  * 管理
  * 接收唤醒命令的串口
+ * 串口接收语音唤醒命令，串口地址:/dev/ttyS3
  */
 public class SerialPortWakeUpUtil {
     private final String TAG=SerialPortWakeUpUtil.class.getSimpleName();
@@ -124,15 +125,22 @@ public class SerialPortWakeUpUtil {
             String msg=null;
             try {
                  msg=new String(buffer,"ascii");
-                displayToastMain("收到的唤醒报文::"+msg);
+//                displayToastMain("收到的唤醒报文::"+msg);
                  msg=msg.toLowerCase();
                  msg=msg.substring(msg.indexOf('w'));//剔除wakeup前面的无用字符
+                 msg= msg.substring(0, msg.indexOf("\n"));
+//                displayToastMain("收到的唤醒报文::"+msg);
+
                 if(msg.contains("wake")&& msg.contains("up") ){
                     int angle=0;
                     if(msg.contains("angle")){
-                        String  str=msg.substring( msg.indexOf(':')+1);
-                        angle = Integer.valueOf( str.substring(0 , str.indexOf(" ")));
+                        String strmsg=msg.substring( msg.indexOf("!")+1);
+                        String [] paramstrs= strmsg.split(" ");
+                        String  anglestr= paramstrs[0].substring( paramstrs[0].indexOf(":")+1);
+                        angle=Integer.parseInt(anglestr);
+//                        displayToastMain("angle::"+angle);
                     }
+
                     SerialController.wakeUp(angle); //唤醒语音
                 }
 

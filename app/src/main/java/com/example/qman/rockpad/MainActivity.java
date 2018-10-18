@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.qman.rockpad.constant.BroadcastType;
 import com.example.qman.rockpad.service.SerialService;
 import com.example.qman.rockpad.test.MusicTestThread;
+import com.example.qman.rockpad.test.SerialTestThread;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView PM_value = null;
     private TextView dianliang_value = null;
     private ImageButton wakeup_button = null;
-//    private Button test_open = null;
+    private Button test_open = null;
     private SerialMsgReceiver serialReceiver;
     private IntentFilter intentFilter;
 
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
+        test_open=(Button)findViewById(R.id.test_btn) ;
         initView();
         //广播注册
         serialReceiver = new SerialMsgReceiver();
@@ -88,15 +90,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
       switch (v.getId())
         {
-//            case R.id.test_btn:
+            case R.id.test_btn:
 
-//                new Thread(new MusicTestThread(getApplicationContext())).start(); //测试MediaPlayer，可删
+                new Thread(new MusicTestThread(getApplicationContext())).start(); //测试MediaPlayer，可删
 
-//               new Thread( new SerialTestThread()).start(); //开启一个测试线程，可删
+               new Thread( new SerialTestThread()).start(); //开启一个测试线程，可删
 
 //                new Thread(new MysqlTestThread()).start(); //测试数据库，可删
 
-//                break;
+                break;
             case R.id.wakeup_button:
                 //        ActivityUtil.toastShow(this, "点我干嘛？");
                 Intent intent = new Intent(this, WakeUpActivity.class);

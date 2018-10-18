@@ -138,6 +138,7 @@ public class SerialPortUtil {
             byte[] mBuffer=cmd.getBytes("UTF-8");
             if(mOutputStream!=null){
                 mOutputStream.write(mBuffer);
+                mOutputStream.flush();
             }else{
                 result=false;
             }
@@ -158,6 +159,7 @@ public class SerialPortUtil {
         try {
             if(mOutputStream!=null){
                 mOutputStream.write(mBuffer);
+                mOutputStream.flush();
             }else{
                 result =false;
             }
@@ -194,7 +196,6 @@ public class SerialPortUtil {
         }
         return false;
     }
-
 
 }
 

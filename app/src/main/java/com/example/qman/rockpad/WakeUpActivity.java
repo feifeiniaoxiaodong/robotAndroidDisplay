@@ -67,6 +67,7 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
 
 //        playingmusic(PlayMusicService.STOP_MUSIC, ""); //add by wei,2018/4/1，在下次语音时，关闭上次音乐
         sendMusicFuncBroadcast("stopmusic"); //add by wei,2018/4/1，在下次语音时，关闭上次音乐
+        SerialController.getInstance().stopRobotMoving();// 再次唤醒时让机器人停止运动
     }
 
     @Override

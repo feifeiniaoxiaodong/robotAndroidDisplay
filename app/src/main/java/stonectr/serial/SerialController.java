@@ -25,7 +25,8 @@ public class SerialController {
     private static ControlCallBack callback;
 
     private final static String TAG = "UARTReceive";
-    private static SerialController instance;
+    private static SerialController instance=null;
+    private volatile boolean stopMotionFlag=false;
 
     public void setControlCallBack(ControlCallBack callback) {
         this.callback = callback;
@@ -159,10 +160,12 @@ public class SerialController {
     public  void sendForward(){
         new Thread(new Runnable() {
 //            1000/50=20
+
             @Override
             public void run() {
+                stopMotionFlag=false;
                 int n=20*3; //每间隔50ms发送一次指令， 3s后停下
-                while(n>0){
+                while(!stopMotionFlag && n>0){
                    if(n>2){
                        sendMsgForward();
                    }else{
@@ -175,6 +178,7 @@ public class SerialController {
                         e.printStackTrace();
                     }
                 }
+                sendMsgStop(); //stop
             }
         }).start();
     }
@@ -184,8 +188,9 @@ public class SerialController {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                stopMotionFlag=false;
                 int n=20*3; //每间隔50ms发送一次指令， 3s后停下
-                while(n>0){
+                while(!stopMotionFlag && n>0){
                     if(n>2){
                         sendMsgBackward();
                     }else{
@@ -198,6 +203,7 @@ public class SerialController {
                         e.printStackTrace();
                     }
                 }
+                sendMsgStop(); //stop
             }
         }).start();
     }
@@ -207,8 +213,9 @@ public class SerialController {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                stopMotionFlag=false;
                 int n=20*3; //每间隔50ms发送一次指令， 3s后停下
-                while(n>0){
+                while(!stopMotionFlag && n>0){
                     if(n>2){
                         sendMsgLeft();
                     }else{
@@ -221,6 +228,7 @@ public class SerialController {
                         e.printStackTrace();
                     }
                 }
+                sendMsgStop(); //stop
             }
         }).start();
     }
@@ -230,8 +238,9 @@ public class SerialController {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                stopMotionFlag=false;
                 int n=20*3; //每间隔50ms发送一次指令， 3s后停下
-                while(n>0){
+                while(!stopMotionFlag && n>0){
                     if(n>2){
                         sendMsgRight();
                     }else{
@@ -244,11 +253,18 @@ public class SerialController {
                         e.printStackTrace();
                     }
                 }
+                sendMsgStop(); //stop
             }
         }).start();
     }
 
-    public  void sendStop(){
+    public  void stopRobotMoving(){
+        stopMotionFlag=true;
+        try {
+            Thread.sleep(70);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         sendMsgStop(); //停止
     }
     

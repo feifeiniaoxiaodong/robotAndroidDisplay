@@ -154,12 +154,12 @@
 
 </LinearLayout>
 
-   <!-- <Button
+    <Button
         android:id="@+id/test_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0.03"
-        android:text="test_open" />-->
+        android:text="test_open" />
 
     <ImageButton
         android:id="@+id/wakeup_button"

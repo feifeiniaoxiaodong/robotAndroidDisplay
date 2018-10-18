@@ -2,6 +2,7 @@ package com.example.qman.rockpad.application;
 
 
 import android.app.Application;
+import android.content.Context;
 
 import com.example.qman.rockpad.R;
 import com.iflytek.cloud.SpeechConstant;
@@ -35,5 +36,8 @@ public class StoneRbtApp extends Application {
         return sApp;
     }
 
+    public static  Context getContext(){
+       return  getApplication();
+    }
 
 }

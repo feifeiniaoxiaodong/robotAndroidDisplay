@@ -1,7 +1,10 @@
 package com.example.qman.rockpad;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -10,6 +13,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.qman.rockpad.application.StoneRbtApp;
+import com.example.qman.rockpad.constant.BroadcastType;
 import com.example.qman.rockpad.ifkytekUtil.JsonParser;
 import com.example.qman.rockpad.service.PlayMusicService;
 import com.example.qman.rockpad.tools.VoiceSpeaker;
@@ -33,6 +38,7 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
     private boolean willClose = true;
     private Timer timer = null;//计时器
     private TimerTask timerTask = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +47,7 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
         wakeup_button.setOnClickListener(this);
         info = (TextView)findViewById(R.id.wakeup_info);
         //10秒后自动退回
+
     }
 
     @Override
@@ -57,6 +64,10 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
         }
         mIat.startListening(mRecognizerListener);
         // VoiceSpeaker.getInstance().speak("有什么可以帮到您");
+
+//        playingmusic(PlayMusicService.STOP_MUSIC, ""); //add by wei,2018/4/1，在下次语音时，关闭上次音乐
+        sendMusicFuncBroadcast("stopmusic"); //add by wei,2018/4/1，在下次语音时，关闭上次音乐
+        SerialController.getInstance().stopRobotMoving();// 再次唤醒时让机器人停止运动
     }
 
     @Override
@@ -83,7 +94,7 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
         @Override
         public void onBeginOfSpeech() {
             // 此回调表示：sdk内部录音机已经准备好了，用户可以开始语音输入
-            //    showTip("开始说话");
+//                showTip("开始说话");
             Toast.makeText(WakeUpActivity.this, "请开始说话", Toast.LENGTH_SHORT).show();
             isListening = true;
         }
@@ -141,19 +152,23 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
             }
             //    if (str.contains("米"))
             SerialController.getInstance().sendForward();
+            displayToastMain("正在向前走...");
 
         } else if (str.contains(BODY_BACKWARD[0]) || str.contains(BODY_BACKWARD[1])) {
             if (str.contains("不") || str.contains("别") || str.contains("甭") || str.contains("禁止"))
                 return;
             SerialController.getInstance().sendBackward();
+            displayToastMain("正在向后走...");
         } else if (str.contains(BODY_LEFT[0]) || str.contains(BODY_LEFT[1])) {
             if (str.contains("不") || str.contains("别") || str.contains("甭") || str.contains("禁止"))
                 return;
             SerialController.getInstance().sendLeft();
+            displayToastMain("正在向左走...");
         } else if (str.contains(BODY_RIGHT[0]) || str.contains(BODY_RIGHT[1])) {
             if (str.contains("不") || str.contains("别") || str.contains("甭") || str.contains("禁止"))
                 return;
             SerialController.getInstance().sendRight();
+            displayToastMain("正在向右走...");
         }
         else if (str.contains("打开") || str.contains("关闭"))
         {
@@ -214,11 +229,17 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
             }
             else if (str.contains("音乐"))
             {
-                playingmusic(PlayMusicService.STOP_MUSIC, -1);
-            }
-            TimerUtil.startTime(WakeUpActivity.this,  4000);
-        }
+                if(isTurnOn){
+                    //此处的命令是打开音乐，可以随便放一首
+                    searchMusic(PlayMusicService.PLAY_MUSIC, "小苹果");
+                }else{
+//                    playingmusic(PlayMusicService.STOP_MUSIC, "");
+                    sendMusicFuncBroadcast("stopmusic");//使用广播形式关闭音乐，该命令目前用不上，因为下次开启wakeup时，会停止当前正在播放音乐
+                }
 
+            }
+            TimerUtil.startTime(WakeUpActivity.this,  4000);//目前未起作用，因为还函数末尾调用了finish()
+        }
 
         else if(str.contains("高兴") || str.contains("见到你"))
         {
@@ -289,7 +310,7 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
             }
             else
             {
-                VoiceSpeaker.getInstance().speak("不好意思，我记性不太好，我只知道今天的天气啊");
+                VoiceSpeaker.getInstance().speak("不好意思，我记性不太好，我只知道今天的天气噢");
             }
         }
         else if (str.contains("你是谁"))
@@ -300,74 +321,63 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
         else if (str.contains("简介") || str.contains("伊利信条")|| str.contains("信条")) {
 
             info.setText(info.getText().toString() + "\n即将为您介绍伊利");
-            playingmusic(PlayMusicService.PLAY_MUSIC,R.raw.music_yilixintiao);
+            playingmusic(PlayMusicService.PLAY_MUSIC, getResources().getString(R.string.yilixintiao));
         }
         else if (str.contains("愿景") || str.contains("伊利愿景")|| str.contains("愿望")) {
             info.setText(info.getText().toString() + "\n即将为您介绍伊利愿景");
-            playingmusic(PlayMusicService.PLAY_MUSIC,R.raw.music_yiliyuanjing);
+//            playingmusic(PlayMusicService.PLAY_MUSIC,R.raw.music_yiliyuanjing);
+            playingmusic(PlayMusicService.PLAY_MUSIC, getResources().getString(R.string.yiliyuanjing));
         }
         else if (str.contains("精神") || str.contains("伊利精神")) {
             info.setText(info.getText().toString() + "\n即将为您介绍伊利精神");
-            playingmusic(PlayMusicService.PLAY_MUSIC,R.raw.music_yilijingshen);
+            playingmusic(PlayMusicService.PLAY_MUSIC, getResources().getString(R.string.yilijingshen));
         }
         else if (str.contains("价值观") || str.contains("核心")|| str.contains("核心价值观")) {
             info.setText(info.getText().toString() + "\n即将为您介绍伊利核心价值观");
-            playingmusic(PlayMusicService.PLAY_MUSIC,R.raw.music_hexinjiazhiguan);
+
+            playingmusic(PlayMusicService.PLAY_MUSIC, getResources().getString(R.string.hexinjiazhiguan));
+
         }
         else if (str.contains("潘总") || str.contains("金句")|| str.contains("潘总金句")) {
             info.setText(info.getText().toString() + "\n即将为您 播放潘总金句");
-            playingmusic(PlayMusicService.PLAY_MUSIC,R.raw.music_panzongjinju);
+            playingmusic(PlayMusicService.PLAY_MUSIC, getResources().getString(R.string.panzongjinju));
         }
-
-        else if (str.contains("播放"))
+        else if (str.contains("播放")|| str.contains("唱")|| str.contains("唱首")|| str.contains("唱一首"))
         {
-
-            if (str.contains("鸿雁"))
-            {
-                info.setText(info.getText().toString() + "\n正在为您播放 鸿雁 ");
-                playingmusic(PlayMusicService.PLAY_MUSIC, R.raw.music_hongyan);
-            }
-            else if (str.contains("丑八怪"))
-            {
-                info.setText(info.getText().toString() + "\n正在为您播放 丑八怪 ");
-                playingmusic(PlayMusicService.PLAY_MUSIC, R.raw.music_choubaguai);
-            }
-            else if (str.contains("小苹果"))
-            {
-                info.setText(info.getText().toString() + "\n正在为您播放 小苹果 ");
-                playingmusic(PlayMusicService.PLAY_MUSIC, R.raw.music_xiaopingguo);
-            }
-            else if (str.contains("音乐"))
-            {
-                info.setText(info.getText().toString() + "\n正在为您播放 音乐 ");
-                playingmusic(PlayMusicService.PLAY_MUSIC, R.raw.music_fenshoukuaile);
-            }
-            else if(str.contains("信条"))
-            {
-                info.setText(info.getText().toString()+"\n正在为您播放 伊利信条 ");
-                playingmusic(PlayMusicService.PLAY_MUSIC,R.raw.music_yilixintiao);
-            }
-            else if(str.contains("伊利之歌") ||str.contains("之歌")||str.contains("歌"))
-            {
-                info.setText(info.getText().toString()+"\n正在为您播放 伊利之歌 ");
-                playingmusic(PlayMusicService.PLAY_MUSIC,R.raw.music_songofyili);
-            }
-            else if (str.contains("潘总") || str.contains("金句")|| str.contains("潘总金句")) {
-                info.setText(info.getText().toString() + "\n即将为您 播放潘总金句");
-                playingmusic(PlayMusicService.PLAY_MUSIC,R.raw.music_panzongjinju);
-            }
+            info.setText(info.getText().toString() + "\n请稍等，正在为您查找歌曲... ");
+//          playingmusic(PlayMusicService.PAUSE_MUSIC, getResources().getString(R.string.hongyan));
+            searchMusic(PlayMusicService.PLAY_MUSIC,str);
+        }else if(str.contains("熊猫")||str.contains("介绍")|| str.contains("哪里")|| str.contains("哪些")|| str.contains("动物")
+                || str.contains("景区")|| str.contains("这里") || str.contains("安全") ){
+            info.setText(info.getText().toString() + "\n为您介绍熊猫");
+            searchMusic(PlayMusicService.PLAY_MUSIC,str);
+        }else{
+            //未正确识别
+//            VoiceSpeaker.getInstance().speak("对不起，我没听清，请再说一次好吗？");
         }
-        else
         {
             willClose = true;
             finish();
         }
     }
 
-    private void playingmusic(int type, int music_id) {
+    /**
+     * 播放sacard中的音乐
+     * @param type：操作类型，1启动、2暂停、3停止
+     * @param path：音乐文件在sdcard中的地址
+     */
+    private void playingmusic(int type,String path){
         //启动服务，播放音乐
+        Intent intent=new Intent(this ,PlayMusicService.class);
+        intent.putExtra("music_path",path );
+        intent.putExtra("type",type);
+        startService(intent);
+    }
+
+    private void searchMusic(int type,String desc){
+        //
         Intent intent=new Intent(this,PlayMusicService.class);
-        intent.putExtra("music_id",music_id);
+        intent.putExtra("musicdesc",desc);
         intent.putExtra("type",type);
         startService(intent);
     }
@@ -379,4 +389,92 @@ public class WakeUpActivity extends AppCompatActivity implements View.OnClickLis
         intent.putExtra("product_id", p_id);
         startActivity(intent);
     }
-}
+
+    private void sendMusicFuncBroadcast(String type){
+        sendBroadcast(BroadcastType.MUSICMSGAC,type);
+    }
+
+    private void sendBroadcast(String ... args){
+        Intent intent=new Intent();
+        intent.setAction(args[0]);
+        intent.putExtra("info",args[1]);
+        sendBroadcast(intent);
+    }
+
+
+    //在主屏幕显示消息
+    private void displayToastMain(String msg){
+        Intent intent=new Intent("com.stone.toast");
+        intent.putExtra("toast",msg);
+
+        Context context= StoneRbtApp.getContext();
+        context.sendBroadcast(intent);
+    }
+
+
+
+
+}//end class
+
+
+        /*    if (str.contains("鸿雁"))
+            {
+                info.setText(info.getText().toString() + "\n正在为您播放 鸿雁 ");
+//                playingmusic(PlayMusicService.PLAY_MUSIC, R.raw.music_hongyan);
+                playingmusic(PlayMusicService.PAUSE_MUSIC, getResources().getString(R.string.hongyan));
+
+            }
+            else if (str.contains("丑八怪"))
+            {
+                info.setText(info.getText().toString() + "\n正在为您播放 丑八怪 ");
+//                playingmusic(PlayMusicService.PLAY_MUSIC, R.raw.music_choubaguai);
+                playingmusic(PlayMusicService.PAUSE_MUSIC, getResources().getString(R.string.choubaguai));
+
+            }
+            else if (str.contains("小苹果"))
+            {
+                info.setText(info.getText().toString() + "\n正在为您播放 小苹果 ");
+//                playingmusic(PlayMusicService.PLAY_MUSIC, R.raw.music_xiaopingguo);
+                playingmusic(PlayMusicService.PAUSE_MUSIC, getResources().getString(R.string.xiaopingguo));
+            }
+            else if (str.contains("音乐"))
+            {
+                info.setText(info.getText().toString() + "\n正在为您播放 音乐 ");
+//               playingmusic(PlayMusicService.PLAY_MUSIC, R.raw.music_fenshoukuaile);
+                playingmusic(PlayMusicService.PAUSE_MUSIC, getResources().getString(R.string.fenshoukuaile));
+            }
+            else if(str.contains("信条"))
+            {
+                info.setText(info.getText().toString()+"\n正在为您播放 伊利信条 ");
+//                playingmusic(PlayMusicService.PLAY_MUSIC,R.raw.music_yilixintiao);
+                playingmusic(PlayMusicService.PLAY_MUSIC, getResources().getString(R.string.yilixintiao));
+
+            }
+            else if(str.contains("伊利之歌") ||str.contains("之歌")||str.contains("歌"))
+            {
+                info.setText(info.getText().toString()+"\n正在为您播放 伊利之歌 ");
+//                playingmusic(PlayMusicService.PLAY_MUSIC,R.raw.music_songofyili);
+                playingmusic(PlayMusicService.PAUSE_MUSIC, getResources().getString(R.string.songofyili));
+
+            }
+            else if (str.contains("潘总") || str.contains("金句")|| str.contains("潘总金句")) {
+                info.setText(info.getText().toString() + "\n即将为您 播放潘总金句");
+//                playingmusic(PlayMusicService.PLAY_MUSIC,R.raw.music_panzongjinju);
+                playingmusic(PlayMusicService.PAUSE_MUSIC, getResources().getString(R.string.panzongjinju));
+            }*/
+
+
+
+
+/*    *//**
+ * 播放音乐
+ * @param type：操作类型，1启动、2暂停、3停止
+ * @param music_id
+ *//*
+    private void playingmusic(int type, int music_id) {
+        //启动服务，播放音乐
+        Intent intent=new Intent(this,PlayMusicService.class);
+        intent.putExtra("music_id",music_id);
+        intent.putExtra("type",type);
+        startService(intent);
+    }*/

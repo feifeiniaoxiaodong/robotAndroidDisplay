@@ -21,4 +21,7 @@ public class BroadcastType {
     public final static String ROBOTINFO_LEVEL = "level";
     public final static String ROBOTINFO_CHARGING = "charging";
 
+    public final static String MUSICMSGAC="com.cn.music.msg";
+//    public final static String M
+
 }

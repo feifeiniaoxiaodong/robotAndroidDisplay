@@ -6,24 +6,36 @@
     android:background="@drawable/background_word"
     android:orientation="vertical">
 
-    <ImageView
+ <!--   <ImageView
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="2"
         android:layout_gravity="center"
         android:layout_marginTop="35dp"
         android:src="@drawable/logo"
-        />
-
-    <TextView
-        android:id="@+id/wakeup_info"
+        />-->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:gravity="center_horizontal"
+
         android:layout_height="0dp"
         android:layout_weight="4"
-        android:text="请问您需要什么帮助？"
-        android:textColor="@color/white"
-        android:textSize="50sp" />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/wakeup_info"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal"
+            android:layout_height="match_parent"
+
+            android:text="请问您需要什么帮助？"
+            android:textColor="@color/white"
+            android:textSize="50sp"
+            android:layout_marginTop="400dp"
+        />
+
+    </LinearLayout>
+
+
 
     <ImageButton
         android:id="@+id/wakeup_button"

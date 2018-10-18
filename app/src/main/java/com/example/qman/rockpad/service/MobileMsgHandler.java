@@ -49,7 +49,7 @@ public class MobileMsgHandler {
     {
         this.remoteIP = ip;
         //将本地地址传递给手机
-        Log.d("remote ip ", "setRemoteIP: " + ip);
+        Log.d("remote ip", "setRemoteIP: " + ip);
         new SocketSendThread("ip " + localIP).start();
     }
     /**

@@ -30,7 +30,8 @@ import stonectr.serial.callBackEvent.UartRobotInfoEvent;
 import stonectr.serial.callBackEvent.UartRobotPoseEvent;
 import stonectr.serial.callBackEvent.UartShelvesInfoEvent;
 import stonectr.serial.callBackEvent.UartWakeUpEvent;
-import stonectr.serial.serialport.SerialPortUtil;
+import stonectr.serial.serialapply.SerialPortUtil;
+import stonectr.serial.serialapply.SerialPortWakeUpUtil;
 
 /**
  * Created by Sunshine on 2017/3/28.
@@ -38,7 +39,7 @@ import stonectr.serial.serialport.SerialPortUtil;
 
 public class SerialService extends Service implements ControlCallBack {
 
-    private String TAG = "serial sevice"; 
+    private final String TAG = "Serial Service";
     public static final String[] BODY_FORWARD = {"往前", "向前", "前进"};
     public static final String[] BODY_BACKWARD = {"后退", "向后", "往后"};
     public static final String[] BODY_LEFT = {"左转", "向左"};
@@ -60,19 +61,20 @@ public class SerialService extends Service implements ControlCallBack {
         serialController =  SerialController.getInstance();
         serialController.setControlCallBack(this);
         SerialPortUtil.getInstance().initSerialPort(); //初试化串口，开启串口接受线程
+        SerialPortWakeUpUtil.getInstance().initSerialPort(); //开启语音唤醒串口
 
-     /*    serialController.startWakeRcv();
-       // serialController.startScanRcv();
-        serialController.startRosRcv();*/
+////        serialController.startWakeRcv(); //造成闪退；更换native库后，不再闪退
+//        serialController.startScanRcv();
+////        serialController.startRosRcv();
+
         musicReceiver=new MusicBroadCastReceiver();
         IntentFilter filter=new IntentFilter();
         filter.addAction("com.music.complete");
         registerReceiver(musicReceiver,filter);
     }
     @Override
-    public int onStartCommand(Intent intent, int flag, int startID)
-    {
-        Log.d(TAG, "service onStart");
+    public int onStartCommand(Intent intent, int flag, int startID){
+        Log.d(TAG, "service onStartCommand");
         return super.onStartCommand(intent, flag, startID);
     }
     @Nullable
@@ -81,6 +83,7 @@ public class SerialService extends Service implements ControlCallBack {
         Log.d(TAG, "service onBind");
         return serialServiceBinder;
     }
+
     public class SerialServiceBinder extends Binder {
         public SerialServiceBinder() {
         }
@@ -88,6 +91,7 @@ public class SerialService extends Service implements ControlCallBack {
             return SerialService.this;
         }
     }
+
     @Override
     public boolean onUnbind(Intent intent)
     {
@@ -99,12 +103,11 @@ public class SerialService extends Service implements ControlCallBack {
     {
         Log.d(TAG, "service onDestroy");
         super.onDestroy();
-        serialController.stopRosRcv();
+       serialController.stopRosRcv();
         serialController.stopWakeRcv();
     }
 
-    public void setRemoteIP(String ip)
-    {
+    public void setRemoteIP(String ip) {
         mobileMsgHandler.setRemoteIP(ip);
     }
 
@@ -121,9 +124,9 @@ public class SerialService extends Service implements ControlCallBack {
             wakeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(wakeIntent);
 
-            Intent intent=new Intent(this,PlayMusicService.class);
+        /*    Intent intent=new Intent(this,PlayMusicService.class); //在wakeup活动的Onresume函数中执行停止音乐操作
             intent.putExtra("type",PlayMusicService.STOP_MUSIC);
-            startService(intent);
+            startService(intent);*/
         }
         else if(event instanceof UartCodebarEvent)
         {
@@ -222,7 +225,6 @@ public class SerialService extends Service implements ControlCallBack {
 
     public void resolve(String str)
     {
-
         if (str == null || str.length() == 0 || str.equals("。") || str.equals("！") || str.equals("？")) {
             return;
         }
@@ -253,7 +255,6 @@ public class SerialService extends Service implements ControlCallBack {
             SerialController.getInstance().sendLeft();
         }
     }
-
 
     public class MusicBroadCastReceiver extends BroadcastReceiver {
         @Override

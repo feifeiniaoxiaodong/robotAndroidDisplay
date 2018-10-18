@@ -10,7 +10,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        // add by fjx-2018-2-3 13:56:57-----start
+    /*    // add by fjx-2018-2-3 13:56:57-----start
         ndk {
             // 模块名称，即编译的.so文件名
             moduleName "SerialPort"
@@ -20,7 +20,7 @@ android {
             // 就可使用__android_log_print方法打印日志到logcat中
             ldLibs "log"
         }
-        // add by fjx-2018-2-3 13:56:57-----end
+        // add by fjx-2018-2-3 13:56:57-----end*/
 
         externalNativeBuild {
             cmake {
@@ -50,6 +50,11 @@ android {
         }
     }
 
+    sourceSets.main {
+        jniLibs.srcDirs = ['libs'] 		//设置.so的库文件夹
+        jni.srcDirs = []
+    }
+
 }
 
 dependencies {
@@ -61,9 +66,10 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
     testCompile 'junit:junit:4.12'
 //    compile project(':stonectr')
-    compile files('libs/BASE64.jar')
+/*    compile files('libs/BASE64.jar')
     compile files('libs/httpclient-4.5.3.jar')
     compile files('libs/Msc.jar')
-    compile files('libs/universal-image-loader-1.9.5.jar')
+    compile files('libs/universal-image-loader-1.9.5.jar')*/
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'
 
 }

@@ -1,21 +1,19 @@
 package stonectr.serial;
 // http://www.cnblogs.com/huangenai/p/6839477.html  编译时候出现 DELETE_FAILED_INTERNAL_ERROR 错误 樊嘉欣 2017-12-16 22:53:14
-import android.provider.Settings;
 import android.util.Log;
 
-import stonectr.serial.callBackEvent.UartBaseEvent;
 import stonectr.serial.callBackEvent.UartCodebarEvent;
 import stonectr.serial.callBackEvent.UartEventNormal;
-import stonectr.serial.callBackEvent.UartEventOther;
 import stonectr.serial.callBackEvent.UartGetFaceEvent;
 import stonectr.serial.callBackEvent.UartRfidEvent;
 import stonectr.serial.callBackEvent.UartRobotInfoEvent;
 import stonectr.serial.callBackEvent.UartRobotPoseEvent;
 import stonectr.serial.callBackEvent.UartShelvesInfoEvent;
 import stonectr.serial.callBackEvent.UartWakeUpEvent;
-import stonectr.serial.serialport.BytesUtil;
-import stonectr.serial.serialport.HandleSerialData;
-import stonectr.serial.serialport.SerialPortUtil;
+import stonectr.serial.utils.BytesUtil;
+
+import stonectr.serial.serialapply.SerialPortUtil;
+import stonectr.serial.utils.CRCVerify;
 
 
 /**
@@ -26,8 +24,9 @@ public class SerialController {
 
     private static ControlCallBack callback;
 
-    private static String TAG = "UARTReceive";
-    private static SerialController instance;
+    private final static String TAG = "UARTReceive";
+    private static SerialController instance=null;
+    private volatile boolean stopMotionFlag=false;
 
     public void setControlCallBack(ControlCallBack callback) {
         this.callback = callback;
@@ -35,6 +34,7 @@ public class SerialController {
 
     private SerialController() {
     }
+
     //单例模式
     public static synchronized SerialController getInstance() {
         if (instance == null) {
@@ -42,6 +42,7 @@ public class SerialController {
         }
         return instance;
     }
+
     //串口唤醒事件1
     public static void wakeUp(int angle)
     {
@@ -86,6 +87,7 @@ public class SerialController {
         if (callback != null)
         callback.onReback(event);
     }
+
     public static void get2Barcode(String code)
     {
         //获得二维码
@@ -135,7 +137,7 @@ public class SerialController {
     /***发送串口命令函数*add by wei 2018/3/10**/
     //待测试.....，2018/3/10
     //导航到指定点
-    public  void navigation(double v, double android_x, double android_y, double android_theta){
+    public  void navigation( double android_x, double android_y, double android_theta){
         navigation(  BytesUtil.parseDoubleToInts(android_x) ,
                     BytesUtil.parseDoubleToInts(android_y) ,
                   BytesUtil.parseDoubleToInts( android_theta));
@@ -149,7 +151,7 @@ public class SerialController {
            System.arraycopy(x,0,command,3,8);
            System.arraycopy(y,0,command,11,8);
            System.arraycopy(theta,0,command,19,8);
-           command[27]= HandleSerialData.getCRCNum(command,27);
+           command[27]= CRCVerify.getCRCNum(command,27);
            SerialPortUtil.getInstance().sendBuffer(command) ; //发送命令
     }
 
@@ -158,10 +160,12 @@ public class SerialController {
     public  void sendForward(){
         new Thread(new Runnable() {
 //            1000/50=20
+
             @Override
             public void run() {
+                stopMotionFlag=false;
                 int n=20*3; //每间隔50ms发送一次指令， 3s后停下
-                while(n>0){
+                while(!stopMotionFlag && n>0){
                    if(n>2){
                        sendMsgForward();
                    }else{
@@ -174,6 +178,7 @@ public class SerialController {
                         e.printStackTrace();
                     }
                 }
+                sendMsgStop(); //stop
             }
         }).start();
     }
@@ -183,8 +188,9 @@ public class SerialController {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                stopMotionFlag=false;
                 int n=20*3; //每间隔50ms发送一次指令， 3s后停下
-                while(n>0){
+                while(!stopMotionFlag && n>0){
                     if(n>2){
                         sendMsgBackward();
                     }else{
@@ -197,16 +203,19 @@ public class SerialController {
                         e.printStackTrace();
                     }
                 }
+                sendMsgStop(); //stop
             }
         }).start();
     }
+
     //向左转，3s后停下
     public  void sendLeft(){
         new Thread(new Runnable() {
             @Override
             public void run() {
+                stopMotionFlag=false;
                 int n=20*3; //每间隔50ms发送一次指令， 3s后停下
-                while(n>0){
+                while(!stopMotionFlag && n>0){
                     if(n>2){
                         sendMsgLeft();
                     }else{
@@ -219,16 +228,19 @@ public class SerialController {
                         e.printStackTrace();
                     }
                 }
+                sendMsgStop(); //stop
             }
         }).start();
     }
+
     //向右转，3s后停下
     public  void sendRight(){
         new Thread(new Runnable() {
             @Override
             public void run() {
+                stopMotionFlag=false;
                 int n=20*3; //每间隔50ms发送一次指令， 3s后停下
-                while(n>0){
+                while(!stopMotionFlag && n>0){
                     if(n>2){
                         sendMsgRight();
                     }else{
@@ -241,11 +253,18 @@ public class SerialController {
                         e.printStackTrace();
                     }
                 }
+                sendMsgStop(); //stop
             }
         }).start();
     }
 
-    public  void sendStop(){
+    public  void stopRobotMoving(){
+        stopMotionFlag=true;
+        try {
+            Thread.sleep(70);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         sendMsgStop(); //停止
     }
     
@@ -274,12 +293,12 @@ public class SerialController {
         command[2]=0x10; //simple move
         command[3]=action; //动作
         command[4]=0;
-        command[5]=HandleSerialData.getCRCNum(command,5);
+        command[5]=CRCVerify.getCRCNum(command,5);
         SerialPortUtil.getInstance().sendBuffer(command) ; //发送命令
     }
     /****************/
 
-    public static native void init_();
+    public static native void init();
     public static native void release();
     //开关串口
     public static native void openScanPort();
@@ -295,7 +314,6 @@ public class SerialController {
     public static native void stopScanRcv();
     public static native void startRosRcv();
     public static native void stopRosRcv();
-
 
     /*public native void sendForward();
     public native void sendBackward();
@@ -342,9 +360,9 @@ public class SerialController {
     public native int add(int x ,int y);*/
     // add by fjx ---2018-02-03 14:22:25----end
 
- /*   static {
-        System.loadLibrary("SerialPort");
-        //init();
+/*   static {
+        System.loadLibrary("serialTool");
+        init();
     }*/
 
 }
